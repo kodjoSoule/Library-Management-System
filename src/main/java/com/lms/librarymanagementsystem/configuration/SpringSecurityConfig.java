@@ -14,7 +14,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
-	
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
 	
@@ -23,8 +22,9 @@ public class SpringSecurityConfig {
 		return http.authorizeHttpRequests(auth -> {
 			auth.requestMatchers("/admin").hasRole("ADMIN");
 			auth.requestMatchers("/user").hasRole("USER");
+			auth.requestMatchers("/welcome").permitAll();
 			auth.anyRequest().authenticated();
-		}).formLogin(Customizer.withDefaults()).build();
+		}).formLogin(Customizer.withDefaults()).oauth2Login(Customizer.withDefaults()).build();
 	}
 	
 	@Bean
