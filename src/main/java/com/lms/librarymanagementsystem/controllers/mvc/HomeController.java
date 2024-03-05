@@ -3,6 +3,7 @@ package com.lms.librarymanagementsystem.controllers.mvc;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HomeController {
@@ -13,10 +14,7 @@ public class HomeController {
         return "home";
     }
 
-    @GetMapping("/livres")
-    public String livres() {
-        return "livres";
-    }
+
 
 
     @GetMapping("/about")
@@ -33,6 +31,12 @@ public class HomeController {
     @GetMapping("/test")
     public String test() {
         return "test";
+    }
+
+    @ResponseBody
+    @GetMapping("/api/message")
+    public String message() {
+        return "Autre message direct";
     }
 
 }

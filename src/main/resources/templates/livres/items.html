@@ -1,0 +1,23 @@
+<!--item.html-->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!-- Inclure le fragment livre-item pour chaque livre -->
+<div class="card mb-4 box-shadow" th:fragment="items" >
+    <!--    <img th:if="${livre.image != null}" th:src="${livre.image.url}" alt="Book Cover" class="card-img-top">-->
+    <!--    <img th:unless="${livre.image != null}" src="https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/5/9/1/9782300013195/tsp20120921190000/C-guide-complet.jpg" alt="Book Cover" class="card-img-top">-->
+    <div class="card-body">
+        <p class="card-text" >
+                            <span>
+                                Titre :
+                            </span>
+            <span th:text="${livre.titre}">
+                            </span>
+        </p>
+        <p class="card-text" th:text="${livre.auteur}"></p>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+                <a th:href="@{/livre/details/{id}(id=${livre.id})}" class="btn btn-sm btn-outline-secondary">Détails</a>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

@@ -52,10 +52,19 @@ public class DataInitializer implements CommandLineRunner {
         // Création d'un livre
         Livre livre = new Livre();
         livre.setIsbn("ISBN123456");
-        livre.setTitre("Titre du Livre");
+        livre.setTitre("Titre du Livre 1");
         livre.setAuteur(auteur);
         livre.setAddedBy(dbUser);
         livreService.save(livre);
+        //fait boucle pour creer 20 livres
+        for (int i = 5; i < 20; i++) {
+            Livre livre1 = new Livre();
+            livre1.setIsbn("ISBN12345"+i);
+            livre1.setTitre("Titre du Livre "+i);
+            livre1.setAuteur(auteur);
+            livre1.setAddedBy(dbUser);
+            livreService.save(livre1);
+        }
 
         // Création d'exemplaires pour le livre
         Exemplaire exemplaire1 = new Exemplaire();

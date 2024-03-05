@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Liste des Livres</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <div class=" jumbotron">
+                <h1 class="h-4">Liste des Livres</h1>
+                <p class="lead">Explorez notre collection et découvrez des mondes à travers les pages.</p>
+            </div>
+        </div>
+    </div>
+    <div class="row" th:if="${livres.empty}">
+            <h2 class="text-info">Aucun employée en base de données</h2>
+    </div>
+    <div th:if="${livres}">
+        <div class="row">
+        <div class="col-3" th:each="livre : ${livres}" >
+            <!-- Inclure le fragment livre-item pour chaque livre -->
+            <div th:replace="livres/items::items"></div>
+        </div>
+    </div>
+
+<!--        pagination-->
+        <!-- Affichage de la pagination -->
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:class="${livres.firstPage} ? 'disabled' : ''">
+                        <a class="page-link" th:href="@{${#httpServletRequest.requestURI}(page=1)}">Première</a>
+                    </li>
+                    <li class="page-item" th:class="${livres.hasPrevious()} ? '' : 'disabled'">
+                        <a class="page-link" th:href="@{${#httpServletRequest.requestURI}(page=${livres.number - 1})}">Précédente</a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, livres.totalPages - 1)}" th:class="${livres.number == i} ? 'active' : ''">
+                        <a class="page-link" th:href="@{${#httpServletRequest.requestURI}(page=${i})}" th:text="${i + 1}"></a>
+                    </li>
+                    <li class="page-item" th:class="${livres.hasNext()} ? '' : 'disabled'">
+                        <a class="page-link" th:href="@{${#httpServletRequest.requestURI}(page=${livres.number + 1})}">Suivante</a>
+                    </li>
+                    <li class="page-item" th:class="${livres.lastPage} ? 'disabled' : ''">
+                        <a class="page-link" th:href="@{${#httpServletRequest.requestURI}(page=${livres.totalPages})}">Dernière</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

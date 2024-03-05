@@ -124,4 +124,17 @@ public class Livre {
             exemplaire.setLivre(this);
         }
   }
+  //to string
+    @Override
+    public String toString() {
+        return "Livre{" +
+                "id=" + id +
+                ", isbn='" + isbn + '\'' +
+                ", titre='" + titre + '\'' +
+                ", auteur=" + auteur +
+                ", exemplaires=" + exemplaires +
+                ", addedBy=" + addedBy +
+                '}';
+    }
+
 }
