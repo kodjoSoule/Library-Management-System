@@ -53,7 +53,7 @@ public class LivreController {
         model.addAttribute("totalPages", livrePage.getTotalPages());
         model.addAttribute("pageSize", livrePage.getTotalElements());
         model.addAttribute("livres", livrePage);
-        return "livres/paginated";
+        return "livres/listes";
     }
 
 }
