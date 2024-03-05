@@ -1,18 +1,12 @@
 package com.lms.librarymanagementsystem.repository;
 
-import com.lms.librarymanagementsystem.model.Auteur;
+import com.lms.librarymanagementsystem.model.Exemplaire;
 import com.lms.librarymanagementsystem.model.Livre;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-public interface LivreRepository extends JpaRepository<Livre, Long> {
-    // Liste des livres par titre
-    public List<Livre> findByTitre(String titre);
-
-    public List<Livre> findAll()  ;
-
-
+public interface ExemplaireRepository extends JpaRepository<Exemplaire, Long> {
 
 }

@@ -16,22 +16,22 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SpringSecurityConfig {
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
-	
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http.authorizeHttpRequests(auth -> {
 			auth.requestMatchers("/admin").hasRole("ADMIN");
 			auth.requestMatchers("/user").hasRole("USER");
 			auth.requestMatchers("/welcome").permitAll();
-			auth.anyRequest().authenticated();
+			auth.anyRequest().permitAll();
 		}).formLogin(Customizer.withDefaults()).oauth2Login(Customizer.withDefaults()).build();
 	}
-	
+
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
-	}	
-	
+	}
+
 	@Bean
 	public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
 		AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);

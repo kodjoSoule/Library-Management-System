@@ -3,6 +3,7 @@ package com.lms.librarymanagementsystem.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class DBUser {
 	
 	@Id
@@ -12,8 +13,17 @@ public class DBUser {
 	private String username;
 	@Column(nullable = false)
 	private String password;
-	@Column(nullable = false)
+
 	private String role;
+	//Constructeur par defaut
+	public DBUser() {
+	}
+
+	public DBUser(String username, String password, String role) {
+		this.username = username;
+		this.password = password;
+		this.role = role;
+	}
 
 	public Integer getId() {
 		return id;
