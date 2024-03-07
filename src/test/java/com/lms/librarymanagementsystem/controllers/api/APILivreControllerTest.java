@@ -2,7 +2,7 @@ package com.lms.librarymanagementsystem.controllers.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lms.librarymanagementsystem.model.Livre;
-import com.lms.librarymanagementsystem.service.api.LivreService;
+import com.lms.librarymanagementsystem.service.LivreService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -10,14 +10,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -61,7 +58,7 @@ class APILivreControllerTest {
             Livre livre = new Livre();
             livre.setId(1L);
             livre.setTitre("Titre 1");
-            when(livreService.getLivreById(1L)).thenReturn(Optional.of(livre));
+            when(livreService.getLivreById(1L)).thenReturn(livre);
 
             // When/Then
             mockMvc.perform(get("/api/livres/{id}", 1))

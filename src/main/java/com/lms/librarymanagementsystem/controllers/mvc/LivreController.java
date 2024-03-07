@@ -1,7 +1,8 @@
 package com.lms.librarymanagementsystem.controllers.mvc;
 
+import com.lms.librarymanagementsystem.model.Auteur;
 import com.lms.librarymanagementsystem.model.Livre;
-import com.lms.librarymanagementsystem.service.api.LivreService;
+import com.lms.librarymanagementsystem.service.LivreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,9 +10,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,6 +57,29 @@ public class LivreController {
         model.addAttribute("pageSize", livrePage.getTotalElements());
         model.addAttribute("livres", livrePage);
         return "livres/listes";
+    }
+
+    // Endpoint pour obtenir les détails d'un livre selectionné
+    @GetMapping("/{id}")
+    public String getLivreDetails(
+            @PathVariable("id") Long id,
+            Model model
+    ) {
+
+        Livre livre = livreService.getLivreById(id);
+        Auteur auteur = livre.getAuteur();
+        byte[] imageData = livre.getImage().getImage();
+        model.addAttribute("auteur", auteur.getNom()+ " " + auteur.getPrenom());
+        model.addAttribute("livre", livre);
+        model.addAttribute("imageBase64", convertToBase64(imageData));
+        return "livres/details";
+
+
+    }
+
+    // Exemple de méthode dans votre contrôleur ou service
+    public String convertToBase64(byte[] data) {
+        return Base64.getEncoder().encodeToString(data);
     }
 
 }

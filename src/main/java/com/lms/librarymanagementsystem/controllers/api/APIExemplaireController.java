@@ -1,8 +1,7 @@
 package com.lms.librarymanagementsystem.controllers.api;
 
 import com.lms.librarymanagementsystem.model.Exemplaire;
-import com.lms.librarymanagementsystem.model.Livre;
-import com.lms.librarymanagementsystem.service.api.ExemplaireService;
+import com.lms.librarymanagementsystem.service.ExemplaireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-package com.lms.librarymanagementsystem.service.api;
+package com.lms.librarymanagementsystem.service;
 
 import com.lms.librarymanagementsystem.model.Livre;
 import com.lms.librarymanagementsystem.repository.LivreRepository;
@@ -26,9 +26,10 @@ public class LivreService {
         return livreRepository.findByTitre(titre);
     }
 
-    @Transactional
-    public Optional<Livre> getLivreById(Long id) {
-        return livreRepository.findById(id);
+
+    public Livre getLivreById(Long id) {
+        Livre searchlivre = livreRepository.findById(id).orElse(null);
+        return searchlivre;
     }
 
     public Livre saveLivre(Livre livre) {

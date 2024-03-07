@@ -1,0 +1,5 @@
+.hero-img img {
+    width: 500px; /* Largeur de l'image */
+    height: 400px; /* Hauteur de l'image */
+    object-fit: cover; /* Assure que l'image couvre la zone sans perdre ses proportions */
+}

@@ -1,7 +1,7 @@
 package com.lms.librarymanagementsystem.controllers.api;
 
 import com.lms.librarymanagementsystem.model.Livre;
-import com.lms.librarymanagementsystem.service.api.LivreService;
+import com.lms.librarymanagementsystem.service.LivreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +28,15 @@ public class APILivreController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Livre> getLivreById(@PathVariable Long id) {
-        return livreService.getLivreById(id)
-                .map(livre -> new ResponseEntity<>(livre, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+                Livre searchlivre =  livreService.getLivreById(id);
+                if(searchlivre == null ) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                else {
+                    return new ResponseEntity<>(searchlivre, HttpStatus.OK);
+                }
+
     }
 
     @PostMapping("")

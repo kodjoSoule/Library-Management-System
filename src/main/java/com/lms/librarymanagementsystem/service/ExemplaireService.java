@@ -1,4 +1,4 @@
-package com.lms.librarymanagementsystem.service.api;
+package com.lms.librarymanagementsystem.service;
 
 import com.lms.librarymanagementsystem.model.Exemplaire;
 import com.lms.librarymanagementsystem.model.Livre;

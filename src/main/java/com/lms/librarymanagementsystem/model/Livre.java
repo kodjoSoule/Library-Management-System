@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import net.minidev.json.annotate.JsonIgnore;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 
 @Entity
 public class Livre {
@@ -13,6 +16,19 @@ public class Livre {
     private Long id;
     private String isbn;
     private String titre;
+
+    //autre propriete du livre
+
+    //Description du livre
+    private String description;
+    //Nombre de pages
+    private int nbPages;
+    //Date de publication
+    private Date datePublication;
+    //Editeur
+    private String editeur;
+    //Langue
+    private String langue;
 
     @JsonBackReference
     @ManyToOne(
@@ -36,6 +52,14 @@ public class Livre {
     @ManyToOne
     @JsonIgnore
     private DBUser addedBy;
+
+    //image du livre, par le model Image
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Image image;
+
     // Getters et setters
     public Long getId() {
         return id;
@@ -66,6 +90,58 @@ public class Livre {
 
     public void setAuteur(Auteur auteur) {
         this.auteur = auteur;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getNbPages() {
+        return nbPages;
+    }
+
+    public void setNbPages(int nbPages) {
+        this.nbPages = nbPages;
+    }
+
+    public Date getDatePublication() {
+        return datePublication;
+    }
+
+    public void setDatePublication(Date datePublication) {
+        this.datePublication = datePublication;
+    }
+
+    public String getEditeur() {
+        return editeur;
+    }
+
+    public void setEditeur(String editeur) {
+        this.editeur = editeur;
+    }
+
+    public String getLangue() {
+        return langue;
+    }
+
+    public void setLangue(String langue) {
+        this.langue = langue;
+    }
+
+    public void setExemplaires(List<Exemplaire> exemplaires) {
+        this.exemplaires = exemplaires;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     public List<Exemplaire> getExemplaires() {
@@ -124,9 +200,8 @@ public class Livre {
             exemplaire.setLivre(this);
         }
   }
-  //to string
-    @Override
-    public String toString() {
+  @Override
+  public String toString() {
         return "Livre{" +
                 "id=" + id +
                 ", isbn='" + isbn + '\'' +
@@ -135,6 +210,12 @@ public class Livre {
                 ", exemplaires=" + exemplaires +
                 ", addedBy=" + addedBy +
                 '}';
-    }
-
+  }
+  // Méthode pour ajouter une image associée à ce livre
+//  public void ajouterImage(byte[] imageBytes) {
+//        Image image = new Image();
+//        image.setImageBytes(imageBytes);
+//        image.setLivre(this);
+//        this.setImage(image);
+//    }
 }

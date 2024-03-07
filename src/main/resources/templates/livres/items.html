@@ -4,6 +4,9 @@
 <div class="card mb-4 box-shadow" th:fragment="items" >
     <!--    <img th:if="${livre.image != null}" th:src="${livre.image.url}" alt="Book Cover" class="card-img-top">-->
     <!--    <img th:unless="${livre.image != null}" src="https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/5/9/1/9782300013195/tsp20120921190000/C-guide-complet.jpg" alt="Book Cover" class="card-img-top">-->
+    <img src="https://i0.wp.com/goodtech.info/wp-content/uploads/2021/09/capture_d_e_cran_2021-08-25_a_07.47.14-9aa.png?fit=1114%2C744&ssl=1"
+         alt="Book Cover"
+         class="card-img-top">
     <div class="card-body">
         <p class="card-text" >
                             <span>
@@ -15,7 +18,7 @@
         <p class="card-text" th:text="${livre.auteur}"></p>
         <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
-                <a th:href="@{/livre/details/{id}(id=${livre.id})}" class="btn btn-sm btn-outline-secondary">Détails</a>
+                <a th:href="@{/livres/{id}(id=${livre.id})}" class="btn btn-sm btn-outline-secondary">Détails</a>
             </div>
         </div>
     </div>

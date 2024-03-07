@@ -1,15 +1,8 @@
-<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Liste des Livres</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
+<head th:replace="fragments/head :: head"></head>
+    <title>Library Management</title>
 <body>
-
-<div th:replace="fragments/header :: header"></div>
-
+<header class="p-3 bg-dark text-white" th:replace="fragments/header :: header"></header>
 <div class="container mt-5">
     <div class="row">
         <div class="col">
@@ -32,23 +25,27 @@
     </div>
     <!-- Affichage de la pagination -->
     <div class="container mt-4">
-        <div class="row justify-content-center">
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li th:if="${currentPage != 1}" class="page-item">
-                        <a class="page-link" th:href="@{/livres(pageNo=${currentPage - 1})}">Précédent</a>
-                    </li>
-                    <li th:each="i : ${#numbers.sequence(1, totalPages - 1)}" th:classappend="${currentPage == i} ? 'active' : ''" class="page-item">
-                        <a class="page-link" th:href="@{/livres(pageNo=${i})}" th:text="${i}"></a>
-                    </li>
-                    <li th:if="${currentPage + 1 != totalPages}" class="page-item">
-                        <a class="page-link" th:href="@{/livres(pageNo=${currentPage + 1})}">Suivant</a>
-                    </li>
-                </ul>
-            </nav>
+        <div class="row  text-center" >
+            <div class="col-4  mx-auto text-center">
+                <p>Page <span th:text="${currentPage}"></span> sur <span th:text="${totalPages}"></span></p>
+                <nav aria-label="Page navigation mx-auto text-center">
+                    <ul class="pagination mx-auto text-center">
+                        <li th:if="${currentPage != 1}" class="page-item">
+                            <a class="page-link" th:href="@{/livres(pageNo=${currentPage - 1})}">Précédent</a>
+                        </li>
+                        <li th:each="i : ${#numbers.sequence(1, totalPages - 1)}" th:classappend="${currentPage == i} ? 'active' : ''" class="page-item">
+                            <a class="page-link" th:href="@{/livres(pageNo=${i})}" th:text="${i}"></a>
+                        </li>
+                        <li th:if="${currentPage + 1 != totalPages}" class="page-item">
+                            <a class="page-link" th:href="@{/livres(pageNo=${currentPage + 1})}">Suivant</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

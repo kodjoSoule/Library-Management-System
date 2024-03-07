@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<!--<head th:fragment="head">-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport"-->
+<!--          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
+<!--    <meta http-equiv="X-UA-Compatible" content="ie=edge">-->
+<!--    <title>Library Management System</title>-->
+<!--    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">-->
+<!--&lt;!&ndash;    <script th:src="@{webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>&ndash;&gt;-->
+<!--</head>-->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<!--section information utils , annonce etc..-->
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    //
+                    <!-- Vérifier si l'image existe -->
+                    <div th:if="${livre.image != null}">
+                        <!-- Utiliser une URL de données pour afficher l'image à partir des données binaires -->
+<!--                        <img th:src="'data:image/png;base64,' + ${#strings.bytesToBase64(livre.image.getImage())}" alt="Image du Livre"/>-->
+<!--                        <img th:src="data:image/png;base64,[[${imageBase64}]]" />-->
+                        <img class='img-thumbnail' th:src="'data:image/jpeg;base64,' + ${imageBase64}" />
+
+                    </div>
+                    <div th:unless="${livre.image != null}">
+                        <!-- Si l'image n'existe pas, afficher une image par défaut -->
+                        <img src="https://ultimatecourses.com/assets/ebooks/nestjs-restful-crud-api-727998c7f01f9e59731d6f4d0b4d5a85425a297e3b873ee8299e5e7bb8acaafd.png"
+                             class="card-img-top img-fluid "
+                             alt="Image du Livre">
+                    </div>
+                    //
+
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1>Bienvenue à la Bibliothèque en Ligne</h1>
+                    <p>Découvrez une vaste collection de livres de tous genres. Trouvez votre prochaine lecture passionnante dès aujourd'hui.</p>
+                    <a href="/livres" class="site-btn">Explorer la Collection</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <div class=" jumbotron">
+                <h1 class="h-4 ">
+                    Détails du Livre
+                </h1>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row" th:if="${livre != null}">
+        <div class="col-md-4">
+            <div class="card">
+<!--                <img th:src="@{/livres/image/{id}(id=${livre.id})}" class="card-img-top" alt="Image du Livre">-->
+                <img src="https://ultimatecourses.com/assets/ebooks/nestjs-restful-crud-api-727998c7f01f9e59731d6f4d0b4d5a85425a297e3b873ee8299e5e7bb8acaafd.png" class="card-img-top" alt="Image du Livre">
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="row mb-4">
+                <div class="col-4">
+                    <a href="/livres" class="btn btn-primary text-right">
+
+                        <svg class="bi bi-arrow-left bx bxs-like bx-fade-left" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"  viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                        </svg>
+
+                        <span>  Retour à la liste des livres</span>
+                    </a>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title" th:text="${livre.titre}"></h2>
+                        <p class="card-text">ISBN: <span th:text="${livre.isbn}"></span></p>
+                        <p class="card-text">Editeur: <span th:text="${livre.editeur}"></span></p>
+
+                        <p class="card-text">Categorie:
+<!--                            <span th:text="${livre.categorie}"></span>-->
+                        </p>
+<!--                        <p class="card-text">Auteur: <span th:text="${livre.auteur.nom}"></span></p>-->
+
+                        <p class="card-text">Date de Publication: <span th:text="${#dates.format(livre.datePublication, 'dd/MM/yyyy')}"></span></p>
+
+<!--                        <p class="card-text">Nombre de Pages: <span th:text="${livre.nbPages}"></span></p>-->
+                        <!-- Ajoutez d'autres détails du livre ici -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5" th:if="${livre == null}">
+        <div class="col">
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">Aucun livre trouvé</h4>
+                <p>Le livre que vous cherchez n'existe pas dans notre base de données.</p>
+                <hr>
+                <p class="mb-0">Veuillez vérifier le numéro du livre et réessayer.</p>
+            </div>
+            <a href="/livres" class="btn btn-primary">Retour à la liste des livres</a>
+        </div>
+    </div>
+
+
+</div>
+<div class="container">
+<!-- ======= Services Section ======= -->
+<section class="mt-5 row">
+
+        <div class="col">
+            <h2 class="mb-4">Plus de détails sur le livre :</h2>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title
+                    ">Titre :</h5>
+                    <p class="card-text" th:text="${livre.titre}"></p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Description :</h5>
+                    <p class="card-text" th:text="${livre.description}"></p>
+                </div>
+            </div>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Categorie :</h5>
+<!--                    <p class="card-text" th:text="${livre.genre}"></p>-->
+                </div>
+            </div>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Langue :</h5>
+                    <p class="card-text" th:text="${livre.langue}"></p>
+                </div>
+            </div>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title
+                    ">Auteur :</h5>
+                    <p class="card-text" th:text="${auteur}"></p>
+                </div>
+            </div>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title
+                    ">Nombre de Pages :</h5>
+                    <p class="card-text" th:text="${livre.nbPages}"></p>
+                </div>
+            </div>
+
+            <!-- Ajoutez d'autres détails du livre ici -->
+        </div>
+
+</section>
+<!-- End Services Section -->
+
+<!-- Decouvrier autres liste de livres en carousel , accompagne de bouton voire tous les livres   -->
+<section class="mt-5 row ">
+            <div class="col">
+                <h2 class="mb-4">Découvrez d'autres livres :</h2>
+                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <img src="https://picsum.photos/600/400" class="card-img-top" alt="Livre 1">
+                                        <div class="card-body">
+                                            <h5 class="card-title
+                    ">Livre Fascinant</h5>
+                                            <p class="card-text">Découvrez ce livre captivant qui vous emmènera dans un voyage extraordinaire.</p>
+                                            <a href="#" class="btn btn-primary">En savoir plus</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <img src="https://picsum.photos/601/400" class="card-img-top" alt="Livre 2">
+                                        <div class="card-body">
+                                            <h5 class="card-title
+                    ">Aventures Inoubliables</h5>
+                                            <p class="card-text">Plongez-vous dans des aventures inoubliables avec ce livre captivant.</p>
+                                            <a href="#" class="btn btn-primary">En savoir plus</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <img src="https://picsum.photos/602/400" class="card-img-top" alt="Livre 3">
+                                        <div class="card-body">
+                                            <h5 class="card-title
+                    ">Secrets Mystérieux</h5>
+                                            <p class="card-text">Explorez les secrets mystérieux cachés dans les pages de ce livre passionnant.</p>
+                                            <a href="#" class="btn btn-primary">En savoir plus</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <img src="https://picsum.photos/603/400" class="card-img-top" alt="Livre 4">
+                                        <div class="card-body">
+                                            <h5 class="card-title
+                    ">Livre Fascinant</h5>
+                                            <p class="card-text">Découvrez ce livre captivant qui vous emmènera dans un voyage extraordinaire.</p>
+                                            <a href="#" class="btn btn-primary">En savoir plus</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <img src="https://picsum.photos/604/400" class="card-img-top" alt="Livre 5">
+                                        <div class="card-body">
+                                            <h5 class="card-title
+                    ">Aventures Inoubliables</h5>
+                                            <p class="card-text">Plongez-vous dans des aventures inoubliables avec ce livre captivant.</p>
+                                            <a href="#" class="btn btn-primary">En savoir plus</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <img src="https://picsum.photos/605/400" class="card-img-top" alt="Livre 6">
+                                        <div class="card-body">
+                                            <h5 class="card-title
+                    ">Secrets Mystérieux</h5>
+                                            <p class="card-text">Explorez les secrets mystérieux cachés dans les pages de ce livre passionnant.</p>
+                                            <a href="#" class="btn btn-primary">En savoir plus</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</section>
+<!-- End Services Section -->
+
+<div class="container mt-5">
+    <div class="row text-center">
+        <div class="col-6 mx-auto">
+            <a href="/livres" class="btn btn-secondary">Voir tous les livres</a>
+        </div>
+    </div>
+</div>
+
+</div>
+<div class="mt-5" th:replace="fragments/footer :: footer"></div>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

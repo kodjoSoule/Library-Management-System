@@ -37,11 +37,13 @@ public class Auteur {
     }
 
     public String getNom() {
+        //en Majuscule
+        this.nom = this.nom.toUpperCase();
         return nom;
     }
 
     public void setNom(String nom) {
-        this.nom = nom;
+        this.nom = nom.toUpperCase();
     }
 
     public String getPrenom() {

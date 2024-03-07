@@ -3,10 +3,9 @@
     <title>Library Management</title>
 <body>
 <header class="p-3 bg-dark text-white" th:replace="fragments/header :: header">
-
 </header>
 <div class="container mt-5">
-    <div class="jumbotron">
+    <div class="mt-5 jumbotron">
         <h1 class="display-4">Bienvenue à la Bibliothèque!</h1>
         <p class="lead">Explorez notre vaste collection de livres et empruntez-les pour une expérience de lecture enrichissante.</p>
         <hr class="my-4">
@@ -14,11 +13,52 @@
         <a class="btn btn-primary btn-lg" href="/livre/liste" role="button">Voir la collection</a>
     </div>
 
+<!--    carousel-->
+    <div class="row">
+        <div class="col">
+
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://picsum.photos/600/400" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                //image of book
+                <img src="
+                https://i0.wp.com/goodtech.info/wp-content/uploads/2021/09/capture_d_e_cran_2021-08-25_a_07.47.14-9aa.png?fit=1114%2C744&ssl=1
+
+" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="https://picsum.photos/600/400" class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+        </div>
+    </div>
+
+    <!--    end carousel-->
+
+
     <!-- Section des livres en vedette -->
-    <div class="row mb-5">
+    <div class="row mb-5 mt-2" >
         <div class="col-md-4">
             <div class="card">
-                <img src="https://placekitten.com/600/400" class="card-img-top" alt="Livre 1">
+                <img src="https://picsum.photos/600/400" class="card-img-top" alt="Livre 1">
                 <div class="card-body">
                     <h5 class="card-title">Livre Fascinant</h5>
                     <p class="card-text">Découvrez ce livre captivant qui vous emmènera dans un voyage extraordinaire.</p>
@@ -28,7 +68,7 @@
         </div>
         <div class="col-md-4">
             <div class="card">
-                <img src="https://placekitten.com/601/400" class="card-img-top" alt="Livre 2">
+                <img src="https://picsum.photos/601/400" class="card-img-top" alt="Livre 2">
                 <div class="card-body">
                     <h5 class="card-title">Aventures Inoubliables</h5>
                     <p class="card-text">Plongez-vous dans des aventures inoubliables avec ce livre captivant.</p>
@@ -38,7 +78,7 @@
         </div>
         <div class="col-md-4">
             <div class="card">
-                <img src="https://placekitten.com/602/400" class="card-img-top" alt="Livre 3">
+                <img src="https://picsum.photos/602/400" class="card-img-top" alt="Livre 3">
                 <div class="card-body">
                     <h5 class="card-title">Secrets Mystérieux</h5>
                     <p class="card-text">Explorez les secrets mystérieux cachés dans les pages de ce livre passionnant.</p>
@@ -47,12 +87,30 @@
             </div>
         </div>
     </div>
-
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <h1>Bienvenue à la Bibliothèque en Ligne</h1>
+                        <p>Découvrez une vaste collection de livres de tous genres. Trouvez votre prochaine lecture passionnante dès aujourd'hui.</p>
+                        <a href="/livres" class="site-btn">Explorer la Collection</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Bibliothèque en Ligne">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- Section des événements -->
     <div class="row">
         <div class="col-md-6">
             <div class="card mb-3">
-                <img src="https://placekitten.com/603/400" class="card-img-top" alt="Événement 1">
+                <img src="https://picsum.photos/603/400" class="card-img-top" alt="Événement 1">
                 <div class="card-body">
                     <h5 class="card-title">Rencontrez un Auteur</h5>
                     <p class="card-text">Assistez à notre prochain événement pour rencontrer un auteur renommé et discuter de son dernier livre.</p>
@@ -61,7 +119,7 @@
         </div>
         <div class="col-md-6">
             <div class="card mb-3">
-                <img src="https://placekitten.com/604/400" class="card-img-top" alt="Événement 2">
+                <img src="https://picsum.photos/604/400" class="card-img-top" alt="Événement 2">
                 <div class="card-body">
                     <h5 class="card-title">Club de Lecture</h5>
                     <p class="card-text">Rejoignez notre club de lecture mensuel et partagez vos impressions sur les derniers livres.</p>
@@ -89,13 +147,13 @@
         </ol>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="https://placekitten.com/1200/400" class="d-block w-100" alt="Livre 1">
+                <img src="https://picsum.photos/1200/400" class="d-block w-100" alt="Livre 1">
             </div>
             <div class="carousel-item">
-                <img src="https://placekitten.com/1200/401" class="d-block w-100" alt="Livre 2">
+                <img src="https://picsum.photos/1200/401" class="d-block w-100" alt="Livre 2">
             </div>
             <div class="carousel-item">
-                <img src="https://placekitten.com/1200/402" class="d-block w-100" alt="Livre 3">
+                <img src="https://picsum.photos/1200/402" class="d-block w-100" alt="Livre 3">
             </div>
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -108,6 +166,8 @@
         </a>
     </div>
 </div>
+
 <div th:replace="fragments/footer :: footer"></div>
-</body>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script></body>
 </html>
