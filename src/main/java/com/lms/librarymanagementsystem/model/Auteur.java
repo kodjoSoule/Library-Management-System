@@ -28,6 +28,13 @@ public class Auteur {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<Livre> livres = new ArrayList<>();
+
+    //add image
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade =CascadeType.ALL
+    )
+    private ImageAuteur image;
+
     public Long getId() {
         return id;
     }

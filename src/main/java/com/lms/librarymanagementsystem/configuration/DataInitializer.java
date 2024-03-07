@@ -4,6 +4,7 @@ import com.lms.librarymanagementsystem.model.*;
 import com.lms.librarymanagementsystem.repository.AuteurRepository;
 import com.lms.librarymanagementsystem.repository.DBUserRepository;
 import com.lms.librarymanagementsystem.repository.LivreRepository;
+import com.lms.librarymanagementsystem.service.CategorieService;
 import com.lms.librarymanagementsystem.service.ImageService;
 import com.lms.librarymanagementsystem.service.LivreService;
 import jakarta.transaction.Transactional;
@@ -14,7 +15,11 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.List;
+
 @Component
 public class DataInitializer implements CommandLineRunner {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(DataInitializer.class);
@@ -22,6 +27,8 @@ public class DataInitializer implements CommandLineRunner {
     private  LivreService livreService;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private CategorieService categorieService;
     private final AuteurRepository auteurRepository;
     private final DBUserRepository dbUserRepository;
 
@@ -54,16 +61,31 @@ public class DataInitializer implements CommandLineRunner {
         dbUserRepository.save(dbUser);
         log.info("Utilisateur créé avec succès");
         // Création d'une image
-        Image image = generateImage();
+        ImageLivre imageLivre = generateImage();
+
+        // Création d'un catégorie
+        Categorie category1 = new Categorie();
+        category1.setNom("Science Fiction");
+
+        Categorie category2 = new Categorie();
+        category2.setNom("Mystery");
+
+        // Enregistrement des catégories
+        categorieService.saveCategorie(category1);
+        categorieService.saveCategorie(category2);
+
         // Création d'un livre
         Livre livre = new Livre();
         livre.setIsbn("ISBN123456");
         livre.setTitre("Titre du Livre 1");
         livre.setAuteur(auteur);
         livre.setAddedBy(dbUser);
-        livre.setImage(image);
+        livre.setImage(imageLivre);
+        livre.setCategories(List.of(
+                category1,
+                category2
+        ));
         livreService.save(livre);
-
         //fait boucle pour creer 20 livres
         for (int i = 5; i < 20; i++) {
             Livre livre1 = new Livre();
@@ -71,8 +93,16 @@ public class DataInitializer implements CommandLineRunner {
             livre1.setTitre("Titre du Livre "+i);
             livre1.setAuteur(auteur);
             livre1.setAddedBy(dbUser);
-            Image image1 = generateImage();
-            livre1.setImage(image1);
+
+            ImageLivre imageLivre1 = generateImage();
+            //Image image1 = loadImageFromFile();
+            livre1.setImage(imageLivre1);
+            livre1.setCategories(
+                    List.of(
+                            category1,
+                            category2
+                    )
+            );
             livreService.save(livre1);
         }
 
@@ -80,8 +110,6 @@ public class DataInitializer implements CommandLineRunner {
         Exemplaire exemplaire1 = new Exemplaire();
         exemplaire1.setStatus("Disponible");
         exemplaire1.setDateDeRetourPrevue(LocalDate.now().plusDays(14));
-
-
 
         Exemplaire exemplaire2 = new Exemplaire();
         exemplaire2.setStatus("Disponible");
@@ -96,32 +124,59 @@ public class DataInitializer implements CommandLineRunner {
         log.info("Livre créé avec succès");
     }
 
-    public Image generateImage(){
-        Image image = new Image();
-        image.setName("image1");
+    public ImageLivre generateImage(){
+        ImageLivre imageLivre = new ImageLivre();
+        imageLivre.setName("image1");
         try {
 
 
             // Charger une image depuis Internet
             //url image books
             String urlImage = "https://th.bing.com/th/id/R.4a53840dde2a1bfa6b69d92606514fc7?rik=AOGJTqt4MCFpog&pid=ImgRaw&r=0";
+
             URL url = new URL(urlImage);
             InputStream inputStream = url.openStream();
             byte[] imageData = inputStream.readAllBytes();
-            image.setImage(imageData);
+            imageLivre.setImageData(imageData);
 
             // Définition des dates
             LocalDate currentDate = LocalDate.now();
-            image.setAddedAt(currentDate);
-            image.setUpdateAt(currentDate);
+            imageLivre.setAddedAt(currentDate);
+            imageLivre.setUpdateAt(currentDate);
 
             // Enregistrement de l'image
-            imageService.save(image);
-            return image;
+            imageService.save(imageLivre);
+            return imageLivre;
 
         } catch (IOException e) {
             log.error("Impossible de charger l'image depuis le disque local", e);
             throw new RuntimeException("Impossible de charger l'image depuis le disque local", e);
+        }
+    }
+
+    public ImageLivre loadImageFromFile() {
+        ImageLivre imageLivre = new ImageLivre();
+        imageLivre.setName("image2");
+        try {
+            // Chemin vers le fichier d'image local
+            String imagePath = "C:\\images\\logo.png";
+
+            // Lecture des données binaires de l'image depuis le fichier local
+            byte[] imageData = Files.readAllBytes(Paths.get(imagePath));
+            imageLivre.setImageData(imageData);
+
+            // Définition des dates
+            LocalDate currentDate = LocalDate.now();
+            imageLivre.setAddedAt(currentDate);
+            imageLivre.setUpdateAt(currentDate);
+
+            // Enregistrement de l'image
+            imageService.save(imageLivre);
+            return imageLivre;
+
+        } catch (IOException e) {
+            log.error("Impossible de charger l'image depuis le fichier local", e);
+            throw new RuntimeException("Impossible de charger l'image depuis le fichier local", e);
         }
     }
 }

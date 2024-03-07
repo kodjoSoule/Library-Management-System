@@ -3,9 +3,10 @@ package com.lms.librarymanagementsystem.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Base64;
 
 @Entity
-public class Image {
+public class ImageLivre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,7 +21,7 @@ public class Image {
     // Champ pour le contenu de l'image (stockage en base64 par exemple)
     @Lob
     @Column(length = 5242880)
-    private byte[] image;
+    private byte[] imageData;
 
 
     @OneToOne(fetch = FetchType.LAZY,
@@ -52,13 +53,17 @@ public class Image {
         this.id = id;
     }
 
-    public byte[] getImage() {
-        return image;
+    public byte[] getImageData() {
+        return imageData;
     }
 
-    public void setImage(byte[] image) {
-        this.image = image;
+    public void setImageData(byte[] image) {
+        this.imageData = image;
     }
+    public String getImageConvertToBase64() {
+        return Base64.getEncoder().encodeToString(this.imageData);
+    }
+
 
     public Livre getLivre() {
         return livre;

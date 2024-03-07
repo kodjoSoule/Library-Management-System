@@ -56,6 +56,8 @@ public class LivreController {
         model.addAttribute("totalPages", livrePage.getTotalPages());
         model.addAttribute("pageSize", livrePage.getTotalElements());
         model.addAttribute("livres", livrePage);
+
+        //model.addAttribute("imageBase64", convertToBase64(livrePage.getImage().getImageData()));
         return "livres/listes";
     }
 
@@ -68,7 +70,7 @@ public class LivreController {
 
         Livre livre = livreService.getLivreById(id);
         Auteur auteur = livre.getAuteur();
-        byte[] imageData = livre.getImage().getImage();
+        byte[] imageData = livre.getImage().getImageData();
         model.addAttribute("auteur", auteur.getNom()+ " " + auteur.getPrenom());
         model.addAttribute("livre", livre);
         model.addAttribute("imageBase64", convertToBase64(imageData));

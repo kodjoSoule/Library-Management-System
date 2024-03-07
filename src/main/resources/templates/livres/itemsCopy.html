@@ -2,18 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <!-- Inclure le fragment livre-item pour chaque livre -->
 <div class="card mb-4 box-shadow" th:fragment="items" >
-    <div th:if="${livre.image != null}">
-        <img th:src="'data:image/png;base64,' + ${livre.image.getImageConvertToBase64()}"
-             class="card-img-top img-fluid"
-             alt="Image du Livre">
-    </div>
-
-    <div th:unless="${livre.image != null}">
-        <img src="https://ultimatecourses.com/assets/ebooks/nestjs-restful-crud-api-727998c7f01f9e59731d6f4d0b4d5a85425a297e3b873ee8299e5e7bb8acaafd.png"
-             class="card-img-top img-fluid "
-             alt="Image du Livre">
-    </div>
-<!--    end image -->
+    <!--    <img th:if="${livre.image != null}" th:src="${livre.image.url}" alt="Book Cover" class="card-img-top">-->
+    <!--    <img th:unless="${livre.image != null}" src="https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/5/9/1/9782300013195/tsp20120921190000/C-guide-complet.jpg" alt="Book Cover" class="card-img-top">-->
+    <img src="https://i0.wp.com/goodtech.info/wp-content/uploads/2021/09/capture_d_e_cran_2021-08-25_a_07.47.14-9aa.png?fit=1114%2C744&ssl=1"
+         alt="Book Cover"
+         class="card-img-top">
     <div class="card-body">
         <p class="card-text" >
                             <span>

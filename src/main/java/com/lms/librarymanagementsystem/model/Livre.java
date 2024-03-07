@@ -2,6 +2,7 @@ package com.lms.librarymanagementsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.Data;
 import net.minidev.json.annotate.JsonIgnore;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 
 
 @Entity
+@Data
 public class Livre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,7 +60,15 @@ public class Livre {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private Image image;
+    private ImageLivre image;
+
+    //add categorie
+    @OneToOne(cascade = {
+            CascadeType.MERGE,
+            CascadeType.PERSIST
+    }
+    )
+    private Categorie categorie;
 
     // Getters et setters
     public Long getId() {
@@ -136,12 +146,12 @@ public class Livre {
         this.exemplaires = exemplaires;
     }
 
-    public Image getImage() {
+    public ImageLivre getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void setImage(ImageLivre imageLivre) {
+        this.image = imageLivre;
     }
 
     public List<Exemplaire> getExemplaires() {
@@ -211,7 +221,19 @@ public class Livre {
                 ", addedBy=" + addedBy +
                 '}';
   }
-  // Méthode pour ajouter une image associée à ce livre
+
+    public ImageLivre getImageLivre() {
+        return image;
+    }
+
+    public void setImageLivre(ImageLivre imageLivre) {
+        this.image = imageLivre;
+    }
+
+
+
+
+    // Méthode pour ajouter une image associée à ce livre
 //  public void ajouterImage(byte[] imageBytes) {
 //        Image image = new Image();
 //        image.setImageBytes(imageBytes);
