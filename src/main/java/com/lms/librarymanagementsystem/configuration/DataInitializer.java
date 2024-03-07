@@ -67,12 +67,12 @@ public class DataInitializer implements CommandLineRunner {
         Categorie category1 = new Categorie();
         category1.setNom("Science Fiction");
 
-        Categorie category2 = new Categorie();
-        category2.setNom("Mystery");
+
+
 
         // Enregistrement des catégories
         categorieService.saveCategorie(category1);
-        categorieService.saveCategorie(category2);
+
 
         // Création d'un livre
         Livre livre = new Livre();
@@ -81,10 +81,7 @@ public class DataInitializer implements CommandLineRunner {
         livre.setAuteur(auteur);
         livre.setAddedBy(dbUser);
         livre.setImage(imageLivre);
-        livre.setCategories(List.of(
-                category1,
-                category2
-        ));
+        livre.setCategorie(category1);
         livreService.save(livre);
         //fait boucle pour creer 20 livres
         for (int i = 5; i < 20; i++) {
@@ -97,12 +94,9 @@ public class DataInitializer implements CommandLineRunner {
             ImageLivre imageLivre1 = generateImage();
             //Image image1 = loadImageFromFile();
             livre1.setImage(imageLivre1);
-            livre1.setCategories(
-                    List.of(
-                            category1,
-                            category2
-                    )
-            );
+            Categorie category2 = new Categorie();
+            category2.setNom("Mystery");
+            livre1.setCategorie(category2);
             livreService.save(livre1);
         }
 

@@ -11,6 +11,7 @@ import java.util.List;
 
 
 @RestController
+
 @RequestMapping("/api/livres")
 public class APILivreController {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(APILivreController.class);
@@ -22,6 +23,7 @@ public class APILivreController {
     @GetMapping("")
     public ResponseEntity<List<Livre>> getAllLivres() {
         List<Livre> livres = livreService.getAllLivres();
+        log.info("Liste des livres: {}", livres);
         return new ResponseEntity<>(livres, HttpStatus.OK);
     }
 

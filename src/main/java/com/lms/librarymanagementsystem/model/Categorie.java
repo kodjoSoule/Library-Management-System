@@ -2,6 +2,7 @@ package com.lms.librarymanagementsystem.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,16 +12,27 @@ public class Categorie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
     private String nom;
 
-    @OneToOne(mappedBy = "categorie")
-    private Categorie genre ;
-    public Categorie getGenre() {
-        return genre;
+    @OneToMany(mappedBy = "categorie",
+            cascade ={
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+
+            }
+    )
+    private List<Livre> livres = new ArrayList<>();
+
+    // Constructeurs, getters et setters
+    public void addLivre(Livre livre) {
+        livres.add(livre);
+        livre.setCategorie(this);
     }
 
-    public void setGenre(Categorie genre) {
-        this.genre = genre;
+    public void removeLivre(Livre livre) {
+        livres.remove(livre);
+        livre.setCategorie(null);
     }
 
     public Long getId() {
@@ -38,9 +50,6 @@ public class Categorie {
     public void setNom(String nom) {
         this.nom = nom;
     }
-
-
-
 
 
 }

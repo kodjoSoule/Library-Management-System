@@ -62,12 +62,13 @@ public class Livre {
     )
     private ImageLivre image;
 
-    //add categorie
-    @OneToOne(cascade = {
-            CascadeType.MERGE,
-            CascadeType.PERSIST
-    }
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }
     )
+    @JoinColumn(name = "categorie_id")
     private Categorie categorie;
 
     // Getters et setters
@@ -230,10 +231,15 @@ public class Livre {
         this.image = imageLivre;
     }
 
+    public Categorie getCategorie() {
+        return categorie;
+    }
 
+    public void setCategorie(Categorie categorie) {
+        this.categorie = categorie;
+    }
 
-
-    // Méthode pour ajouter une image associée à ce livre
+// Méthode pour ajouter une image associée à ce livre
 //  public void ajouterImage(byte[] imageBytes) {
 //        Image image = new Image();
 //        image.setImageBytes(imageBytes);

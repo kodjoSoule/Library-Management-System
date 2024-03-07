@@ -13,8 +13,6 @@ public interface LivreRepository extends JpaRepository<Livre, Long> {
     // Liste des livres par titre
     public List<Livre> findByTitre(String titre);
 
-    public List<Livre> findAll()  ;
-
     //Liste Livre par pagination
     //public Page<Livre> findAll(Pageable pageable);
 //    Page<Livre> findPaginated(Pageable pageable);

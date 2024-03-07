@@ -15,17 +15,15 @@
     <div class="row" th:if="${livres.empty}">
             <h2 class="text-info">Aucun employée en base de données</h2>
     </div>
-    <div th:if="${livres}">
+    <div th:if="${livres != null }">
         <div class="row">
             <div class="col-3" th:each="livre : ${livres}" >
                 <!-- Inclure le fragment livre-item pour chaque livre -->
-                <div th:replace="livres/items::items(livre=${livre}, imageBase64=${convertToBase64(livre.image.imageData)})s"></div>
+<!--                <div th:replace="livres/items::items(livre=${livre}, imageBase64=${convertToBase64(livre.image.imageData)})"></div>-->
+                <div th:replace="livres/items::items(livre=${livre})"></div>
             </div>
         </div>
-    </div>
-    <!-- Affichage de la pagination -->
-    <div class="container mt-4">
-        <div class="row  text-center" >
+        <div class="row  text-center" th:if="${livres.totalPages > 1}" >
             <div class="col-4  mx-auto text-center">
                 <p>Page <span th:text="${currentPage}"></span> sur <span th:text="${totalPages}"></span></p>
                 <nav aria-label="Page navigation mx-auto text-center">

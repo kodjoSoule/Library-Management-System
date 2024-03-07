@@ -21,7 +21,6 @@ public class LivreService {
     public List<Livre> getAllLivres() {
         return livreRepository.findAll();
     }
-
     public List<Livre> getLivreByTitre(String titre) {
         return livreRepository.findByTitre(titre);
     }
