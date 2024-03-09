@@ -15,6 +15,14 @@ public class Categorie {
     @Column
     private String nom;
 
+    public List<Livre> getLivres() {
+        return livres;
+    }
+
+    public void setLivres(List<Livre> livres) {
+        this.livres = livres;
+    }
+
     @OneToMany(mappedBy = "categorie",
             cascade ={
                     CascadeType.PERSIST,

@@ -1,0 +1,78 @@
+<!-- Thymeleaf page -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/shared/head :: head">
+    <title>Library Management</title>
+</head>
+<body>
+
+<header th:replace="admin/shared/header :: header"></header>
+<aside id="sidebar" class="sidebar" th:replace="admin/shared/sidebar :: sidebar"></aside>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+                <li class="breadcrumb-item active">Gestion des auteurs</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <!-- Loading section spinner -->
+    <section id="loading">
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="section auteurs-manager">
+        <div class="row" th:if="${auteurs == null}">
+            <p>Aucun auteur en base de données</p>
+        </div>
+        <div th:if="${auteurs != null}">
+            <h1>Listes des auteurs</h1>
+            <p th:text="auteurs"></p>
+            <!-- Ajouter un bouton pour créer un nouvel auteur -->
+            <a th:href="@{/admin/auteurs-manager/add}" class="btn btn-success">Ajouter un Auteur</a>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Utilisez Thymeleaf pour itérer sur la liste des auteurs -->
+                <tr th:each="auteur : ${auteurs}">
+                    <td th:text="${auteur.id}"></td>
+                    <td th:text="${auteur.nom}"></td>
+                    <td>
+                        <!-- Ajouter des boutons pour les actions CRUD (par exemple, modifier, supprimer) -->
+                        <a href="#" class="btn btn-info btn-sm">Modifier</a>
+                        <a th:href="@{'/admin/auteur-confirm-delete/'+${auteur.getId()} }" class="btn btn-danger btn-sm">Supprimer</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer id="footer" class="footer">
+    <p th:text="${mainContent}"></p>
+    <p>Tout droit réservé</p>
+</footer>
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+
+
+</body>
+</html>

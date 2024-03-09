@@ -29,4 +29,7 @@ public class CategorieService {
     }
 
 
+    public List<Categorie> getCategories() {
+        return categorieRepository.findAll();
+    }
 }

@@ -1,0 +1,41 @@
+<!-- Thymeleaf Fragment - auteurs-form-update.html -->
+<div th:fragment="auteurs-form-update">
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="auteurs-manager.html">Gestion des auteurs</a></li>
+                <li class="breadcrumb-item active">Modifier un Auteur</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section auteurs-form">
+        <h1>Modifier un auteur</h1>
+
+        <!-- Formulaire de modification d'auteur -->
+        <form th:action="@{/admin/auteurs-manager/edit}" method="post" th:object="${auteur}">
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="mb-3">
+                <label for="nom" class="form-label">Nom de l'auteur</label>
+                <input type="text" class="form-control" id="nom" name="nom" th:field="*{nom}" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Modifier
+            </button>
+        </form>
+
+        <!-- Bouton de retour -->
+        <a href="#" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Retour
+        </a>
+
+        <!-- Bouton de suppression -->
+        <a href="#" class="btn btn-danger">
+            <i class="bi bi-trash"></i> Supprimer
+        </a>
+    </section>
+</div>

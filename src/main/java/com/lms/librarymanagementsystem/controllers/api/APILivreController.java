@@ -1,6 +1,9 @@
 package com.lms.librarymanagementsystem.controllers.api;
 
+import com.lms.librarymanagementsystem.model.Auteur;
 import com.lms.librarymanagementsystem.model.Livre;
+import com.lms.librarymanagementsystem.model.RequestLivre;
+import com.lms.librarymanagementsystem.service.AuteurService;
 import com.lms.librarymanagementsystem.service.LivreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,51 +12,88 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
-
-@RequestMapping("/api/livres")
+@RequestMapping( "/api")
 public class APILivreController {
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(APILivreController.class);
-
     @Autowired
     private LivreService livreService;
+    @Autowired
+    private AuteurService auteurService;
 
-    // afficher tous les livres
-    @GetMapping("")
+    // Endpoint pour récupérer tous les livres
+    @GetMapping("/livres")
     public ResponseEntity<List<Livre>> getAllLivres() {
         List<Livre> livres = livreService.getAllLivres();
-        log.info("Liste des livres: {}", livres);
-        return new ResponseEntity<>(livres, HttpStatus.OK);
+        return ResponseEntity.ok(livres);
     }
+    // Endpoint pour ajouter un nouveau livre
+    //test message
+    // Endpoint pour ajouter un nouveau livre
+    @PostMapping("/v1/livre")
+    public ResponseEntity<String> saveLivre(@RequestBody RequestLivre requestLivre) {
+        Livre nouveauLivre = new Livre();
+        nouveauLivre.setTitre(requestLivre.getTitre());
+        //recherche si author existe
+        Auteur auteur = auteurService.getAuteurById(requestLivre.getAuteurId());
+        if (auteur == null) {
+            return new ResponseEntity<>("Auteur non trouvé", HttpStatus.NOT_FOUND);
+        }
+        nouveauLivre.setAuteur(auteur);
+        nouveauLivre.setDescription(requestLivre.getDescription());
+        nouveauLivre.setNbPages(requestLivre.getNbPages());
 
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Livre> getLivreById(@PathVariable Long id) {
-
-                Livre searchlivre =  livreService.getLivreById(id);
-                if(searchlivre == null ) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-                }
-                else {
-                    return new ResponseEntity<>(searchlivre, HttpStatus.OK);
-                }
-
+        nouveauLivre.setDatePublication(requestLivre.getDatePublication());
+        nouveauLivre.setEditeur(requestLivre.getEditeur());
+        nouveauLivre.setLangue(requestLivre.getLangue());
+        // Vous pouvez définir d'autres propriétés du livre en fonction de votre modèle
+        Livre savedLivre = livreService.save(nouveauLivre);
+        return new ResponseEntity<>("Livre ajouté avec succès \n" + savedLivre, HttpStatus.CREATED);
     }
-
-    @PostMapping("")
+    @PostMapping("/livre")
     public ResponseEntity<Livre> saveLivre(@RequestBody Livre livre) {
-        log.info("Livre: {}", livre);
-        Livre savedLivre = livreService.saveLivre(livre);
-        return new ResponseEntity<Livre>(savedLivre, HttpStatus.CREATED);
+        Livre savedLivre = livreService.save(livre);
+        return new ResponseEntity<>(savedLivre, HttpStatus.CREATED);
     }
 
+    //test message
+    @PutMapping("/livre/{id}")
+    public ResponseEntity<String> updateLivre() {
+        return  new ResponseEntity<>("Livre modifié avec succès", HttpStatus.OK);
+    }
+
+
+
+    // Endpoint pour récupérer un livre par son ID
+    @GetMapping("/livres/{id}")
+    public ResponseEntity<Livre> getLivreById(@PathVariable("id") Long id) {
+        Livre livre = livreService.getLivreById(id);
+        if (livre == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(livre);
+    }
+
+
+    // Endpoint pour mettre à jour un livre existant
+    @PutMapping("/{id}")
+    public ResponseEntity<Livre> updateLivre(@PathVariable("id") Long id, @RequestBody Livre livre) {
+        Livre existingLivre = livreService.getLivreById(id);
+        if (existingLivre == null) {
+            return ResponseEntity.notFound().build();
+        }
+        livre.setId(id);
+        Livre updatedLivre = livreService.save(livre);
+        return ResponseEntity.ok(updatedLivre);
+    }
+
+    // Endpoint pour supprimer un livre
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteLivre(@PathVariable Long id) {
-        livreService.deleteLivre(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Void> deleteLivre(@PathVariable("id") Long id) {
+        Livre existingLivre = livreService.getLivreById(id);
+        if (existingLivre == null) {
+            return ResponseEntity.notFound().build();
+        }
+        livreService.delete(id);
+        return ResponseEntity.noContent().build();
     }
-
-
-
 }

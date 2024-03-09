@@ -2,6 +2,7 @@ package com.lms.librarymanagementsystem.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -13,7 +14,7 @@ public class Retour {
     @ManyToOne
     private Emprunt emprunt;
 
-    private Date dateRetourEffectif;
+    private LocalDate dateRetourEffectif;
     private boolean retard;
     private boolean penaliteAppliquee;
 

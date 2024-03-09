@@ -1,0 +1,29 @@
+<!--tymeleaf page-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/shared/head ::head">
+  <title>Library Management</title>
+</head>
+<body>
+
+<header th:replace="admin/shared/header::header"></header>
+<aside id="sidebar" class="sidebar" th:replace="admin/shared/sidebar::sidebar"></aside>
+
+<!--<main id="main" class="main" th:replace="${mainContent}">-->
+<!--</main>-->
+<main id="main" class="main" th:replace="admin/auteur/auteur-form-new"></main>
+<footer id="footer" class="footer">
+  <p th:text="${mainContent}"></p>
+  <p>
+    Tout droit reserve
+  </p>
+</footer>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+
+</body>
+
+</html>

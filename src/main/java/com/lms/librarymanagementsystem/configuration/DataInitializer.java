@@ -4,9 +4,7 @@ import com.lms.librarymanagementsystem.model.*;
 import com.lms.librarymanagementsystem.repository.AuteurRepository;
 import com.lms.librarymanagementsystem.repository.DBUserRepository;
 import com.lms.librarymanagementsystem.repository.LivreRepository;
-import com.lms.librarymanagementsystem.service.CategorieService;
-import com.lms.librarymanagementsystem.service.ImageService;
-import com.lms.librarymanagementsystem.service.LivreService;
+import com.lms.librarymanagementsystem.service.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -29,10 +27,18 @@ public class DataInitializer implements CommandLineRunner {
     private ImageService imageService;
     @Autowired
     private CategorieService categorieService;
+
+    @Autowired
+    private AdherantService adherentService;
+    @Autowired
+    private AdminService adminService;
+
+    @Autowired
+    private EmpruntService empruntService;
     private final AuteurRepository auteurRepository;
     private final DBUserRepository dbUserRepository;
-
-
+    @Autowired
+    ExamplaireService examplaireService;
 
     public DataInitializer(LivreRepository livreRepository, AuteurRepository auteurRepository, DBUserRepository dbUserRepository) {
         this.auteurRepository = auteurRepository;
@@ -46,19 +52,18 @@ public class DataInitializer implements CommandLineRunner {
         Auteur auteur = new Auteur();
         auteur.setNom("Nom de l'Auteur");
         auteur.setPrenom("Prénom de l'Auteur");
-        auteur.setNationalite("Nationalité de l'Auteur");
+//        auteur.setNationalite("Nationalité de l'Auteur");
         // Ajoutez d'autres propriétés de l'auteur
         auteurRepository.save(auteur);
         log.info("Auteur créé avec succès");
 
         // Création d'un utilisateur
-        DBUser dbUser = new DBUser();
+        Admin dbUser = new Admin();
         // N'utilisez pas de mots de passe en texte brut dans un environnement de production
         dbUser.setUsername("admin");
         dbUser.setPassword("admin");
-        dbUser.setRole("ADMIN");
         // Ajoutez d'autres propriétés de l'utilisateur
-        dbUserRepository.save(dbUser);
+        adminService.saveAdmin(dbUser);
         log.info("Utilisateur créé avec succès");
         // Création d'une image
         ImageLivre imageLivre = generateImage();
@@ -116,6 +121,79 @@ public class DataInitializer implements CommandLineRunner {
         // Enregistrement du livre
         livreService.save(livre);
         log.info("Livre créé avec succès");
+
+
+        // Création d'un adhérent
+        Adherent adherent = new Adherent();
+        adherent.setNom("Nom de l'Adhérent");
+        adherent.setPrenom("Prénom de l'Adhérent");
+        adherent.setUsername("adherent");
+        adherent.setPassword("adherent");
+
+        adherentService.saveAdherent(adherent);
+        // Création d'un administrateur
+        Admin admin1 = new Admin();
+        admin1.setNom("Nom de l'Administrateur");
+        admin1.setPrenom("Prénom de l'Administrateur");
+        admin1.setUsername("admin");
+        admin1.setPassword("admin");
+        adminService.saveAdmin(admin1);
+        //creation d'un livre
+        Livre livre2 = new Livre();
+        livre2.setIsbn("ISBN123456");
+        livre2.setTitre("Titre du Livre 2 Empruntee");
+        livre2.setAuteur(auteur);
+        livre2.setAddedBy(admin1);
+        livre2.setImage(imageLivre);
+        //date de publication 2002-12-12
+        livre2.setDatePublication(LocalDate.of(2002, 12, 12));
+        livre2.setCategorie(category1);
+        livre2.setExemplaires(List.of(exemplaire1, exemplaire2));
+        livreService.save(livre2);
+        // Création d'exemplaires pour le livre
+        Exemplaire exemplaire3 = new Exemplaire();
+        exemplaire3.setStatus("Emprunté");
+        exemplaire3.setDateDeRetourPrevue(LocalDate.now().plusDays(14));
+
+
+
+
+
+        // Emprunt d'un exemplaire par l'administrateur à l'adhérent
+        Emprunt emprunt = new Emprunt();
+        emprunt.setAdherent(adherent);
+        emprunt.setExemplaire(exemplaire3); // Remplacez 1L par l'ID du livre réel
+        emprunt.setDateEmprunt(LocalDate.now());
+        emprunt.setDateRetourPrevue(LocalDate.now().plusDays(14)); // Retour prévu dans 14 jours
+        empruntService.saveEmprunt(emprunt);
+
+        // Affichage de la liste des emprunts de l'adhérent
+        //GetAdherant parID
+        Adherent adherent1 = adherentService.getAdherantById(1);
+
+        List<Emprunt> empruntsAdherent = empruntService.getEmpruntsByAdherent(adherent1);
+        System.out.println("Liste des emprunts de l'adhérent :");
+        for (Emprunt e : empruntsAdherent) {
+            System.out.println("ID Emprunt : " + e.getId() +
+                    ", Livre : " + e.getExemplaire().getLivre().getTitre() +
+                    ", Date de Retour Prévue : " + e.getDateRetourPrevue());
+        }
+        // Exemple d'emprunt par l'administrateur à l'adhérent
+        Emprunt empruntAdmin = new Emprunt();
+        empruntAdmin.setAdherent(adherent);
+        empruntAdmin.setExemplaire(exemplaire3); // Remplacez 2L par l'ID du livre réel
+        empruntAdmin.setDateEmprunt(LocalDate.now());
+        empruntAdmin.setDateRetourPrevue(LocalDate.now().plusDays(14)); // Retour prévu dans 14 jours
+        empruntService.saveEmprunt(empruntAdmin);
+
+        // Affichage de la liste des emprunts de l'adhérent après l'emprunt par l'administrateur
+        List<Emprunt> empruntsAdherentApresAdmin = empruntService.getEmpruntsByAdherent(adherent1);
+        System.out.println("Liste des emprunts de l'adhérent après l'emprunt par l'administrateur :");
+        for (Emprunt e : empruntsAdherentApresAdmin) {
+            System.out.println("ID Emprunt : " + e.getId() +
+                    ", Livre : " + e.getExemplaire().getLivre().getTitre() +
+                    ", Date de Retour Prévue : " + e.getDateRetourPrevue());
+        }
     }
 
     public ImageLivre generateImage(){

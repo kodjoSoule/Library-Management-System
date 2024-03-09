@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import net.minidev.json.annotate.JsonIgnore;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,15 +19,13 @@ public class Livre {
     private Long id;
     private String isbn;
     private String titre;
-
     //autre propriete du livre
-
     //Description du livre
     private String description;
     //Nombre de pages
     private int nbPages;
     //Date de publication
-    private Date datePublication;
+    private LocalDate datePublication;
     //Editeur
     private String editeur;
     //Langue
@@ -40,7 +39,7 @@ public class Livre {
             }
     )
     @JoinColumn(name="auteur")
-    @JsonIgnore
+
     private Auteur auteur;
 
     @JsonBackReference
@@ -53,15 +52,22 @@ public class Livre {
     @JsonBackReference
     @ManyToOne
     @JsonIgnore
-    private DBUser addedBy;
+    private Admin addedBy;
+
+    public Categorie getCategorie() {
+        return categorie;
+    }
 
     //image du livre, par le model Image
+    @JsonBackReference
     @OneToOne(
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonIgnore
     private ImageLivre image;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
@@ -119,11 +125,11 @@ public class Livre {
         this.nbPages = nbPages;
     }
 
-    public Date getDatePublication() {
+    public LocalDate getDatePublication() {
         return datePublication;
     }
 
-    public void setDatePublication(Date datePublication) {
+    public void setDatePublication(LocalDate datePublication) {
         this.datePublication = datePublication;
     }
 
@@ -163,11 +169,12 @@ public class Livre {
 //        this.exemplaires = exemplaires;
 //    }
 
-    public DBUser getAddedBy() {
+    public Admin getAddedBy() {
         return addedBy;
     }
 
-    public void setAddedBy(DBUser addedBy) {
+    public void setAddedBy(Admin addedBy) {
+
         this.addedBy = addedBy;
     }
 
@@ -223,27 +230,9 @@ public class Livre {
                 '}';
   }
 
-    public ImageLivre getImageLivre() {
-        return image;
-    }
-
-    public void setImageLivre(ImageLivre imageLivre) {
-        this.image = imageLivre;
-    }
-
-    public Categorie getCategorie() {
-        return categorie;
-    }
 
     public void setCategorie(Categorie categorie) {
         this.categorie = categorie;
     }
 
-// Méthode pour ajouter une image associée à ce livre
-//  public void ajouterImage(byte[] imageBytes) {
-//        Image image = new Image();
-//        image.setImageBytes(imageBytes);
-//        image.setLivre(this);
-//        this.setImage(image);
-//    }
 }

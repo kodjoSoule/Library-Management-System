@@ -1,11 +1,8 @@
 package com.lms.librarymanagementsystem.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.ManyToOne;
-import java.util.Date;
+import jakarta.persistence.*;
+
+import java.time.LocalDate;
 
 
 @Entity
@@ -14,13 +11,91 @@ public class Emprunt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    private Exemplaire exemplaireEmprunte;
+    private Exemplaire exemplaire;
     @ManyToOne
-    private DBUser adherentEmprunteur;
+    private Adherent adherent ;
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private Admin admin;
 
-    private Date dateEmprunt;
-    private Date dateRetourPrevue;
-    private Date dateRetourEffectif;
+    private boolean valide;
+    // Indique si l'emprunt est validé par l'administrateur
 
-    // Getters et Setters
+    private LocalDate dateEmprunt;
+    private LocalDate dateRetourPrevue;
+    private LocalDate dateRetourEffectif;
+
+
+    // Méthode pour valider l'emprunt par l'administrateur
+    public void validerEmprunt(Admin admin) {
+        this.valide = true;
+        this.admin = admin;
+        // Vous pouvez également ajouter d'autres actions liées à la validation
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Exemplaire getExemplaire() {
+        return exemplaire;
+    }
+
+    public void setExemplaire(Exemplaire exemplaireEmprunte) {
+        this.exemplaire = exemplaireEmprunte;
+    }
+
+    public Adherent getAdherent() {
+        return adherent;
+    }
+
+    public void setAdherent(Adherent adherent) {
+        this.adherent = adherent;
+    }
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
+
+    public boolean isValide() {
+        return valide;
+    }
+
+    public void setValide(boolean valide) {
+        this.valide = valide;
+    }
+
+    public LocalDate getDateEmprunt() {
+        return dateEmprunt;
+    }
+
+    public void setDateEmprunt(LocalDate dateEmprunt) {
+        this.dateEmprunt = dateEmprunt;
+    }
+
+    public LocalDate getDateRetourPrevue() {
+        return dateRetourPrevue;
+    }
+
+    public void setDateRetourPrevue(LocalDate dateRetourPrevue) {
+        this.dateRetourPrevue = dateRetourPrevue;
+    }
+
+    public LocalDate getDateRetourEffectif() {
+        return dateRetourEffectif;
+    }
+
+    public void setDateRetourEffectif(LocalDate dateRetourEffectif) {
+        this.dateRetourEffectif = dateRetourEffectif;
+    }
+
+
 }
