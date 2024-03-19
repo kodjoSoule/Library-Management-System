@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface ExemplaireRepository extends JpaRepository<Exemplaire, Long> {
 
+    public List<Exemplaire> findByLivre(Livre livre);
 }

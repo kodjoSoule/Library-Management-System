@@ -1,4 +1,4 @@
-package com.lms.librarymanagementsystem.controllers.mvc;
+package com.lms.librarymanagementsystem.controllers.web;
 
 import com.lms.librarymanagementsystem.model.Auteur;
 import com.lms.librarymanagementsystem.service.AuteurService;

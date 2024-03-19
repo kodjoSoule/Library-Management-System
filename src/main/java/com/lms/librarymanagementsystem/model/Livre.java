@@ -2,7 +2,6 @@ package com.lms.librarymanagementsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Data;
 import net.minidev.json.annotate.JsonIgnore;
 
 import java.time.LocalDate;
@@ -12,7 +11,6 @@ import java.util.List;
 
 
 @Entity
-@Data
 public class Livre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +21,7 @@ public class Livre {
     //Description du livre
     private String description;
     //Nombre de pages
+
     private int nbPages;
     //Date de publication
     private LocalDate datePublication;
@@ -41,6 +40,7 @@ public class Livre {
     @JoinColumn(name="auteur")
 
     private Auteur auteur;
+
 
     @JsonBackReference
     @OneToMany(
@@ -64,7 +64,6 @@ public class Livre {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JsonIgnore
     private ImageLivre image;
 
     @JsonBackReference
@@ -199,25 +198,10 @@ public class Livre {
     }
 
     // Méthode pour ajouter un exemplaire associé à ce livre
-    public void ajouterExemplaire(Exemplaire exemplaire) {
-        if (exemplaires == null) {
-            exemplaires = new ArrayList<>();
-        }
-        exemplaires.add(exemplaire);
+    public void addExemplaire(Exemplaire exemplaire) {
+        this.exemplaires.add(exemplaire);
         exemplaire.setLivre(this);
     }
-    // Méthode pour ajouter un nombre spécifique d'exemplaires associés à ce livre
-    public void ajouterExemplaires(int nombreExemplaires) {
-        if (exemplaires == null) {
-            exemplaires = new ArrayList<>();
-        }
-        for (int i = 0; i < nombreExemplaires; i++) {
-            Exemplaire exemplaire = new Exemplaire();
-            exemplaire.setStatus("Disponible");
-            exemplaires.add(exemplaire);
-            exemplaire.setLivre(this);
-        }
-  }
   @Override
   public String toString() {
         return "Livre{" +
@@ -234,5 +218,4 @@ public class Livre {
     public void setCategorie(Categorie categorie) {
         this.categorie = categorie;
     }
-
 }

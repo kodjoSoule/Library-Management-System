@@ -26,4 +26,8 @@ public class EmpruntService {
     public List<Emprunt> getEmpruntsByAdherent(Adherent adherent1) {
         return empruntRepository.findByAdherent(adherent1);
     }
+
+    public List<Emprunt> getRetoursByAdherent(Adherent adherent1) {
+        return empruntRepository.findByAdherentAndRetourne(adherent1, true);
+    }
 }

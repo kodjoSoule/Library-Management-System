@@ -12,6 +12,13 @@ public class Exemplaire {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
+
+
+
+
+
     @JsonManagedReference
     @ManyToOne(
             fetch = FetchType.LAZY,
@@ -25,8 +32,8 @@ public class Exemplaire {
     // Statut de l'exemplaire (par exemple, "Disponible", "Emprunté")
     private String status;
 
-
-    private LocalDate dateDeRetourPrevue;
+    //date de retour prévue par defaut 14 jours
+    private LocalDate dateDeRetourPrevue = LocalDate.now().plusDays(14);
 
     // Getters et Setters
 
@@ -36,12 +43,10 @@ public class Exemplaire {
         return "Disponible".equals(status);
     }
     // Méthode pour créer et ajouter un nombre donné d'exemplaires à la liste des exemplaires du livre
-    public static void ajouterExemplaires(Livre livre, int nombre) {
-        for (int i = 0; i < nombre; i++) {
-            Exemplaire exemplaire = new Exemplaire();
-            exemplaire.setStatus("Disponible");
-            livre.ajouterExemplaire(exemplaire);
-        }
+    //constructeur
+    public Exemplaire() {
+        this.status = "Disponible";
+        this.dateDeRetourPrevue = LocalDate.now().plusDays(14);
     }
     public Long getId() {
         return id;

@@ -17,4 +17,12 @@ public class ExemplaireService {
     public List<Exemplaire> getAllExemplaires() {
         return exemplaireRepository.findAll();
     }
+
+    public List<Exemplaire> getExemplairesByLivre(Livre livre) {
+        return exemplaireRepository.findByLivre(livre);
+    }
+
+    public void save(Exemplaire exemplaire) {
+        exemplaireRepository.save(exemplaire);
+    }
 }

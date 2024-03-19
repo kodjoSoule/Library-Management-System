@@ -1,27 +1,20 @@
 package com.lms.librarymanagementsystem.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
-import java.util.Base64;
-
 @Entity
 public class ImageLivre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private  String name;
+    //
+    private String title ;
+    // Ceci stocke le nom du fichier pour référence
+    private  String fileName;
     //addedAt
     private LocalDate addedAt;
     //updateAt
     private LocalDate updateAt;
-
-
-    // Champ pour le contenu de l'image (stockage en base64 par exemple)
-    @Lob
-    @Column(length = 5242880)
-    private byte[] imageData;
 
 
     @OneToOne(fetch = FetchType.LAZY,
@@ -33,17 +26,7 @@ public class ImageLivre {
     )
     @JoinColumn(name = "livre_id")
     private Livre livre;
-
-    // Getters et setters
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String uri;
 
     public Long getId() {
         return id;
@@ -53,18 +36,17 @@ public class ImageLivre {
         this.id = id;
     }
 
-    public byte[] getImageData() {
-        return imageData;
+    public String getUri() {
+        return uri;
     }
 
-    public void setImageData(byte[] image) {
-        this.imageData = image;
-    }
-    public String getImageConvertToBase64() {
-        return Base64.getEncoder().encodeToString(this.imageData);
+    public String getTitle() {
+        return title;
     }
 
-
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public Livre getLivre() {
         return livre;
@@ -88,5 +70,26 @@ public class ImageLivre {
 
     public void setUpdateAt(LocalDate updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+
+    public void setUri(String string) {
+        this.uri = string;
+    }
+
+    public void setName(String s) {
+        this.fileName = s;
+    }
+
+    public String getName() {
+        return fileName;
     }
 }

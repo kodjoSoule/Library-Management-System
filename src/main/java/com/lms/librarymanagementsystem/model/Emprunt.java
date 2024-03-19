@@ -12,26 +12,17 @@ public class Emprunt {
     private Long id;
     @ManyToOne
     private Exemplaire exemplaire;
+
     @ManyToOne
     private Adherent adherent ;
     @ManyToOne
     @JoinColumn(name = "admin_id")
     private Admin admin;
-
-    private boolean valide;
-    // Indique si l'emprunt est validé par l'administrateur
-
+    private boolean retourne;
     private LocalDate dateEmprunt;
     private LocalDate dateRetourPrevue;
     private LocalDate dateRetourEffectif;
 
-
-    // Méthode pour valider l'emprunt par l'administrateur
-    public void validerEmprunt(Admin admin) {
-        this.valide = true;
-        this.admin = admin;
-        // Vous pouvez également ajouter d'autres actions liées à la validation
-    }
 
     public Long getId() {
         return id;
@@ -46,7 +37,15 @@ public class Emprunt {
     }
 
     public void setExemplaire(Exemplaire exemplaireEmprunte) {
+        exemplaireEmprunte.setStatus("Emprunte");
         this.exemplaire = exemplaireEmprunte;
+
+    }
+    //constructeur
+    public Emprunt() {
+        this.retourne = false;
+        this.dateEmprunt = LocalDate.now();
+        this.dateRetourPrevue = LocalDate.now().plusDays(14);
     }
 
     public Adherent getAdherent() {
@@ -63,14 +62,6 @@ public class Emprunt {
 
     public void setAdmin(Admin admin) {
         this.admin = admin;
-    }
-
-    public boolean isValide() {
-        return valide;
-    }
-
-    public void setValide(boolean valide) {
-        this.valide = valide;
     }
 
     public LocalDate getDateEmprunt() {
@@ -98,4 +89,14 @@ public class Emprunt {
     }
 
 
+    public void setExemplaireId(Long id) {
+
+    }
+
+    public void setRetourne(boolean retourne) {
+        this.retourne = retourne;
+    }
+    public boolean getRetourne() {
+        return retourne;
+    }
 }

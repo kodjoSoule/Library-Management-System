@@ -30,15 +30,7 @@ public class ImageService  {
         imageRepository.save(imageLivre);
     }
 
-    public void saveImagePost(ImageLivre imageLivreEntity, MultipartFile file) {
-        try {
-            imageLivreEntity.setImageData(file.getBytes());
-            imageRepository.save(imageLivreEntity);
-        } catch (IOException ex) {
-            Logger.getLogger(ImageService.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
-    }
 //    public Image getImageByLivreId(Long id) {
 //        Image searchImage = imageRepository.findByLivreId(id);
 //        return searchImage;

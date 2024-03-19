@@ -1,4 +1,4 @@
-package com.lms.librarymanagementsystem.controllers.api;
+package com.lms.librarymanagementsystem.controllers.rest;
 
 import com.lms.librarymanagementsystem.model.Auteur;
 import com.lms.librarymanagementsystem.service.AuteurService;

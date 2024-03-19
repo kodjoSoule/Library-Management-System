@@ -1,8 +1,9 @@
-package com.lms.librarymanagementsystem.controllers.mvc;
+package com.lms.librarymanagementsystem.controllers.web;
 
 import com.lms.librarymanagementsystem.model.Auteur;
 import com.lms.librarymanagementsystem.model.Livre;
 import com.lms.librarymanagementsystem.service.LivreService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Slf4j
 @Controller
 @RequestMapping("/livres")
 public class LivreController {
@@ -75,10 +77,10 @@ public class LivreController {
 
         Livre livre = livreService.getLivreById(id);
         Auteur auteur = livre.getAuteur();
-        byte[] imageData = livre.getImage().getImageData();
+        //byte[] imageData = livre.getImage().getImageData();
         model.addAttribute("auteur", auteur.getNom()+ " " + auteur.getPrenom());
         model.addAttribute("livre", livre);
-        model.addAttribute("imageBase64", convertToBase64(imageData));
+        //model.addAttribute("imageBase64", convertToBase64(imageData));
         return "livres/details";
 
 

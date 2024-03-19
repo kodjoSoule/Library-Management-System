@@ -11,7 +11,5 @@ public interface EmpruntRepository extends JpaRepository<Emprunt, Long> {
     List<Emprunt> findByAdherent(Adherent adherent1);
     public Optional<Emprunt> findById(Long id);
     void deleteById(Long id);
-
-
-
+    List<Emprunt> findByAdherentAndRetourne(Adherent adherent1, boolean b);
 }

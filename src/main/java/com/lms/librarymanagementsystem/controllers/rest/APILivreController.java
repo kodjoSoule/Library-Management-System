@@ -1,10 +1,11 @@
-package com.lms.librarymanagementsystem.controllers.api;
+package com.lms.librarymanagementsystem.controllers.rest;
 
 import com.lms.librarymanagementsystem.model.Auteur;
 import com.lms.librarymanagementsystem.model.Livre;
 import com.lms.librarymanagementsystem.model.RequestLivre;
 import com.lms.librarymanagementsystem.service.AuteurService;
 import com.lms.librarymanagementsystem.service.LivreService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+@Slf4j
 @RestController
 @RequestMapping( "/api")
 public class APILivreController {
@@ -46,12 +49,12 @@ public class APILivreController {
         nouveauLivre.setEditeur(requestLivre.getEditeur());
         nouveauLivre.setLangue(requestLivre.getLangue());
         // Vous pouvez définir d'autres propriétés du livre en fonction de votre modèle
-        Livre savedLivre = livreService.save(nouveauLivre);
+        Livre savedLivre = livreService.saveLivre(nouveauLivre);
         return new ResponseEntity<>("Livre ajouté avec succès \n" + savedLivre, HttpStatus.CREATED);
     }
     @PostMapping("/livre")
     public ResponseEntity<Livre> saveLivre(@RequestBody Livre livre) {
-        Livre savedLivre = livreService.save(livre);
+        Livre savedLivre = livreService.saveLivre(livre);
         return new ResponseEntity<>(savedLivre, HttpStatus.CREATED);
     }
 
@@ -82,7 +85,7 @@ public class APILivreController {
             return ResponseEntity.notFound().build();
         }
         livre.setId(id);
-        Livre updatedLivre = livreService.save(livre);
+        Livre updatedLivre = livreService.saveLivre(livre);
         return ResponseEntity.ok(updatedLivre);
     }
 

@@ -1,4 +1,4 @@
-package com.lms.librarymanagementsystem.controllers.api;
+package com.lms.librarymanagementsystem.controllers.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lms.librarymanagementsystem.model.Livre;
