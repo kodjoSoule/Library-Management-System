@@ -1,7 +1,6 @@
 package com.lms.librarymanagementsystem.configuration;
 
 import com.lms.librarymanagementsystem.model.*;
-import com.lms.librarymanagementsystem.repository.AuteurRepository;
 import com.lms.librarymanagementsystem.repository.DBUserRepository;
 import com.lms.librarymanagementsystem.repository.LivreRepository;
 import com.lms.librarymanagementsystem.service.*;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,32 +33,88 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     private EmpruntService empruntService;
-    private final AuteurRepository auteurRepository;
-    private final DBUserRepository dbUserRepository;
+    @Autowired
+    private AuteurService auteurService;
     @Autowired
     ExamplaireService examplaireService;
-
-    public DataInitializer(LivreRepository livreRepository, AuteurRepository auteurRepository, DBUserRepository dbUserRepository) {
-        this.auteurRepository = auteurRepository;
-        this.dbUserRepository = dbUserRepository;
+    public DataInitializer(LivreRepository livreRepository, DBUserRepository dbUserRepository) {
     }
+    //Create function to return file image  from C:\Users\Kodjo\lmages\profile.jpg
+    public File getImageFromSystem(){
+        String path = "C:\\Users\\Kodjo\\lmages\\profile.jpg";
+        File file = new File(path);
+        return file;
+    }
+    public void createLivreTest(){
+        // Création d'une catégorie
+        Categorie romanCategory = new Categorie();
+        romanCategory.setNom("Roman");
+        romanCategory.setDescription("Catégorie de livres de romans");
+        categorieService.saveCategorie(romanCategory);
+        log.info("Catégorie créée avec succès");
+        //Création d'un auteur
+        Auteur victorHugo = new Auteur();
+        victorHugo.setNom("Victor");
+        victorHugo.setPrenom("Hugo");
+        auteurService.saveAuteur(victorHugo);
+        log.info("Auteur "+victorHugo.getNom() +" créé avec succès");
+        // Création d'un administrateur
+        Admin soule = new Admin();
+        soule.setUsername("soule");
+        soule.setPassword("soule");
+        adminService.saveAdmin(soule);
+        log.info("Administrateur "+soule.getUsername() +" créé avec succès");
 
+        // Définir le nombre de livres à créer
+        int nombreDeLivres = 5; // Modifier ce nombre selon vos besoins
+        for (int i = 0; i < nombreDeLivres; i++) {
+            // Création d'un nouveau livre
+            Livre livre = new Livre();
+            livre.setIsbn("ISBN" + (i + 1)); // ISBN unique pour chaque livre
+            livre.setTitre("Titre du Livre " + (i + 1)); // Titre unique pour chaque livre
+            livre.setLangue("Français"); // Langue commune pour tous les livres
+            livre.setNbPages(200); // Nombre de pages commun pour tous les livres
+            livre.setDatePublication(LocalDate.of(2002, 12, 12)); // Date de publication commune pour tous les livres
+            livre.setEditeur("Editions du Baobab"); // Éditeur commun pour tous les livres
+            livre.setAuteur(victorHugo); // Utilisation du même auteur pour tous les livres
+            livre.setAddedBy(soule); // Utilisateur qui ajoute le livre
+            try {
+                imageService.uploadImageFromURL("https://www.example.com/image.jpg"); // URL de l'image du livre
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            ImageData imageData = new ImageData();
+            imageData.setName("sous-orange.jpg"); // Nom de l'image commun pour tous les livres
+            livre.setImage(imageData); // Utilisation de la même image pour tous les livres
+            livre.setCategorie(romanCategory); // Catégorie commune pour tous les livres
+
+            // Enregistrement du livre
+            livreService.saveLivre(livre);
+
+            // Ajout d'exemplaires au livre
+            livreService.addExemplaireParNombre(livre, 5); // Ajout de 5 exemplaires à chaque livre
+            livreService.saveLivre(livre); // Sauvegarde du livre après ajout des exemplaires
+
+            // Affichage d'un message pour indiquer que le livre a été créé avec succès
+            log.info("Livre " + (i + 1) + " créé avec succès");
+        }
+    }
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        createLivreTest();
         //1 Création d'un catégorie
         Categorie scienceFictionCategory = new Categorie();
         scienceFictionCategory.setNom("Science Fiction");
+        scienceFictionCategory.setDescription("Catégorie de livres de science fiction");
         categorieService.saveCategorie(scienceFictionCategory);
         log.info("Catégorie créée avec succès");
-
         //2 Création d'un auteur
         Auteur auteur = new Auteur();
         auteur.setNom("Kouyaté");
         auteur.setPrenom("Seydou Bandja");
-        auteurRepository.save(auteur);
+        auteurService.saveAuteur(auteur);
         log.info("Auteur créé avec succès");
-
         //3 Création d'un utilisateur
         Admin administrateur = new Admin();
         administrateur.setUsername("djiguiba");
@@ -70,13 +126,17 @@ public class DataInitializer implements CommandLineRunner {
         Livre sousOrange = new Livre();
         sousOrange.setIsbn("ISBN123456");
         sousOrange.setTitre("Sous Orange");
+        sousOrange.setLangue("Français");
+        sousOrange.setNbPages(200);
+        sousOrange.setDatePublication(LocalDate.of(2002, 12, 12));
+        sousOrange.setEditeur("Editions du Baobab");
         sousOrange.setAuteur(auteur);
         sousOrange.setAddedBy(administrateur);
         //date de publication 2002-12-12
         sousOrange.setDatePublication(
                 LocalDate.of(2002, 12, 12)
         );
-        ImageLivre sousOrangeImage = new ImageLivre();
+        ImageData sousOrangeImage = new ImageData();
         sousOrangeImage.setName("sous-orange.jpg");
         sousOrange.setImage(sousOrangeImage);
         sousOrange.setCategorie(scienceFictionCategory);

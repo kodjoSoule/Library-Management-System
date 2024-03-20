@@ -1,72 +1,43 @@
-package com.lms.librarymanagementsystem.controllers.web;
-
-import com.lms.librarymanagementsystem.model.ImageLivre;
-import com.lms.librarymanagementsystem.repository.ImageRepository;
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-@Controller
-public class ImageController {
-
-    private static final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/uploads";
-
-    @Autowired
-    private ImageRepository imageRepository;
-    @PostConstruct
-    public void init() {
-        try {
-            Files.createDirectories(Paths.get(UPLOAD_DIRECTORY));
-        } catch (IOException e) {
-            e.printStackTrace();
-            // Gérer l'exception si nécessaire (log, throw runtime exception, etc.)
-        }
-    }
-    @GetMapping("/uploadimage")
-    public String showGallery(Model model) {
-        model.addAttribute("images", imageRepository.findAll());
-        return "gallery";
-    }
-
+//
+//package com.lms.librarymanagementsystem.controllers.web;
+//import com.lms.librarymanagementsystem.service.ImageService;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.MediaType;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.stereotype.Controller;
+//import org.springframework.web.bind.annotation.*;
+//import org.springframework.web.multipart.MultipartFile;
+//
+//@Controller
+//@RequestMapping("/images")
+//public class ImageController {
+//
+//    @Autowired
+//    private ImageService imageService;
+//
 //    @PostMapping("/upload")
-//    public String uploadImage(@RequestParam("image") MultipartFile file, @RequestParam("title") String title) throws IOException {
-//        if (!file.isEmpty()) {
-//            String fileName = file.getOriginalFilename();
-//            Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, fileName);
-//            Files.write(fileNameAndPath, file.getBytes());
-//            ImageLivre image = new ImageLivre();
-//            image.setFileName(fileName);
-//            image.setTitle(title);
-//            imageRepository.save(image);
+//    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+//        try {
+//            String result = imageService.uploadImage(file);
+//            return ResponseEntity.ok(result);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body("Erreur lors du téléchargement de l'image: " + e.getMessage());
 //        }
-//        return "redirect:/";
 //    }
-
-    @PostMapping("/upload")
-    public String uploadImage(@RequestParam("image") MultipartFile file, @RequestParam("title") String title) throws IOException {
-        if (!file.isEmpty()) {
-            String fileName = file.getOriginalFilename();
-            Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, fileName);
-            Files.write(fileNameAndPath, file.getBytes());
-            //show the image uri
-            System.out.println("Image URI: " + fileNameAndPath);
-            ImageLivre image = new ImageLivre();
-            image.setFileName(fileName);
-            image.setUri(fileNameAndPath.toString());
-            image.setTitle(title);
-            imageRepository.save(image);
-        }
-        return "redirect:/uploadimage";
-    }
-
-
-    // Ajoutez les méthodes pour la recherche, l'édition et la suppression selon vos besoins
-}
+//
+//    @GetMapping("/download/{fileName}")
+//    public ResponseEntity<byte[]> downloadImage(@PathVariable String fileName) {
+//        try {
+//            byte[] imageBytes = imageService.downloadImage(fileName);
+//            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageBytes);
+//        } catch (Exception e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+//
+//    @GetMapping("/url/{fileName}")
+//    public ResponseEntity<String> getImageUrl(@PathVariable String fileName) {
+//        String imageUrl = imageService.getImageUrl(fileName);
+//        return ResponseEntity.ok(imageUrl);
+//    }
+//}

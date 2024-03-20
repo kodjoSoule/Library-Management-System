@@ -11,11 +11,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategorieService {
     @Autowired
     private CategorieRepository categorieRepository;
+    @Autowired LivreRepository livreRepository;
 
     public List<Categorie> getAllCategories() {
         return categorieRepository.findAll();
@@ -31,5 +33,58 @@ public class CategorieService {
 
     public List<Categorie> getCategories() {
         return categorieRepository.findAll();
+    }
+
+    public void deleteCategorie(Long id) {
+        categorieRepository.deleteById(id);
+    }
+
+    public List<Categorie> searchCategorie(String nom) {
+        return categorieRepository.findByNomContaining(nom);
+    }
+
+    public void removeLivreFromCategorie(Long id, Long idLivre) {
+        Categorie categorie = categorieRepository.findById(id).orElse(null);
+        if (categorie != null) {
+            Livre livre = categorie.getLivres().stream().filter(l -> l.getId().equals(idLivre)).findFirst().orElse(null);
+            if (livre != null) {
+                categorie.getLivres().remove(livre);
+                categorieRepository.save(categorie);
+            }
+        }
+    }
+
+    public void addLivreToCategorie(Long id, Long idLivre) {
+        Categorie categorie = categorieRepository.findById(id).orElse(null);
+
+        if (categorie != null) {
+            Livre livre = categorie.getLivres().stream().filter(l -> l.getId().equals(idLivre)).findFirst().orElse(null);
+            if (livre == null) {
+                LivreRepository livreRepository = null;
+                Livre livre1 = livreRepository.findById(idLivre).orElse(null);
+                if (livre1 != null) {
+                    categorie.getLivres().add(livre1);
+                    categorieRepository.save(categorie);
+                }
+            }
+        }
+    }
+
+    public List<Categorie> findByNom(String title) {
+        return categorieRepository.findByNomContaining(title);
+    }
+
+    public Optional<Categorie> findById(String id) {
+        return categorieRepository.findById(Long.valueOf(id));
+    }
+
+    public boolean addLivreToCategorie(Categorie categorie, Long idLivre) {
+        Livre livre = livreRepository.findById(idLivre).orElse(null);
+        if (livre != null) {
+            categorie.getLivres().add(livre);
+            categorieRepository.save(categorie);
+            return true;
+        }
+        return false;
     }
 }

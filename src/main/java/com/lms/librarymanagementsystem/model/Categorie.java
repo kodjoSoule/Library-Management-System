@@ -6,14 +6,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Categorie {
 
+public class Categorie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column
     private String nom;
+    @Column
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public List<Livre> getLivres() {
         return livres;
@@ -58,6 +67,4 @@ public class Categorie {
     public void setNom(String nom) {
         this.nom = nom;
     }
-
-
 }

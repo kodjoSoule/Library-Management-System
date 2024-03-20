@@ -1,12 +1,11 @@
 package com.lms.librarymanagementsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import net.minidev.json.annotate.JsonIgnore;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -64,7 +63,7 @@ public class Livre {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private ImageLivre image;
+    private ImageData image;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY,
@@ -152,16 +151,23 @@ public class Livre {
         this.exemplaires = exemplaires;
     }
 
-    public ImageLivre getImage() {
+    public ImageData getImage() {
         return image;
     }
 
-    public void setImage(ImageLivre imageLivre) {
-        this.image = imageLivre;
+    public void setImage(ImageData imageData) {
+        this.image = imageData;
     }
 
     public List<Exemplaire> getExemplaires() {
         return exemplaires;
+    }
+
+    public String getNomCategorie() {
+        return categorie != null ? categorie.getNom() : null;
+    }
+    public String getImageUrl() {
+        return image != null ? image.getFilePath() : null;
     }
 
 //    public void setExemplaires(List<Exemplaire> exemplaires) {
@@ -187,14 +193,7 @@ public class Livre {
 
     // Méthode pour vérifier la disponibilité du livre
     public boolean estDisponible() {
-        for (Exemplaire exemplaire : exemplaires) {
-            // Si un exemplaire est disponible, le livre est disponible
-            if (exemplaire.estDisponible()) {
-                return true;
-            }
-
-        }
-        return false;
+        return exemplaires.stream().anyMatch(Exemplaire::estDisponible);
     }
 
     // Méthode pour ajouter un exemplaire associé à ce livre
