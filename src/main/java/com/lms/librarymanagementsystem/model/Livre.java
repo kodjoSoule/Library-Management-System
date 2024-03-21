@@ -18,6 +18,7 @@ public class Livre {
     private String titre;
     //autre propriete du livre
     //Description du livre
+    @Column(columnDefinition = "TEXT")
     private String description;
     //Nombre de pages
 
@@ -165,6 +166,9 @@ public class Livre {
 
     public String getNomCategorie() {
         return categorie != null ? categorie.getNom() : null;
+    }
+    public String getImgUrl2() {
+        return image != null ? image.getFilePath() : null;
     }
     public String getImageUrl() {
         return image != null ? image.getFilePath() : null;

@@ -62,4 +62,7 @@ public class Auteur {
     public void setLivres(List<Livre> livres) {
         this.livres = livres;
     }
+    public String getNomComplet(){
+        return nom + " " + prenom;
+    }
 }

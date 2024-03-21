@@ -5,9 +5,13 @@ import com.lms.librarymanagementsystem.repository.DBUserRepository;
 import com.lms.librarymanagementsystem.repository.LivreRepository;
 import com.lms.librarymanagementsystem.service.*;
 import jakarta.transaction.Transactional;
+import org.apache.catalina.Server;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -16,8 +20,10 @@ import java.util.List;
 
 
 @Component
-
 public class DataInitializer implements CommandLineRunner {
+    @Autowired
+    private Environment env;
+
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(DataInitializer.class);
     @Autowired
     private  LivreService livreService;
@@ -72,22 +78,23 @@ public class DataInitializer implements CommandLineRunner {
             Livre livre = new Livre();
             livre.setIsbn("ISBN" + (i + 1)); // ISBN unique pour chaque livre
             livre.setTitre("Titre du Livre " + (i + 1)); // Titre unique pour chaque livre
+            livre.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac purus sit amet nunc fermentum aliquam. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet."+
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac purus sit amet nunc fermentum aliquam. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet." +
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac purus sit amet nunc fermentum aliquam. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet."); // Description commune pour tous les livres
             livre.setLangue("Français"); // Langue commune pour tous les livres
             livre.setNbPages(200); // Nombre de pages commun pour tous les livres
             livre.setDatePublication(LocalDate.of(2002, 12, 12)); // Date de publication commune pour tous les livres
             livre.setEditeur("Editions du Baobab"); // Éditeur commun pour tous les livres
             livre.setAuteur(victorHugo); // Utilisation du même auteur pour tous les livres
             livre.setAddedBy(soule); // Utilisateur qui ajoute le livre
-            try {
-                imageService.uploadImageFromURL("https://www.example.com/image.jpg"); // URL de l'image du livre
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+            // Création d'une image pour le livre
             ImageData imageData = new ImageData();
-            imageData.setName("sous-orange.jpg"); // Nom de l'image commun pour tous les livres
-            livre.setImage(imageData); // Utilisation de la même image pour tous les livres
+            imageData.setName( (i + 1) + ".png");
+            imageData.setType("image/png");
+            imageData.setFilePath("images/" + imageData.getName());
+            imageService.saveImage(imageData);
+            livre.setImage(imageData);
             livre.setCategorie(romanCategory); // Catégorie commune pour tous les livres
-
             // Enregistrement du livre
             livreService.saveLivre(livre);
 
@@ -194,7 +201,7 @@ public class DataInitializer implements CommandLineRunner {
             //categorie deetails
             log.info("Catégorie : " + livre.getCategorie().getNom());
             //image details
-            log.info("Image : " + livre.getImage().getName());
+            log.info("Image : " + livre.getImage().getFilePath());
             //nombre d'exemplaires
             log.info("Nombre d'exemplaires : " + livre.getExemplaires().size());
             //nombre d'exemplaires disponibles
@@ -311,5 +318,10 @@ public class DataInitializer implements CommandLineRunner {
 //                    ", Livre : " + e.getExemplaire().getLivre().getTitre() +
 //                    ", Date de Retour Prévue : " + e.getDateRetourPrevue());
 //        }
+
+        //show address of server and port
+        log.info("Server started +"+env.getProperty("server.host") +"on port "+env.getProperty("server.port"));
+
+
     }
 }

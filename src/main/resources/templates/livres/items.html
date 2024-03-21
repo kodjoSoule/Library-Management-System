@@ -1,31 +1,73 @@
-<!--item.html-->
+<!--&lt;!&ndash;item.html&ndash;&gt;-->
+<!--<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">-->
+<!--&lt;!&ndash; Inclure le fragment livre-item pour chaque livre &ndash;&gt;-->
+<!--<div class="card mb-4 box-shadow" th:fragment="items" >-->
+<!--    <div th:if="${livre.image != null}">-->
+<!--        <img src="https://ultimatecourses.com/assets/ebooks/nestjs-restful-crud-api-727998c7f01f9e59731d6f4d0b4d5a85425a297e3b873ee8299e5e7bb8acaafd.png"-->
+<!--             class="card-img-top img-fluid "-->
+<!--             alt="Image du Livre">-->
+<!--    </div>-->
+
+<!--    <div th:unless="${livre.image != null}">-->
+<!--        <img src="https://ultimatecourses.com/assets/ebooks/nestjs-restful-crud-api-727998c7f01f9e59731d6f4d0b4d5a85425a297e3b873ee8299e5e7bb8acaafd.png"-->
+<!--             class="card-img-top img-fluid "-->
+<!--             alt="Image du Livre">-->
+<!--    </div>-->
+<!--&lt;!&ndash;    end image &ndash;&gt;-->
+<!--    <div class="card-body">-->
+<!--        <p class="card-text" >-->
+<!--                            <span>-->
+<!--                                Titre :-->
+<!--                            </span>-->
+<!--            <span th:text="${livre.titre}">-->
+<!--                            </span>-->
+<!--        </p>-->
+<!--        <p class="card-text" th:text="${livre.auteur}"></p>-->
+<!--        <div class="d-flex justify-content-between align-items-center">-->
+<!--            <div class="btn-group">-->
+<!--                <a th:href="@{/livres/{id}(id=${livre.id})}" class="btn btn-sm btn-outline-secondary">Détails</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</html>-->
+
+
+
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<!-- Inclure le fragment livre-item pour chaque livre -->
-<div class="card mb-4 box-shadow" th:fragment="items" >
+<!-- Include the livre-item fragment for each book -->
+<div class="card mb-4 box-shadow" th:fragment="items">
     <div th:if="${livre.image != null}">
-        <img th:src="'data:image/png;base64,' + ${livre.image.getImageConvertToBase64()}"
+        <img src="https://ultimatecourses.com/assets/ebooks/nestjs-restful-crud-api-727998c7f01f9e59731d6f4d0b4d5a85425a297e3b873ee8299e5e7bb8acaafd.png"
              class="card-img-top img-fluid"
-             alt="Image du Livre">
+             alt="Image of the Book">
     </div>
 
     <div th:unless="${livre.image != null}">
         <img src="https://ultimatecourses.com/assets/ebooks/nestjs-restful-crud-api-727998c7f01f9e59731d6f4d0b4d5a85425a297e3b873ee8299e5e7bb8acaafd.png"
-             class="card-img-top img-fluid "
-             alt="Image du Livre">
+             class="card-img-top img-fluid"
+             alt="Image of the Book">
     </div>
-<!--    end image -->
+    <!-- End image -->
+
     <div class="card-body">
-        <p class="card-text" >
-                            <span>
-                                Titre :
-                            </span>
-            <span th:text="${livre.titre}">
-                            </span>
+        <p class="card-text">
+            <span>Titre:</span>
+            <span th:text="${livre.titre}"></span>
         </p>
         <p class="card-text" th:text="${livre.auteur}"></p>
+
         <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
                 <a th:href="@{/livres/{id}(id=${livre.id})}" class="btn btn-sm btn-outline-secondary">Détails</a>
+            </div>
+
+            <div th:if="${livre.getNombreExemplaires() > 0}">
+                <p class="text-success">Disponible</p>
+            </div>
+
+            <div th:unless="${livre.getNombreExemplaires() > 0}">
+                <p class="text-danger">Non disponible</p>
             </div>
         </div>
     </div>

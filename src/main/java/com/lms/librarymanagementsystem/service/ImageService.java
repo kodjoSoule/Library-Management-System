@@ -3,6 +3,7 @@ package com.lms.librarymanagementsystem.service;
 import com.lms.librarymanagementsystem.model.ImageData;
 import com.lms.librarymanagementsystem.repository.ImageDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @Service
 public class ImageService {
 
+
     @Autowired
     private ImageDataRepository imageDataRepository;
 
@@ -27,11 +29,10 @@ public class ImageService {
     private static final String IMAGE_FOLDER = "src/main/resources/static/images"; // Mettre à jour si nécessaire
     private static final String IMAGE_URL_PREFIX = "/images/"; // Mettre à jour si nécessaire
 
-    public String uploadImage(MultipartFile file) throws IOException {
+    public String uploadImageAPI(MultipartFile file) throws IOException {
         String fileName = file.getOriginalFilename();
         Path uploadPath = Path.of(IMAGE_FOLDER).resolve(fileName);
         Files.copy(file.getInputStream(), uploadPath, StandardCopyOption.REPLACE_EXISTING);
-
         ImageData imageData = new ImageData();
         imageData.setName(fileName);
         imageData.setType(file.getContentType());
@@ -41,6 +42,17 @@ public class ImageService {
         return "Fichier téléchargé avec succès: " + fileName;
     }
 
+    public ImageData uploadImage(MultipartFile file) throws IOException {
+        String fileName = file.getOriginalFilename();
+        Path uploadPath = Path.of(IMAGE_FOLDER).resolve(fileName);
+        Files.copy(file.getInputStream(), uploadPath, StandardCopyOption.REPLACE_EXISTING);
+        ImageData imageData = new ImageData();
+        imageData.setName(fileName);
+        imageData.setType(file.getContentType());
+        imageData.setFilePath(IMAGE_URL_PREFIX + fileName);
+        imageDataRepository.save(imageData);
+        return imageData;
+    }
     public byte[] downloadImage(String fileName) throws IOException {
         Optional<ImageData> imageData = imageDataRepository.findByName(fileName);
         if (imageData.isEmpty()) {
@@ -50,25 +62,37 @@ public class ImageService {
         Path filePath = Path.of(IMAGE_FOLDER).resolve(fileName);
         return Files.readAllBytes(filePath);
     }
-
     public String getImageUrl(String fileName) {
         return IMAGE_URL_PREFIX + fileName;
     }
-    public String uploadImageFromURL(String imageUrl) throws IOException {
-        String fileName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-        Path uploadPath = Path.of(IMAGE_FOLDER).resolve(fileName);
-
-        if (imageUrl.startsWith("http")) {
-            URL url = new URL(imageUrl);
-            try (InputStream in = url.openStream()) {
-                Files.copy(in, uploadPath, StandardCopyOption.REPLACE_EXISTING);
-            }
-        } else { // Si c'est un chemin de fichier local
-            Files.copy(Path.of(imageUrl), uploadPath, StandardCopyOption.REPLACE_EXISTING);
-        }
-
-        return "Fichier téléchargé avec succès à partir de l'URL: " + imageUrl;
+    public String getImageUrl2(ImageData imageData){
+        String fileName = imageData.getName();
+        Path filePath = Path.of(IMAGE_FOLDER).resolve(fileName);
+        return filePath.toString();
     }
+    public ImageData getImageDataByID(Long id) {
+        return imageDataRepository.findById(id).orElse(null);
+    }
+
+    public void saveImage(ImageData imageData) {
+        imageDataRepository.save(imageData);
+    }
+
+//    public String uploadImageFromURL(String imageUrl) throws IOException {
+//        String fileName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+//        Path uploadPath = Path.of(IMAGE_FOLDER).resolve(fileName);
+//
+//        if (imageUrl.startsWith("http")) {
+//            URL url = new URL(imageUrl);
+//            try (InputStream in = url.openStream()) {
+//                Files.copy(in, uploadPath, StandardCopyOption.REPLACE_EXISTING);
+//            }
+//        } else { // Si c'est un chemin de fichier local
+//            Files.copy(Path.of(imageUrl), uploadPath, StandardCopyOption.REPLACE_EXISTING);
+//        }
+//
+//        return "Fichier téléchargé avec succès à partir de l'URL: " + imageUrl;
+//    }
 
 
 }

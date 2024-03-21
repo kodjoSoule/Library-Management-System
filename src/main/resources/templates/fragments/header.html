@@ -6,23 +6,67 @@
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                <img src="@{/uploads/images/logo_book.jpg}" alt="Bibliothèque pour Tous" width="40" height="32">
+                <img th:src="@{/uploads/images/logo_book.jpg}" alt="Bibliothèque pour Tous" width="40" height="32">
             </a>
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="/" class="nav-link px-2 text-white">Home</a></li>
                 <li><a href="/livres" class="nav-link px-2 text-white">Livres</a></li>
                 <li><a href="/reglements" class="nav-link px-2 text-white">Reglements</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-                <li><a href="/administration" class="nav-link px-2 text-white">Administration</a></li>
+                <li><a href="/admin" class="nav-link px-2 text-white">Administration</a></li>
                 <li><a href="/about" class="nav-link px-2 text-white">About</a></li>
             </ul>
-            <form class="col-12 col-lg-auto text-end ms-auto mb-lg-0">
-                    <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
-            </form>
-                <div class="text-end ms-auto ">
+            <div class="text-end ms-auto d-none ">
                     <button type="button" class="btn btn-outline-light me-2">Login</button>
                     <button type="button" class="btn btn-warning">Sign-up</button>
-                </div>
+            </div>
+            <div class="dropdown">
+                <a class="dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="ms-4"><img src="https://avatars.githubusercontent.com/u/76671691?v=4" width="45" alt="Profile" class="rounded-circle text-info"> Bouba Coulibaly</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" aria-labelledby="userDropdown">
+                    <li class="dropdown-header">
+                        <h6>Bouba Coulibaly</h6>
+                        <span>Etudiant</span>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                            <i class="bi bi-person"></i>
+                            <span>My Profile</span>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                            <i class="bi bi-envelope"></i>
+                            <span>Messages</span>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <i class="bi bi-gear"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <i class="bi bi-question-circle"></i>
+                            <span>Help</span>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Sign Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </div>
 </header>

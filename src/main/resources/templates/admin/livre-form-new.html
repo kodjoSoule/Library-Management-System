@@ -14,6 +14,14 @@
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
+
+    <div class="search-bar">
+        <form class="search-form d-flex align-items-center" method="POST" action="#">
+            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+        </form>
+    </div>
+
     <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
             <li class="nav-item dropdown">
@@ -59,6 +67,7 @@
                 <span>Dashboard</span>
             </a>
         </li>
+
         <li class="nav-item active">
             <a class="nav-link" data-bs-target="#livres-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-book"></i><span>Livres</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -83,14 +92,13 @@
 
 
 <main id="main" class="main">
-
     <div class="pagetitle">
         <h1>Form Elements</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                 <li class="breadcrumb-item">Livres</li>
-                <li class="breadcrumb-item active">Listes des livres</li>
+                <li class="breadcrumb-item active">Ajouter un livres</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -100,41 +108,57 @@
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Liste des Livres</h5>
-                        <a href="/livres/ajouter" class="btn btn-primary mb-3">Ajouter un Livre</a>
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>Titre</th>
-                                <th>Auteur</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody th:if="${livres.isEmpty()}">
-                            <tr>
-                                <td colspan="3">Aucun livre en base de données</td>
-                            </tr>
-                            </tbody>
-                            <tbody th:unless="${livres.isEmpty()}">
-                            <tr th:each="livre : ${livres}">
-                                <td th:text="${livre.getTitre()}"></td>
-                                <td th:text="${livre.getAuteur().getNomComplet()}"></td>
-                                <td>
-                                    <a th:href="@{/livres/${livre.getId()}}" class="btn btn-info">Détails</a>
-                                    <a th:href="@{/livres/${livre.getId()}/modifier}" class="btn btn-warning">Modifier</a>
-                                    <a th:href="@{/livres/${livre.getId()}/supprimer}" class="btn btn-danger">Supprimer</a>
-                                </td>
-                            </tr>
-
-                            </tbody>
-
-                        </table>
+                        <h5 class="card-title">Ajouter un Nouveau Livre</h5>
+                        <form method="POST" action="/livres/ajouter" class="row g-3">
+                            <div class="col-md-6">
+                                <label for="isbn" class="form-label">ISBN</label>
+                                <input type="text" class="form-control" id="isbn" name="isbn" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="titre" class="form-label">Titre</label>
+                                <input type="text" class="form-control" id="titre" name="titre" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="auteur" class="form-label">Auteur</label>
+                                <input type="text" class="form-control" id="auteur" name="auteur" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="nbPages" class="form-label">Nombre de Pages</label>
+                                <input type="number" class="form-control" id="nbPages" name="nbPages" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="datePublication" class="form-label">Date de Publication</label>
+                                <input type="date" class="form-control" id="datePublication" name="datePublication" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editeur" class="form-label">Editeur</label>
+                                <input type="text" class="form-control" id="editeur" name="editeur" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="langue" class="form-label">Langue</label>
+                                <input type="text" class="form-control" id="langue" name="langue" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="categorie" class="form-label">Catégorie</label>
+                                <input type="text" class="form-control" id="categorie" name="categorie">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="image" class="form-label">Image du Livre</label>
+                                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Ajouter le Livre</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
 </main><!-- End #main -->
 
 <!-- ======= Footer ======= -->

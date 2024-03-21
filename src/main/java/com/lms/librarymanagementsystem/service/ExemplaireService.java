@@ -25,4 +25,8 @@ public class ExemplaireService {
     public void save(Exemplaire exemplaire) {
         exemplaireRepository.save(exemplaire);
     }
+
+    public void supprimerExemplaire(Long id) {
+        exemplaireRepository.deleteById(id);
+    }
 }

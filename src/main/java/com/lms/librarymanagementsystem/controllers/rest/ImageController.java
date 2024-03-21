@@ -1,5 +1,6 @@
 
 package com.lms.librarymanagementsystem.controllers.rest;
+import com.lms.librarymanagementsystem.model.ImageData;
 import com.lms.librarymanagementsystem.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,11 +16,14 @@ public class ImageController {
     @PostMapping("/upload")
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
-            String result = imageService.uploadImage(file);
-            return ResponseEntity.ok(result);
+            ImageData result = imageService.uploadImage(file);
+            if(result != null){
+                return ResponseEntity.ok("Image téléchargée avec succès: " + result.getName());
+            }
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Erreur lors du téléchargement de l'image: " + e.getMessage());
         }
+        return ResponseEntity.badRequest().body("Erreur lors du téléchargement de l'image");
     }
     @GetMapping("/download/{fileName}")
     public ResponseEntity<byte[]> downloadImage(@PathVariable String fileName) {
@@ -30,6 +34,7 @@ public class ImageController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping
     public ResponseEntity<String> showMessafe() {
         return ResponseEntity.ok("Images API is working!");
