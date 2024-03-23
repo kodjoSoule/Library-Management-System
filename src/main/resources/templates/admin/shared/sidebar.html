@@ -1,69 +1,47 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head::head"></head>
-<body>
-<aside id="sidebar" class="sidebar" th:fragment="sidebar">
-
+<aside th:fragment="sidebar" id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
         <li class="nav-item">
-            <a class="nav-link " href="/admin">
+            <a class="nav-link" href="/admin/dashboard">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
         </li>
-        <!-- End Dashboard Nav -->
 
-        <li class="nav-item">
-            <a class="nav-link" href="/admin/livres-manager">
-                <i class="bi bi-book"></i>
-                <span>Gestion des Livres</span>
+        <li class="nav-item active">
+            <a class="nav-link" data-bs-target="#livres-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-book"></i><span>Livres</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-        </li><!-- End Gestion des Livres Nav -->
-
+            <ul id="livres-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li><a href="/admin/livres">Liste des Livres</a></li>
+                <li><a href="/admin/livres/add">Ajouter un Livre</a></li>
+            </ul>
+        </li>
         <li class="nav-item">
-            <a class="nav-link" href="/admin/auteurs-manager">
-                <i class="bi bi-person"></i>
-                <span>Gestion des Auteurs</span>
+            <a class="nav-link" data-bs-target="#auteurs-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-pen"></i><span>Auteurs</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-        </li><!-- End Gestion des Auteurs Nav -->
+            <ul id="auteurs-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li><a href="/admin/auteurs">Liste des Auteurs</a></li>
+                <li><a href="/admin/auteur/add">Ajouter un Auteur</a></li>
+            </ul>
+        </li>
+        <!-- Ajouter des sections pour les catégories, les emprunts, les pénalités, les règlements, etc. -->
         <li class="nav-item">
-            <a class="nav-link" href="/admin/emprunts">
-                <i class="bi bi-arrow-right-circle"></i>
-                <span>Emprunts</span>
+            <a class="nav-link" data-bs-target="#emprunt-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-book-half"></i><span>Emprunt</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-        </li><!-- End Emprunts Nav -->
-
+            <ul id="emprunt-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li><a href="/admin/emprunts">Liste des Emprunts</a></li>
+                <li><a href="/admin/emprunt/add">Emprunter une livre</a></li>
+            </ul>
+        </li>
         <li class="nav-item">
-            <a class="nav-link" href="/admin/retours">
-                <i class="bi bi-arrow-left-circle"></i>
-                <span>Retours</span>
+            <a class="nav-link" data-bs-target="#reglement-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-cash-coin"></i><span>Reglement</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-        </li><!-- End Retours Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link" href="/admin/penalites">
-                <i class="bi bi-exclamation-circle"></i>
-                <span>Pénalités</span>
-            </a>
-        </li><!-- End Pénalités Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link" href="/admin/utilisateurs">
-                <i class="bi bi-people"></i>
-                <span>Utilisateurs</span>
-            </a>
-        </li><!-- End Utilisateurs Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link" href="#modifierReglement">
-                <i class="bi bi-gear"></i>
-                <span>Modifier le Règlement</span>
-            </a>
-        </li><!-- End Modifier le Règlement Nav -->
+            <ul id="reglement-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li><a href="/admin/emprunts">Gestion de reglements</a></li>
+            </ul>
+        </li>
     </ul>
 </aside>
-
-<!-- Reste du contenu de votre page -->
-
-</body>
-</html>

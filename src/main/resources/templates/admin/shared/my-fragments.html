@@ -1,0 +1,21 @@
+<div th:fragment="categoriesDropdown">
+    <label for="categorie" class="form-label">Catégorie</label>
+    <select class="form-select" id="categorie" name="categorie">
+        <option value="">Sélectionner une catégorie</option>
+        <!-- Iterating over categories retrieved from backend -->
+        <option th:each="categorie : ${categories}" th:value="${categorie.id}" th:text="${categorie.nom}"></option>
+        <!-- Option for creating a new category -->
+        <option value="new">Créer une nouvelle catégorie</option>
+    </select>
+</div>
+
+<div th:fragment="authorsDropdown">
+    <label for="auteur" class="form-label">Auteur</label>
+    <select class="form-select" id="auteur" name="auteur">
+        <option value="">Sélectionner un auteur</option>
+        <!-- Iterating over authors retrieved from backend -->
+        <option th:each="auteur : ${auteurs}" th:value="${auteur.id}" th:text="${auteur.nom}"></option>
+        <!-- Option for creating a new author -->
+        <option value="new">Créer un nouvel auteur</option>
+    </select>
+</div>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="admin/shared/head ::head">
+    <title>Library Management</title>
+</head>
+<body>
+<div th:replace="/admin/shared/header::header"></div>
+<div th:replace="/admin/shared/sidebar::sidebar"></div>
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Gestion des livres</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item">Livres</li>
+                <li class="breadcrumb-item active">Ajouter un livres</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <section class="section">
+<!--        back bouton -->
+        <div class="row">
+            <div class="col">
+                <a href="/admin/livres" class="btn btn-primary mb-3">
+                    <i class="bi bi-arrow-left"></i> Retour
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <img src="https://img.freepik.com/vecteurs-libre/livre-ouvert-blanc_1308-22968.jpg?w=996&t=st=1711155872~exp=1711156472~hmac=3b67d7ca5601794082694a725e8e3825d4cb21c2421fc05298352405d8cd4c37" alt="Book Cover" style="max-width: 100%; height: auto;">
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Title of the Book</h5>
+                        <p>ISBN: XXXXXXXXXXXX</p>
+                        <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <p>Number of Pages: 300</p>
+                        <p>Date of Publication: 01/01/2023</p>
+                        <p>Publisher: Publisher Name</p>
+                        <p>Language: English</p>
+                        <p>Author: Author Name</p>
+                        <p>Category: Category Name</p>
+
+                        <!-- Additional Book Details Here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy; Copyright <strong><span>Library Management System</span></strong>
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+<!-- Vendor JS Files -->
+<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+</body>
+
+</html>

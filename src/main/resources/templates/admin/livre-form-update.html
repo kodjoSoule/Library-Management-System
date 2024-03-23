@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head th:replace="admin/shared/head ::head">
     <title>Library Management</title>
 </head>
@@ -14,7 +13,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                 <li class="breadcrumb-item">Livres</li>
-                <li class="breadcrumb-item active">Ajouter un livres</li>
+                <li class="breadcrumb-item active">Mise a jour du livre</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -30,7 +29,7 @@
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Ajouter un Nouveau Livre</h5>
+                        <h5 class="card-title">Mise a jour du Livre</h5>
                         <form method="POST" th:action="@{/admin/livres/add}"  class="row g-3" th:object="${livreRequest}">
                             <div class="col-md-6 mb-3">
                                 <label for="isbn" class="form-label">ISBN</label>
@@ -129,7 +128,7 @@
                             </div>
                              <div class="col-12">
                                 <button type="submit" class="btn btn-primary"
-                                >Ajouter le Livre</button>
+                                >Mise a jour le Livre</button>
                              </div>
 
                         </form>

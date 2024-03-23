@@ -2,6 +2,9 @@ package com.lms.librarymanagementsystem.controllers.web;
 
 import com.lms.librarymanagementsystem.model.Auteur;
 import com.lms.librarymanagementsystem.model.Livre;
+import com.lms.librarymanagementsystem.model.LivreRequest;
+import com.lms.librarymanagementsystem.service.AuteurService;
+import com.lms.librarymanagementsystem.service.CategorieService;
 import com.lms.librarymanagementsystem.service.LivreService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +23,16 @@ import java.util.stream.IntStream;
 
 @Slf4j
 @Controller
-@RequestMapping("/livres")
 public class LivreController {
     @Autowired
     LivreService livreService;
+    @Autowired
+    CategorieService categorieService;
+    @Autowired
+    AuteurService auteurService ;
     //liste des livres
     // Endpoint pour obtenir une liste paginée de livres
-    @GetMapping("")
+    @GetMapping("/livres")
     public String getPaginatedLivres(
             @RequestParam("pageNo") Optional<Integer> page,
             @RequestParam("pageSize") Optional<Integer> size,
@@ -56,7 +62,7 @@ public class LivreController {
         return "livres/listes";
     }
 
-    @GetMapping("/admin")
+    @GetMapping("/admin/livres")
     public String getPaginatedLivresAdmin(
             @RequestParam("pageNo") Optional<Integer> page,
             @RequestParam("pageSize") Optional<Integer> size,
@@ -85,13 +91,50 @@ public class LivreController {
         return "admin/livres-manager";
     }
 
-    @GetMapping("/admin/ajouter")
+    @GetMapping("/admin/livres/add")
     public String showAjouterLivreFormAdmin(Model model) {
+        //LivreRequest
+        LivreRequest livreRequest = new LivreRequest();
+        livreRequest.setAuteurId(1L);
+
+        livreRequest.setIsbn("1234567890");
+        livreRequest.setLangue("fr");
+        livreRequest.setNbPages(100);
+        livreRequest.setEditeur("Editeur");
+        livreRequest.setTitre("Titre");
+        livreRequest.setDescription("Description");
+        model.addAttribute("livreRequest",livreRequest);
         model.addAttribute("livre", new Livre());
+        model.addAttribute("categories", categorieService.getAllCategories());
+        model.addAttribute("auteurs", auteurService.getAllAuteurs() );
         return "admin/livre-form-new";
     }
+    @GetMapping("/admin/livre/{id}/update")
+    public String showModifierLivreFormAdmin(@PathVariable("id") Long id, Model model) {
+        LivreRequest livreRequest = new LivreRequest();
+        model.addAttribute("livreRequest", livreRequest);
+        model.addAttribute("categories", categorieService.getAllCategories());
+        model.addAttribute("auteurs", auteurService.getAllAuteurs() );
+        return "admin/livre-form-update";
+    }
+    @GetMapping("/admin/livre/{id}/delete")
+    public String supprimerLivreAdmin(@PathVariable("id") Long id) {
+        livreService.supprimerLivre(id);
+        return "/admin/livre-form-confirmation";
+    }
+    @DeleteMapping("/admin/livre/{id}/delete")
+    public String deleteLivreAdmin(@PathVariable("id") Long id) {
+        livreService.supprimerLivre(id);
+        return "redirect:/admin/livre-form-confirmation";
+    }
+    @PostMapping("/admin/livres/{id}/update")
+    public String modifierLivreAdmin(@PathVariable("id") Long id, @ModelAttribute("livre") Livre livre) {
+        livreService.modifierLivre(id, livre);
+        return "redirect:/admin/livres";
+    }
+
     // Endpoint pour obtenir les détails d'un livre selectionné
-    @GetMapping("/{id}")
+    @GetMapping("/admin/livre/{id}")
     public String getLivreDetails(
             @PathVariable("id") Long id,
             Model model
@@ -102,7 +145,7 @@ public class LivreController {
         model.addAttribute("auteur", auteur.getNom()+ " " + auteur.getPrenom());
         model.addAttribute("livre", livre);
         //model.addAttribute("imageBase64", convertToBase64(imageData));
-        return "livres/details";
+        return "/admin/livre-details";
     }
 
     // Exemple de méthode dans votre contrôleur ou service
@@ -111,31 +154,35 @@ public class LivreController {
     }
 
 
-    @GetMapping("/ajouter")
+    @GetMapping("/ajouter/ol")
     public String showAjouterLivreForm(Model model) {
         model.addAttribute("livre", new Livre());
         return "livres/ajouterLivre";
     }
-    @PostMapping("/ajouter")
+    @PostMapping("/admin/livres/add")
     public String ajouterLivre(@ModelAttribute("livre") Livre livre) {
         livreService.ajouterLivre(livre);
-        return "redirect:/livres";
+        return "redirect:/admin/livre-form-confirmation";
     }
 
-    @GetMapping("/{id}/modifier")
+    @GetMapping("/admin/livre-form-confirmation")
+    public String showConfirmationForm() {
+        return "admin/livre-form-confirmation";
+    }
+    @GetMapping("/admin/livres/{id}/modifier")
     public String showModifierLivreForm(@PathVariable("id") Long id, Model model) {
         Livre livre = livreService.getLivreById(id);
         model.addAttribute("livre", livre);
         return "livres/modifierLivre";
     }
 
-    @PostMapping("/{id}/modifier")
+    @PostMapping("/admin/livres/{id}/modifier")
     public String modifierLivre(@PathVariable("id") Long id, @ModelAttribute("livre") Livre livre) {
         livreService.modifierLivre(id, livre);
         return "redirect:/livres";
     }
 
-    @GetMapping("/{id}/supprimer")
+    @GetMapping("/admin/livres/{id}/supprimer")
     public String supprimerLivre(@PathVariable("id") Long id) {
         livreService.supprimerLivre(id);
         return "redirect:/livres";

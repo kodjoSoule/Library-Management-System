@@ -1,48 +1,72 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
-    <title>Library Management</title>
+<title>Library Management</title>
 <body>
-<header class="p-3 bg-dark text-white" th:replace="fragments/header :: header"></header>
+<header class="p-3 bg-dark text-white" th:replace="fragments/header::header2"></header>
 <div class="container mt-5">
     <div class="row">
         <div class="col">
-            <div class=" jumbotron">
-                <h1 class="h-4">Liste des Livres</h1>
+            <div class="jumbotron">
+                <h1 class="display-4">Liste des Livres</h1>
                 <p class="lead">Explorez notre collection et découvrez des mondes à travers les pages.</p>
             </div>
         </div>
     </div>
-    <div class="row" th:if="${livres.empty}">
-            <h2 class="text-info">Aucun employée en base de données</h2>
+    <div class="row" th:if="${livres.isEmpty()}">
+        <h2 class="text-info">Aucun livre en base de données</h2>
     </div>
     <div th:if="${livres != null }">
         <div class="row">
-            <div class="col-3" th:each="livre : ${livres}" >
-                <!-- Inclure le fragment livre-item pour chaque livre -->
-<!--                <div th:replace="livres/items::items(livre=${livre}, imageBase64=${convertToBase64(livre.image.imageData)})"></div>-->
-                <div th:replace="livres/items::items(livre=${livre})"></div>
-            </div>
-        </div>
-        <div class="row  text-center" th:if="${livres.totalPages > 1}" >
-            <div class="col-4  mx-auto text-center">
-                <p>Page <span th:text="${currentPage}"></span> sur <span th:text="${totalPages}"></span></p>
-                <nav aria-label="Page navigation mx-auto text-center">
-                    <ul class="pagination mx-auto text-center">
-                        <li th:if="${currentPage != 1}" class="page-item">
-                            <a class="page-link" th:href="@{/livres(pageNo=${currentPage - 1})}">Précédent</a>
-                        </li>
-                        <li th:each="i : ${#numbers.sequence(1, totalPages - 1)}" th:classappend="${currentPage == i} ? 'active' : ''" class="page-item">
-                            <a class="page-link" th:href="@{/livres(pageNo=${i})}" th:text="${i}"></a>
-                        </li>
-                        <li th:if="${currentPage + 1 != totalPages}" class="page-item">
-                            <a class="page-link" th:href="@{/livres(pageNo=${currentPage + 1})}">Suivant</a>
-                        </li>
-                    </ul>
-                </nav>
+            <div th:each="livre : ${livres}">
+                <div class="col-4" th:replace="livres/items::items(livre=${livre})"></div>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-4">
+            <div class="card img-fluid card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg"
+                 style="background-image: url('https://ultimatecourses.com/assets/ebooks/nestjs-restful-crud-api-727998c7f01f9e59731d6f4d0b4d5a85425a297e3b873ee8299e5e7bb8acaafd.png');">
+                <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                    <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Short title, long jacket</h2>
+                    <ul class="d-flex list-unstyled mt-auto">
+                        <li class="me-auto">
+                            <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32"
+                                 class="rounded-circle border border-white">
+                        </li>
+                        <li class="d-flex align-items-center me-3">
+                            <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"/></svg>
+                            <small>Earth</small>
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
+                            <small>3d</small>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row text-center" th:if="${livres.totalPages > 1}">
+        <div class="col-4 mx-auto text-center">
+            <p>Page <span th:text="${currentPage}"></span> sur <span th:text="${totalPages}"></span></p>
+            <nav aria-label="Page navigation mx-auto text-center">
+                <ul class="pagination mx-auto text-center">
+                    <li th:if="${currentPage != 1}" class="page-item">
+                        <a class="page-link" th:href="@{/livres(pageNo=${currentPage - 1})}">Précédent</a>
+                    </li>
+                    <li th:each="i : ${#numbers.sequence(1, totalPages - 1)}"
+                        th:classappend="${currentPage == i} ? 'active' : ''" class="page-item">
+                        <a class="page-link" th:href="@{/livres(pageNo=${i})}" th:text="${i}"></a>
+                    </li>
+                    <li th:if="${currentPage + 1 != totalPages}" class="page-item">
+                        <a class="page-link" th:href="@{/livres(pageNo=${currentPage + 1})}">Suivant</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 </div>
+
 <div th:replace="fragments/footer :: footer"></div>
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>

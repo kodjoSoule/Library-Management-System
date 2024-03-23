@@ -13,7 +13,7 @@ import java.util.List;
 public class AuteurController {
     @Autowired
     private AuteurService auteurService;
-@RequestMapping("/admin/auteurs-manager")
+@RequestMapping("/admin/auteurs")
     public String index(Model model) {
     model.addAttribute("loading", true);
     List<Auteur> auteurs = auteurService.getAllAuteurs();

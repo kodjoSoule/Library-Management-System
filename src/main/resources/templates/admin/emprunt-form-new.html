@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="admin/shared/head ::head">
+    <title>Library Management</title>
+</head>
+<body>
+
+<header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="index.html" class="logo d-flex align-items-center">
+            <img src="assets/img/logo.png" alt="">
+            <span class="d-none d-lg-block">Library Management System</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div>
+
+    <div class="search-bar">
+        <form class="search-form d-flex align-items-center" method="POST" action="#">
+            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+        </form>
+    </div>
+
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+            <li class="nav-item dropdown">
+                <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge bg-primary badge-number">4</span>
+                </a>
+                <!-- Notifications Dropdown -->
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                    <!-- Notifications Items -->
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                    <i class="bi bi-chat-left-text"></i>
+                    <span class="badge bg-success badge-number">3</span>
+                </a>
+                <!-- Messages Dropdown -->
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+                    <!-- Messages Items -->
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown pe-3">
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                    <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+                </a>
+                <!-- Profile Dropdown -->
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <!-- Profile Dropdown Items -->
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="/dashboard">
+                <i class="bi bi-grid"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <li class="nav-item active">
+            <a class="nav-link" data-bs-target="#livres-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-book"></i><span>Livres</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="livres-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li><a href="/livres/admin">Liste des Livres</a></li>
+                <li><a href="/livres/admin/ajouter">Ajouter un Livre</a></li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-target="#auteurs-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-pen"></i><span>Auteurs</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="auteurs-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li><a href="/auteurs">Liste des Auteurs</a></li>
+                <li><a href="/auteurs/ajouter">Ajouter un Auteur</a></li>
+            </ul>
+        </li>
+        <!-- Ajouter des sections pour les catégories, les emprunts, les pénalités, les règlements, etc. -->
+    </ul>
+</aside>
+
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Form Elements</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item">Livres</li>
+                <li class="breadcrumb-item active">Ajouter un livres</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Ajouter un Nouveau Livre</h5>
+                        <form method="POST" action="/livres/ajouter" class="row g-3">
+                            <div class="col-md-6">
+                                <label for="isbn" class="form-label">ISBN</label>
+                                <input type="text" class="form-control" id="isbn" name="isbn" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="titre" class="form-label">Titre</label>
+                                <input type="text" class="form-control" id="titre" name="titre" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="auteur" class="form-label">Auteur</label>
+                                <input type="text" class="form-control" id="auteur" name="auteur" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="nbPages" class="form-label">Nombre de Pages</label>
+                                <input type="number" class="form-control" id="nbPages" name="nbPages" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="datePublication" class="form-label">Date de Publication</label>
+                                <input type="date" class="form-control" id="datePublication" name="datePublication" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editeur" class="form-label">Editeur</label>
+                                <input type="text" class="form-control" id="editeur" name="editeur" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="langue" class="form-label">Langue</label>
+                                <input type="text" class="form-control" id="langue" name="langue" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="categorie" class="form-label">Catégorie</label>
+                                <input type="text" class="form-control" id="categorie" name="categorie">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="image" class="form-label">Image du Livre</label>
+                                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Ajouter le Livre</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy; Copyright <strong><span>Library Management System</span></strong>
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+
+</body>
+
+</html>

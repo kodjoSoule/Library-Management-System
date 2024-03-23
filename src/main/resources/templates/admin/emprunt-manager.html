@@ -8,59 +8,53 @@
 <div th:replace="/admin/shared/header::header"></div>
 <div th:replace="/admin/shared/sidebar::sidebar"></div>
 <main id="main" class="main">
-
     <div class="pagetitle">
-        <h1>Gestion des auteurs</h1>
+        <h1>Liste des Emprunts</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item">auteurs</li>
-                <li class="breadcrumb-item active">Listes des auteurs</li>
+                <li class="breadcrumb-item">Livres</li>
+                <li class="breadcrumb-item active">Listes des emprunt</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
+
     <section class="section">
         <div class="row">
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Liste des auteurs</h5>
-                        <a href="/admin/auteur/add" class="btn btn-primary mb-3">Ajouter un auteur</a>
+                        <h5 class="card-title">Liste des Emprunts</h5>
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th>Titre</th>
-                                <th>Auteur</th>
-                                <th>Actions</th>
+                                <th>Exemplaire</th>
+                                <th>Adhérent</th>
+                                <th>Emprunté le</th>
+                                <th>Date de Retour Prévue</th>
+                                <th>Date de Retour Effectif</th>
+                                <th>Statut</th>
                             </tr>
                             </thead>
-                            <tbody th:if="${auteurs.isEmpty()}">
+                            <tbody>
+                            <!-- Insérer les données de la liste des emprunts ici -->
                             <tr>
-                                <td colspan="3">Aucun auteur en base de données</td>
+                                <td>Exemplaire 1</td>
+                                <td>Adhérent 1</td>
+                                <td>2021-10-01</td>
+                                <td>2021-10-15</td>
+                                <td>2021-10-15</td>
+                                <td>Retourné</td>
                             </tr>
+
                             </tbody>
-<!--                            <tbody th:unless="${auteurs.isEmpty()}">-->
-<!--                            <tr th:each="auteur : ${auteurs}">-->
-<!--                                <td th:text="${auteur.getTitre()}"></td>-->
-<!--                                <td th:text="${auteur.getAuteur().getNomComplet()}"></td>-->
-<!--                                <td>-->
-<!--                                    <a th:href="@{/admin/auteur/{id}(id=${auteur.id})}" class="btn btn-info"><i class="bi bi-eye"></i></a>-->
-<!--                                    <a th:href="@{/admin/auteur/{id}/update(id=${auteur.id})}" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>-->
-<!--                                    <a th:href="@{/admin/auteur/{id}/delete(id=${auteur.id})}" class="btn btn-danger"><i class="bi bi-trash"></i></a>-->
-<!--                                </td>-->
-<!--                            </tr>-->
-
-<!--                            </tbody>-->
-
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
 </main><!-- End #main -->
-
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
     <div class="copyright">

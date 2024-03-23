@@ -3,3 +3,15 @@
     height: 400px; /* Hauteur de l'image */
     object-fit: cover; /* Assure que l'image couvre la zone sans perdre ses proportions */
 }
+
+/*body {*/
+/*    min-height: 75rem;*/
+/*    padding-top: 4.5rem;*/
+/*}*/
+
+.my-main {
+    min-height: 75rem;
+    padding-top: 4.5rem;
+}
+
+/* styles.css */

@@ -15,6 +15,15 @@ public class Auteur {
     private Long id;
     private String nom;
     private String prenom;
+    private LocalDate dateNaissance;
+
+    public LocalDate getDateNaissance() {
+        return dateNaissance;
+    }
+
+    public void setDateNaissance(LocalDate dateNaissance) {
+        this.dateNaissance = dateNaissance;
+    }
 
     @JsonManagedReference
     @OneToMany(

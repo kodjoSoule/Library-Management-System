@@ -1,71 +1,114 @@
-<!--tymeleaf page-->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhml"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
 <head th:replace="admin/shared/head ::head">
     <title>Library Management</title>
 </head>
 <body>
-
-<header th:replace="admin/shared/header::header"></header>
-<aside id="sidebar" class="sidebar" th:replace="admin/shared/sidebar::sidebar"></aside>
-
-<!-- Thymeleaf Fragment - auteur-form-new.html -->
-<main id="main" class="main" th:fragment="auteur-form-new">
+<div th:replace="/admin/shared/header::header"></div>
+<div th:replace="/admin/shared/sidebar::sidebar"></div>
+<main id="main" class="main">
     <div class="pagetitle">
-        <h1>Dashboard</h1>
+        <h1>Gestion des livres</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                <li class="breadcrumb-item"><a href="/admin/auteurs-manager">Gestion des auteurs</a></li>
-                <li class="breadcrumb-item active">Ajouter un Auteur</li>
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item">Livres</li>
+                <li class="breadcrumb-item active">Ajouter un livres</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
+    <section class="section">
+        <div class="row">
+            <div class="col">
+                <a href="/admin/livres" class="btn btn-primary mb-3">
+                    <i class="bi bi-arrow-left"></i> Retour
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Ajouter un Nouveau Livre</h5>
+                        <form method="POST" th:action="@{/admin/auteur/add}"  class="row g-3" th:object="${auteur}">
+                            <div class="col-md-6">
+                                <label for="nom" class="form-label">Nom de l'auteur</label>
+                                <input type="text" class="form-control" id="nom" name="nom" th:field="*{nom}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="prenom" class="form-label">Prénom de l'auteur</label>
+                                <input type="text" class="form-control" id="prenom" name="prenom" th:field="*{prenom}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="dateNaissance" class="form-label">Date de naissance</label>
+                                <input type="date" class="form-control" id="dateNaissance" name="dateNaissance" th:field="*{dateNaissance}" required>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary"
+                                >Ajouter l'auteur</button>
+                            </div>
 
-    <section class="section auteurs-form">
-    </section>
-    <section>
-        <div class="col-lg-6">
-            <div class="card p-3">
-                <div class="card-body">
-                    <h5 class="card-title">Formulaire d'ajout d'auteur</h5>
-
-                    <!-- Vertical Form -->
-                    <form class="row g-3" th:action="@{/admin/auteurs-manager/add}" method="post" th:object="${auteur}">
-                        <div class="col-12">
-                            <label for="inputNanme4" class="form-label">Nom</label>
-                            <input type="text" class="form-control" id="inputNanme4" required th:field="*{nom}" >
-                        </div>
-                        <div class="col-12">
-                            <label for="inputNanme5" class="form-label">Prenom</label>
-                            <input type="text" class="form-control" id="inputNanme5" required th:field="*{prenom}">
-                        </div>
-
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <button type="reset" class="btn btn-secondary">Reset</button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-</main>
+</main><!-- End #main -->
 
+<!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
-    <p th:text="${mainContent}"></p>
-    <p>
-        Tout droit reserve
-    </p>
-</footer>
+    <div class="copyright">
+        &copy; Copyright <strong><span>Library Management System</span></strong>
+    </div>
+</footer><!-- End Footer -->
+
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+
+<!-- Vendor JS Files -->
 <script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
 <script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
 <script th:src="@{/assets/js/main.js}"></script>
+<!-- JavaScript pour afficher le formulaire de nouvelle catégorie si nécessaire -->
+<script th:inline="javascript">
+    $(document).ready(function() {
+        $('#categorie').change(function() {
+            if ($(this).val() === 'nouvelle-categorie') {
+                $('#nouvelle-categorie-form').show();
+            } else {
+                $('#nouvelle-categorie-form').hide();
+            }
+        });
+        $('#auteur').change(function() {
+            if ($(this).val() === 'new') {
+                $('#new-author-form').show();
+            } else {
+                $('#new-author-form').hide();
+            }
+        });
 
+    });
+    //set current date to input date #datePublication
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementById('datePublication').value = today;
+
+
+    document.getElementById('image').onchange = function (e) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var preview = document.getElementById('imagePreview');
+            preview.src = reader.result;
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(this.files[0]);
+    };
+</script>
 </body>
 
 </html>
