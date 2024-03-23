@@ -1,11 +1,13 @@
 package com.lms.librarymanagementsystem.controllers.web;
 
 import com.lms.librarymanagementsystem.model.Auteur;
+import com.lms.librarymanagementsystem.model.Categorie;
 import com.lms.librarymanagementsystem.model.Livre;
-import com.lms.librarymanagementsystem.model.LivreRequest;
+import com.lms.librarymanagementsystem.model.LivreDetails;
 import com.lms.librarymanagementsystem.service.AuteurService;
 import com.lms.librarymanagementsystem.service.CategorieService;
 import com.lms.librarymanagementsystem.service.LivreService;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -91,28 +92,11 @@ public class LivreController {
         return "admin/livres-manager";
     }
 
-    @GetMapping("/admin/livres/add")
-    public String showAjouterLivreFormAdmin(Model model) {
-        //LivreRequest
-        LivreRequest livreRequest = new LivreRequest();
-        livreRequest.setAuteurId(1L);
 
-        livreRequest.setIsbn("1234567890");
-        livreRequest.setLangue("fr");
-        livreRequest.setNbPages(100);
-        livreRequest.setEditeur("Editeur");
-        livreRequest.setTitre("Titre");
-        livreRequest.setDescription("Description");
-        model.addAttribute("livreRequest",livreRequest);
-        model.addAttribute("livre", new Livre());
-        model.addAttribute("categories", categorieService.getAllCategories());
-        model.addAttribute("auteurs", auteurService.getAllAuteurs() );
-        return "admin/livre-form-new";
-    }
     @GetMapping("/admin/livre/{id}/update")
     public String showModifierLivreFormAdmin(@PathVariable("id") Long id, Model model) {
-        LivreRequest livreRequest = new LivreRequest();
-        model.addAttribute("livreRequest", livreRequest);
+        LivreDetails livreDetails = new LivreDetails();
+        model.addAttribute("livreRequest", livreDetails);
         model.addAttribute("categories", categorieService.getAllCategories());
         model.addAttribute("auteurs", auteurService.getAllAuteurs() );
         return "admin/livre-form-update";
@@ -148,20 +132,60 @@ public class LivreController {
         return "/admin/livre-details";
     }
 
-    // Exemple de méthode dans votre contrôleur ou service
-    public String convertToBase64(byte[] data) {
-        return Base64.getEncoder().encodeToString(data);
+    //Ajouter un livre
+    @GetMapping("/admin/livres/add")
+    public String showAjouterLivreFormAdmin(Model model) {
+        //LivreRequest
+        LivreDetails livreDetails = new LivreDetails();
+        livreDetails.setAuteur("1");
+        livreDetails.setIsbn("1234567890");
+        livreDetails.setLangue("fr");
+        livreDetails.setNbPages(100);
+        livreDetails.setEditeur("Editeur");
+        livreDetails.setTitre("Titre");
+        livreDetails.setDescription("Description");
+        model.addAttribute("livreDetails", livreDetails);
+        model.addAttribute("categories", categorieService.getAllCategories());
+        model.addAttribute("auteurs", auteurService.getAllAuteurs() );
+        return "admin/livre-form-new";
     }
-
-
-    @GetMapping("/ajouter/ol")
-    public String showAjouterLivreForm(Model model) {
-        model.addAttribute("livre", new Livre());
-        return "livres/ajouterLivre";
-    }
+    @Transactional
     @PostMapping("/admin/livres/add")
-    public String ajouterLivre(@ModelAttribute("livre") Livre livre) {
-        livreService.ajouterLivre(livre);
+    public String ajouterLivre(@ModelAttribute("livreDetails") LivreDetails livreDetails) {
+        log.info("*********************************************************");
+        log.info("*********************************************************");
+        log.info("*********************************************************");
+        log.info("Ajout d'un livre controller invoked");
+        if(livreDetails == null) {
+            return "redirect:/admin/livres/add";
+        }
+        Categorie categorie = null ;
+        Auteur auteur = null ;
+        Livre livre = null ;
+        if(livreDetails.getCategorie() == "new"){
+             Categorie newCategorie = new Categorie();
+            newCategorie.setNom(livreDetails.getCategorie());
+            categorie = categorieService.saveCategorie(newCategorie);
+        }else{
+            categorie = categorieService.getCategorieById(Long.parseLong(livreDetails.getCategorie()));
+        }
+        if(livreDetails.getAuteur() == "new"){
+            Auteur newAuteur = new Auteur();
+            newAuteur.setNom(livreDetails.getAuteur());
+            auteur = auteurService.saveAuteur(newAuteur);
+        }else{
+            auteur = auteurService.getAuteurById((int) Long.parseLong(livreDetails.getAuteur()));
+        }
+        livre = new Livre();
+        livre.setAuteur(auteur);
+        livre.setCategorie(categorie);
+        livre.setIsbn(livreDetails.getIsbn());
+        livre.setLangue(livreDetails.getLangue());
+        livre.setNbPages(livreDetails.getNbPages());
+        livre.setEditeur(livreDetails.getEditeur());
+        livre.setTitre(livreDetails.getTitre());
+        livre.setDescription(livreDetails.getDescription());
+        livreService.saveLivre(livre);
         return "redirect:/admin/livre-form-confirmation";
     }
 

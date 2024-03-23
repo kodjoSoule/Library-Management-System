@@ -31,7 +31,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Ajouter un Nouveau Livre</h5>
-                        <form method="POST" th:action="@{/admin/livres/add}"  class="row g-3" th:object="${livreRequest}">
+                        <form method="POST" th:action="@{/admin/livres/add}"  class="row g-3" th:object="${livreDetails}">
                             <div class="col-md-6 mb-3">
                                 <label for="isbn" class="form-label">ISBN</label>
                                 <input type="text" class="form-control" id="isbn" name="isbn" required th:field="*{isbn}">
@@ -80,18 +80,16 @@
                                 <div class="row">
                                     <div class="col">
                                         <label for="auteur" class="form-label">Auteur</label>
-                                        <select class="form-select" id="auteur" name="auteur">
+                                        <select class="form-select" id="auteur" name="auteur" th:field="*{auteur}" required>
                                             <option value="">Sélectionner un auteur</option>
-                                            <!-- Iterating over authors retrieved from backend -->
                                             <option th:each="auteur : ${auteurs}" th:value="${auteur.id}" th:text="${auteur.nom}"></option>
-                                            <!-- Option for creating a new author -->
                                             <option value="new">Créer un nouvel auteur</option>
                                         </select>
                                     </div>
-                                    <div class="col-12 mb-3">
+                                    <div class="col-12" th:if="${livreDetails.auteur == 'new'}">
                                         <div id="new-author-form" style="display: none;">
                                             <label for="new-author" class="form-label">Nouvel Auteur</label>
-                                            <input type="text" class="form-control" id="new-author" name="new-author">
+                                            <input type="text" class="form-control" id="new-author" name="new-author"  required th:field="*{newAuteur}">
                                         </div>
                                     </div>
                                 </div>
@@ -102,31 +100,27 @@
                                 <div class="row">
                                     <div class="col">
                                         <label for="categorie" class="form-label">Catégorie</label>
-                                        <select class="form-select" id="categorie" name="categorie"
-
-                                        >
+                                        <select class="form-select" id="categorie" name="categorie" th:field="*{categorie}" required>
                                             <option value="">Sélectionner une catégorie...</option>
-                                            <!-- Afficher les catégories existantes -->
                                             <option th:each="categorie : ${categories}" th:value="${categorie.id}" th:text="${categorie.nom}"></option>
-                                            <!-- Option pour créer une nouvelle catégorie -->
-                                            <option value="nouvelle-categorie">Créer une nouvelle catégorie</option>
+                                            <option value="new">Créer une nouvelle catégorie</option>
                                         </select>
                                     </div>
-                                     <div class="col-12">
-                                            <div id="nouvelle-categorie-form" style="display: none;">
-                                                <label for="nouvelle-categorie" class="form-label">Nouvelle Catégorie</label>
-                                                <input type="text" class="form-control" id="nouvelle-categorie" name="nouvelle-categorie">
+                                     <div class="col-12" th:if="${livreDetails.categorie == 'new'}">
+                                            <div id="new-form" style="display: none;" >
+                                                <label for="new" class="form-label">Nouvelle Catégorie</label>
+                                                <input type="text" class="form-control" id="new" name="new"  required th:field="*{newCategorie}">
                                             </div>
                                      </div>
                                 </div>
                             </div>
-                            <div class="col-12 mb-3">
-                                <label for="image" class="form-label">Image du Livre</label>
-                                <input type="file" class="form-control" id="image" name="image" accept="image/*"
-                                        required th:field="*{imageFile}"
-                                >
-                                <img id="imagePreview" src="#" alt="Preview" style="display: none; max-width: 100px; max-height: 100px; margin-top: 10px;">
-                            </div>
+<!--                            <div class="col-12 mb-3">-->
+<!--                                <label for="image" class="form-label">Image du Livre</label>-->
+<!--                                <input type="file" class="form-control" id="image" name="image" accept="image/*"-->
+<!--                                        required th:field="*{imageFile}"-->
+<!--                                >-->
+<!--                                <img id="imagePreview" src="#" alt="Preview" style="display: none; max-width: 100px; max-height: 100px; margin-top: 10px;">-->
+<!--                            </div>-->
                              <div class="col-12">
                                 <button type="submit" class="btn btn-primary"
                                 >Ajouter le Livre</button>
@@ -162,10 +156,10 @@
 <script th:inline="javascript">
     $(document).ready(function() {
         $('#categorie').change(function() {
-            if ($(this).val() === 'nouvelle-categorie') {
-                $('#nouvelle-categorie-form').show();
+            if ($(this).val() === 'new') {
+                $('#new-form').show();
             } else {
-                $('#nouvelle-categorie-form').hide();
+                $('#new-form').hide();
             }
         });
         $('#auteur').change(function() {

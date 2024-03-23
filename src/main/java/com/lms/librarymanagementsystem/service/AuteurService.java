@@ -17,8 +17,8 @@ public class AuteurService {
 
         return auteurRepository.findAll();
     }
-    public void saveAuteur(Auteur auteur) {
-        auteurRepository.save(
+    public Auteur saveAuteur(Auteur auteur) {
+        return auteurRepository.save(
                 auteur
         );
     }
