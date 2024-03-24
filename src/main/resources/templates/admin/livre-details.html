@@ -14,7 +14,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                 <li class="breadcrumb-item">Livres</li>
-                <li class="breadcrumb-item active">Ajouter un livres</li>
+                <li class="breadcrumb-item active">Détails d'un livre</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -28,23 +28,55 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
-                <img src="https://img.freepik.com/vecteurs-libre/livre-ouvert-blanc_1308-22968.jpg?w=996&t=st=1711155872~exp=1711156472~hmac=3b67d7ca5601794082694a725e8e3825d4cb21c2421fc05298352405d8cd4c37" alt="Book Cover" style="max-width: 100%; height: auto;">
+<!--            <div th:unless="${livre.getImage()}" class="col-md-4">-->
+<!--                <img src="https://img.freepik.com/vecteurs-libre/livre-ouvert-blanc_1308-22968.jpg?w=996&t=st=1711155872~exp=1711156472~hmac=3b67d7ca5601794082694a725e8e3825d4cb21c2421fc05298352405d8cd4c37" alt="Book Cover" style="max-width: 100%; height: auto;">-->
+<!--            </div>-->
+            <div th:if="${livre.getImage() != null}" class="col-md-4">
+                <img th:src="@{/images/{filename}(filename=${livre.getImage().getName()})}"
+                     alt="Book Cover" style="max-width: 100%; height: auto;">
             </div>
             <div class="col-md-8">
-                <div class="card">
+                <div class="card" th:if="${livre}">
                     <div class="card-body">
-                        <h5 class="card-title">Title of the Book</h5>
-                        <p>ISBN: XXXXXXXXXXXX</p>
-                        <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <p>Number of Pages: 300</p>
-                        <p>Date of Publication: 01/01/2023</p>
-                        <p>Publisher: Publisher Name</p>
-                        <p>Language: English</p>
-                        <p>Author: Author Name</p>
-                        <p>Category: Category Name</p>
+                        <h5 class="card-title">
+                            <strong th:text="${livre.titre}"></strong>
+                        </h5>
+                        <p>
+                            <strong> ISBN: </strong> <span th:text="${livre.isbn}"></span>
+                        </p>
 
-                        <!-- Additional Book Details Here -->
+                        <p>
+                            <strong >Number of Pages: </strong><span th:text="${livre.nbPages}"></span>
+                        </p>
+                        <p>
+                            <strong> Date of Publication: </strong><span th:text="${livre.datePublication}"></span>
+                        </p>
+
+                        <p>
+                            <strong> Publisher: </strong><span th:text="${livre.editeur}"></span>
+                        </p>
+                        <p>
+                            <strong> Language: </strong><span th:text="${livre.langue}"></span>
+                        </p>
+                        <p th:if="${livre.getAuteur()}">
+                            <strong>Author: </strong><span th:text="${livre.getAuteur().getNomComplet()}"></span>
+                        </p>
+                        <p th:if="${livre.getCategorie()}">
+                            <strong>Category: </strong><span th:text="${livre.getCategorie().getNom()}"></span>
+                        </p>
+                        <p>
+                            <strong>Description: </strong><span th:text="${livre.description}"></span>
+                        </p>
+                        <p th:if="${livre.getAddedBy()}">
+                            <strong>Ajoutee par : </strong><span th:text="${livre.getAddedBy().getNomComplet}"></span>
+                        </p>
+
+                    </div>
+                </div>
+                <div class="card" th:unless="${livre}">
+                    <div class="card-body">
+                        <h5 class="card-title">Livre non trouvé</h5>
+                        <p>Le livre que vous cherchez n'existe pas.</p>
                     </div>
                 </div>
             </div>

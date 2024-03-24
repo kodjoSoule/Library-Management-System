@@ -1,8 +1,8 @@
 package com.lms.librarymanagementsystem.configuration;
 
 import com.lms.librarymanagementsystem.model.*;
-import com.lms.librarymanagementsystem.repository.DBUserRepository;
 import com.lms.librarymanagementsystem.repository.LivreRepository;
+import com.lms.librarymanagementsystem.repository.UserRepository;
 import com.lms.librarymanagementsystem.service.*;
 import jakarta.transaction.Transactional;
 import org.apache.catalina.Server;
@@ -43,7 +43,7 @@ public class DataInitializer implements CommandLineRunner {
     private AuteurService auteurService;
     @Autowired
     ExamplaireService examplaireService;
-    public DataInitializer(LivreRepository livreRepository, DBUserRepository dbUserRepository) {
+    public DataInitializer(LivreRepository livreRepository, UserRepository dbUserRepository) {
     }
     //Create function to return file image  from C:\Users\Kodjo\lmages\profile.jpg
     public File getImageFromSystem(){
@@ -66,13 +66,16 @@ public class DataInitializer implements CommandLineRunner {
         log.info("Auteur "+victorHugo.getNom() +" créé avec succès");
         // Création d'un administrateur
         Admin soule = new Admin();
+        soule.setNom("Souleymane");
+        soule.setPrenom("Diallo")  ;
+        soule.setEmail("soule@example.com");
         soule.setUsername("soule");
         soule.setPassword("soule");
         adminService.saveAdmin(soule);
         log.info("Administrateur "+soule.getUsername() +" créé avec succès");
 
         // Définir le nombre de livres à créer
-        int nombreDeLivres = 5; // Modifier ce nombre selon vos besoins
+        int nombreDeLivres = 15; // Modifier ce nombre selon vos besoins
         for (int i = 0; i < nombreDeLivres; i++) {
             // Création d'un nouveau livre
             Livre livre = new Livre();
@@ -92,7 +95,7 @@ public class DataInitializer implements CommandLineRunner {
             imageData.setName( (i + 1) + ".png");
             imageData.setType("image/png");
             imageData.setFilePath("images/" + imageData.getName());
-            imageService.saveImage(imageData);
+            //imageService.saveImage(imageData);
             livre.setImage(imageData);
             livre.setCategorie(romanCategory); // Catégorie commune pour tous les livres
             // Enregistrement du livre
@@ -120,12 +123,24 @@ public class DataInitializer implements CommandLineRunner {
         Auteur auteur = new Auteur();
         auteur.setNom("Kouyaté");
         auteur.setPrenom("Seydou Bandja");
+        //test de creation de 10 auteurs
+        for (int i = 10; i < 30; i++) {
+            Auteur auteur1 = new Auteur();
+            auteur1.setNom("Nom Auteur "+i);
+            auteur1.setPrenom("Prenom Auteur "+i);
+            auteur1.setDateNaissance(LocalDate.of(1990, 12, 12));
+            auteurService.saveAuteur(auteur1);
+        }
+
         auteurService.saveAuteur(auteur);
         log.info("Auteur créé avec succès");
         //3 Création d'un utilisateur
         Admin administrateur = new Admin();
         administrateur.setUsername("djiguiba");
         administrateur.setPassword("djiguiba");
+        administrateur.setNom("Djiguiba");
+        administrateur.setPrenom("Kouyaté");
+        administrateur.setEmail("Djiguiba@example.com");
         adminService.saveAdmin(administrateur);
         log.info("Utilisateur créé avec succès");
 

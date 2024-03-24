@@ -3,6 +3,7 @@ package com.lms.librarymanagementsystem.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,24 +11,22 @@ import java.util.List;
 
 
 @Entity
+@Data
 public class Livre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String isbn;
     private String titre;
-    //autre propriete du livre
-    //Description du livre
+
     @Column(columnDefinition = "TEXT")
     private String description;
-    //Nombre de pages
 
     private int nbPages;
-    //Date de publication
+
     private LocalDate datePublication;
-    //Editeur
+
     private String editeur;
-    //Langue
     private String langue;
 
     @JsonBackReference
@@ -48,10 +47,14 @@ public class Livre {
 
     @JsonIgnore
     private List<Exemplaire> exemplaires = new ArrayList<>() ;
-    //utisaeur qui a ajoute le livre
-    @JsonBackReference
-    @ManyToOne
-    @JsonIgnore
+
+    @ManyToOne(
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }
+    )
+    @JoinColumn(name = "added_by")
     private Admin addedBy;
 
     public Categorie getCategorie() {
@@ -76,92 +79,9 @@ public class Livre {
     @JoinColumn(name = "categorie_id")
     private Categorie categorie;
 
-    // Getters et setters
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    public String getTitre() {
-        return titre;
-    }
-
-    public void setTitre(String titre) {
-        this.titre = titre;
-    }
-
-    public Auteur getAuteur() {
-        return auteur;
-    }
-
-    public void setAuteur(Auteur auteur) {
-        this.auteur = auteur;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getNbPages() {
-        return nbPages;
-    }
-
-    public void setNbPages(int nbPages) {
-        this.nbPages = nbPages;
-    }
-
-    public LocalDate getDatePublication() {
-        return datePublication;
-    }
-
-    public void setDatePublication(LocalDate datePublication) {
-        this.datePublication = datePublication;
-    }
-
-    public String getEditeur() {
-        return editeur;
-    }
-
-    public void setEditeur(String editeur) {
-        this.editeur = editeur;
-    }
-
-    public String getLangue() {
-        return langue;
-    }
-
-    public void setLangue(String langue) {
-        this.langue = langue;
-    }
 
     public void setExemplaires(List<Exemplaire> exemplaires) {
         this.exemplaires = exemplaires;
-    }
-
-    public ImageData getImage() {
-        return image;
-    }
-
-    public void setImage(ImageData imageData) {
-        this.image = imageData;
-    }
-
-    public List<Exemplaire> getExemplaires() {
-        return exemplaires;
     }
 
     public String getNomCategorie() {
@@ -183,7 +103,6 @@ public class Livre {
     }
 
     public void setAddedBy(Admin addedBy) {
-
         this.addedBy = addedBy;
     }
 

@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/images")
-public class ImageController {
+public class ImageControllerAPI {
     @Autowired
     private ImageService imageService;
     @PostMapping("/upload")
@@ -44,5 +44,7 @@ public class ImageController {
         String imageUrl = imageService.getImageUrl(fileName);
         return ResponseEntity.ok(imageUrl);
     }
+
+
 
 }

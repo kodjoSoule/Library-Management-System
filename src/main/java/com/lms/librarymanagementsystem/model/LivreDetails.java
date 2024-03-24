@@ -15,6 +15,15 @@ public class LivreDetails {
     private String auteur; // ID de l'auteur du livre
     private String newAuteur; // Nouvel auteur du livre
     private String newCategorie; // Nouvelle catégorie du livre
+    private Long adminID;
+
+    public Long getAdminID() {
+        return adminID;
+    }
+
+    public void setAdminID(Long adminID) {
+        this.adminID = adminID;
+    }
 
     private String categorie; // ID de la catégorie du livre
     private MultipartFile imageFile; // Fichier image du livre
@@ -134,4 +143,6 @@ public class LivreDetails {
                 ", newCategorie='" + newCategorie + '\'' +
                 '}';
     }
+
+
 }

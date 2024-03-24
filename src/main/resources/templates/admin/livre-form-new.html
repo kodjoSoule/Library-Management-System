@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head th:replace="admin/shared/head ::head">
-    <title>Library Management</title>
-</head>
+<head th:replace="admin/shared/head ::head"></head>
 <body>
 <div th:replace="/admin/shared/header::header"></div>
 <div th:replace="/admin/shared/sidebar::sidebar"></div>
@@ -31,7 +28,11 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Ajouter un Nouveau Livre</h5>
-                        <form method="POST" th:action="@{/admin/livres/add}"  class="row g-3" th:object="${livreDetails}">
+                        <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+                            <span th:text="${message}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <form method="POST" th:action="@{/admin/livres/add}"  class="row g-3" th:object="${livreDetails}" enctype="multipart/form-data">
                             <div class="col-md-6 mb-3">
                                 <label for="isbn" class="form-label">ISBN</label>
                                 <input type="text" class="form-control" id="isbn" name="isbn" required th:field="*{isbn}">
@@ -86,15 +87,14 @@
                                             <option value="new">Créer un nouvel auteur</option>
                                         </select>
                                     </div>
-                                    <div class="col-12" th:if="${livreDetails.auteur == 'new'}">
+                                    <div class="col-12" >
                                         <div id="new-author-form" style="display: none;">
                                             <label for="new-author" class="form-label">Nouvel Auteur</label>
-                                            <input type="text" class="form-control" id="new-author" name="new-author"  required th:field="*{newAuteur}">
+                                            <input type="text" class="form-control" id="new-author" name="new-author"   th:field="*{newAuteur}">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Sélection de la catégorie -->
                             <div class="col-md-6 mb-3">
                                 <div class="row">
@@ -106,21 +106,19 @@
                                             <option value="new">Créer une nouvelle catégorie</option>
                                         </select>
                                     </div>
-                                     <div class="col-12" th:if="${livreDetails.categorie == 'new'}">
-                                            <div id="new-form" style="display: none;" >
-                                                <label for="new" class="form-label">Nouvelle Catégorie</label>
-                                                <input type="text" class="form-control" id="new" name="new"  required th:field="*{newCategorie}">
-                                            </div>
-                                     </div>
+                                    <div class="col-12" >
+                                        <div id="new-form-categorie" style="display: none;" >
+                                            <label for="new" class="form-label">Nouvelle Catégorie</label>
+                                            <input type="text" class="form-control" id="new" name="new"   th:field="*{newCategorie}">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-<!--                            <div class="col-12 mb-3">-->
-<!--                                <label for="image" class="form-label">Image du Livre</label>-->
-<!--                                <input type="file" class="form-control" id="image" name="image" accept="image/*"-->
-<!--                                        required th:field="*{imageFile}"-->
-<!--                                >-->
-<!--                                <img id="imagePreview" src="#" alt="Preview" style="display: none; max-width: 100px; max-height: 100px; margin-top: 10px;">-->
-<!--                            </div>-->
+                            <div class="col-12 mb-3">
+                                <label for="image" class="form-label">Image du Livre</label>
+                                <input type="file" class="form-control" id="image" name="file"  accept="image/*">
+                                <img id="imagePreview" src="#" alt="Preview" style="display: none; max-width: 100px; max-height: 100px; margin-top: 10px;">
+                            </div>
                              <div class="col-12">
                                 <button type="submit" class="btn btn-primary"
                                 >Ajouter le Livre</button>
@@ -156,13 +154,15 @@
 <script th:inline="javascript">
     $(document).ready(function() {
         $('#categorie').change(function() {
+            console.log("Categorie Change detected");
             if ($(this).val() === 'new') {
-                $('#new-form').show();
+                $('#new-form-categorie').show();
             } else {
-                $('#new-form').hide();
+                $('#new-form-categorie').hide();
             }
         });
         $('#auteur').change(function() {
+            console.log("Auteur Change detected");
             if ($(this).val() === 'new') {
                 $('#new-author-form').show();
             } else {

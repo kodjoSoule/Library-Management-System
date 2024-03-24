@@ -21,10 +21,9 @@
     <section class="section">
         <div class="container mt-5">
             <div th:if="${success}" class="alert alert-success" role="alert">
-                <h4 class="alert-heading" th:text="${success}"></h4>
-            </div>
-            <div th:if="${error}" class="alert alert-danger" role="alert">
-                <h4 class="alert-heading" th:text="${error}"></h4>
+                <h4 class="alert-heading">
+                    Livre Ajouté avec Succès
+                </h4>
             </div>
             <div class="text-center mt-3">
                 <a th:href="@{/admin/livres}" class="btn btn-primary mx-2">Retourner à la Liste</a>

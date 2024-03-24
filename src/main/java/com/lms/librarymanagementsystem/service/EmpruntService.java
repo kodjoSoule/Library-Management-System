@@ -1,6 +1,6 @@
 package com.lms.librarymanagementsystem.service;
 
-import com.lms.librarymanagementsystem.model.Adherent;
+import com.lms.librarymanagementsystem.model.User;
 import com.lms.librarymanagementsystem.model.Emprunt;
 import com.lms.librarymanagementsystem.repository.EmpruntRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +25,12 @@ public class EmpruntService {
         empruntRepository.save(emprunt);
     }
 
-    public List<Emprunt> getEmpruntsByAdherent(Adherent adherent1) {
-        return empruntRepository.findByAdherent(adherent1);
+    public List<Emprunt> getEmpruntsByAdherent(User user1) {
+        return empruntRepository.findByAdherent(user1);
     }
 
-    public List<Emprunt> getRetoursByAdherent(Adherent adherent1) {
-        return empruntRepository.findByAdherentAndRetourne(adherent1, true);
+    public List<Emprunt> getRetoursByAdherent(User user1) {
+        return empruntRepository.findByAdherentAndRetourne(user1, true);
     }
 
     public Page<Emprunt> findPaginated(Pageable pageable) {

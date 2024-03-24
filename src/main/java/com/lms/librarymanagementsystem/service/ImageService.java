@@ -3,96 +3,50 @@ package com.lms.librarymanagementsystem.service;
 import com.lms.librarymanagementsystem.model.ImageData;
 import com.lms.librarymanagementsystem.repository.ImageDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.Optional;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 @Service
 public class ImageService {
+    private final ImageDataRepository imageDataRepository;
+    private final Path rootLocation; // Ce chemin devra être configuré
 
-
+    private static final String IMAGE_FOLDER = "src/main/resources/static/images";
+    private static final String IMAGE_URL_PREFIX = "/images/";
     @Autowired
-    private ImageDataRepository imageDataRepository;
-
-    @Autowired
-    private ResourceLoader resourceLoader;
-
-    private static final String IMAGE_FOLDER = "src/main/resources/static/images"; // Mettre à jour si nécessaire
-    private static final String IMAGE_URL_PREFIX = "/images/"; // Mettre à jour si nécessaire
-
-    public String uploadImageAPI(MultipartFile file) throws IOException {
-        String fileName = file.getOriginalFilename();
-        Path uploadPath = Path.of(IMAGE_FOLDER).resolve(fileName);
-        Files.copy(file.getInputStream(), uploadPath, StandardCopyOption.REPLACE_EXISTING);
-        ImageData imageData = new ImageData();
-        imageData.setName(fileName);
-        imageData.setType(file.getContentType());
-        imageData.setFilePath(IMAGE_URL_PREFIX + fileName);
-        imageDataRepository.save(imageData);
-
-        return "Fichier téléchargé avec succès: " + fileName;
+    public ImageService(ImageDataRepository imageDataRepository) {
+        this.imageDataRepository = imageDataRepository;
+        this.rootLocation = Paths.get(IMAGE_FOLDER);
     }
-
     public ImageData uploadImage(MultipartFile file) throws IOException {
-        String fileName = file.getOriginalFilename();
-        Path uploadPath = Path.of(IMAGE_FOLDER).resolve(fileName);
-        Files.copy(file.getInputStream(), uploadPath, StandardCopyOption.REPLACE_EXISTING);
+        String filename = StringUtils.cleanPath(file.getOriginalFilename());
+        //Files.copy(file.getInputStream(), this.rootLocation.resolve(filename));
+        Path path = this.rootLocation.resolve(filename);
+        Files.write(path, file.getBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
         ImageData imageData = new ImageData();
-        imageData.setName(fileName);
+        imageData.setName(filename);
         imageData.setType(file.getContentType());
-        imageData.setFilePath(IMAGE_URL_PREFIX + fileName);
-        imageDataRepository.save(imageData);
-        return imageData;
+        imageData.setFilePath(rootLocation.resolve(filename).toString());
+        return imageDataRepository.save(imageData);
     }
+
     public byte[] downloadImage(String fileName) throws IOException {
-        Optional<ImageData> imageData = imageDataRepository.findByName(fileName);
-        if (imageData.isEmpty()) {
-            throw new IOException("Image non trouvée: " + fileName);
-        }
-
-        Path filePath = Path.of(IMAGE_FOLDER).resolve(fileName);
-        return Files.readAllBytes(filePath);
+        Path file = rootLocation.resolve(fileName);
+        return Files.readAllBytes(file);
     }
+
     public String getImageUrl(String fileName) {
-        return IMAGE_URL_PREFIX + fileName;
+        ImageData imageData = imageDataRepository.findByName(fileName);
+        if (imageData != null) {
+            return imageData.getFilePath();
+        }
+        return null;
     }
-    public String getImageUrl2(ImageData imageData){
-        String fileName = imageData.getName();
-        Path filePath = Path.of(IMAGE_FOLDER).resolve(fileName);
-        return filePath.toString();
-    }
-    public ImageData getImageDataByID(Long id) {
-        return imageDataRepository.findById(id).orElse(null);
-    }
-
-    public void saveImage(ImageData imageData) {
-        imageDataRepository.save(imageData);
-    }
-
-//    public String uploadImageFromURL(String imageUrl) throws IOException {
-//        String fileName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-//        Path uploadPath = Path.of(IMAGE_FOLDER).resolve(fileName);
-//
-//        if (imageUrl.startsWith("http")) {
-//            URL url = new URL(imageUrl);
-//            try (InputStream in = url.openStream()) {
-//                Files.copy(in, uploadPath, StandardCopyOption.REPLACE_EXISTING);
-//            }
-//        } else { // Si c'est un chemin de fichier local
-//            Files.copy(Path.of(imageUrl), uploadPath, StandardCopyOption.REPLACE_EXISTING);
-//        }
-//
-//        return "Fichier téléchargé avec succès à partir de l'URL: " + imageUrl;
-//    }
-
-
 }

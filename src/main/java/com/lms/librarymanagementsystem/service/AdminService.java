@@ -10,7 +10,11 @@ public class AdminService {
     @Autowired
     AdminRepository adminRepository;
 
-    public void saveAdmin(Admin admin) {
-        adminRepository.save(admin);
+    public Admin saveAdmin(Admin admin) {
+        return adminRepository.save(admin);
+    }
+
+    public Admin getAdminById(Long id) {
+        return adminRepository.findById(id).orElse(null);
     }
 }

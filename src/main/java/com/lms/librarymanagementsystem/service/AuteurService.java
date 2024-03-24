@@ -1,8 +1,12 @@
 package com.lms.librarymanagementsystem.service;
 
 import com.lms.librarymanagementsystem.model.Auteur;
+import com.lms.librarymanagementsystem.model.Livre;
 import com.lms.librarymanagementsystem.repository.AuteurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,4 +44,9 @@ public class AuteurService {
     public void deleteAuteur(Long id) {
         auteurRepository.deleteById(id);
     }
+
+    public Page<Auteur> findPaginated(Pageable Pageable) {
+        return auteurRepository.findAll(Pageable);
+    }
+
 }

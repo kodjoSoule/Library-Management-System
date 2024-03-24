@@ -3,24 +3,33 @@ package com.lms.librarymanagementsystem.controllers.web;
 import com.lms.librarymanagementsystem.model.Auteur;
 import com.lms.librarymanagementsystem.service.AuteurService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class AuteurController {
     @Autowired
     private AuteurService auteurService;
-@RequestMapping("/admin/auteurs")
-    public String index(Model model) {
-    model.addAttribute("loading", true);
-    List<Auteur> auteurs = auteurService.getAllAuteurs();
-    model.addAttribute("auteurs", auteurs);
-    model.addAttribute("mainContent", "admin/auteur/auteurs-manager");
-    model.addAttribute("loading", false);
-    return "/admin/auteurs-manager";
+    @GetMapping("/admin/auteurs")
+    public String index(Model model, @RequestParam("pageNo") Optional<Integer> page,
+                        @RequestParam("size") Optional<Integer> size) {
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+        //show log
+        System.out.println("currentPage: " + currentPage);
+        System.out.println("pageSize: " + pageSize);
+
+        Page<Auteur> auteurPage = auteurService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        model.addAttribute("auteurs", auteurPage.getContent());
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPages", auteurPage.getTotalPages());
+        return "/admin/auteurs-manager";
     }
     @GetMapping("/admin/auteurs-manager/add")
     public String add(Model model) {
