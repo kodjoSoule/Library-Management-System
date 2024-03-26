@@ -42,21 +42,9 @@ public class LivreController {
             @RequestParam("pageSize") Optional<Integer> size,
             Model model
     ) {
-//        int currentPage = page.orElse(1);
-                int currentPage = page.orElse(1);
+        int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
-        Pageable pageable = PageRequest.of(currentPage - 1, pageSize) ;
-        Page<Livre> livrePage = livreService.findPaginated(pageable);
-        //List<Livre> livres = livrePage.getContent();
-        if (currentPage >= livrePage.getTotalPages()) {
-//            throw new IllegalArgumentException("Page number out of bounds");
-            currentPage = 1;
-            pageable = PageRequest.of(currentPage - 1, pageSize) ;
-            livrePage = livreService.findPaginated(pageable);
-
-        }
-        int totalPages = livrePage.getTotalPages();
-        List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+        Page<Livre> livrePage = livreService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", livrePage.getTotalPages());
         model.addAttribute("pageSize", livrePage.getTotalElements());

@@ -17,4 +17,7 @@ public class InfosService {
         return infosRepository.findFirstByOrderByIdAsc();
     }
 
+    public void updateInfos(Infos infos) {
+        infosRepository.save(infos);
+    }
 }

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="admin/shared/head ::head">
+    <title>Library Management</title>
+    <!-- Include TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+</head>
+<body>
+<div th:replace="/admin/shared/header::header"></div>
+<div th:replace="/admin/shared/sidebar::sidebar"></div>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Gestion des livres</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item">Infos</li>
+                <li class="breadcrumb-item active">Gestion des informations</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col">
+                <form method="post" th:action="@{/admin/infos/update}" th:object="${infos}">
+                    <div class="form-group mb-2">
+                        <label for="openingHours">Heures d'Ouverture:</label>
+                        <textarea th:field="${infos.heuresOuverture}" id="openingHours" name="openingHours" class="form-control" required placeholder="Enter opening hours"></textarea>
+                    </div>
+
+                    <div class="form-group mb-2">
+                        <label for="rules">Règlements:</label>
+                        <textarea id="rules" name="rules" class="form-control" required placeholder="Enter rules"
+                                  th:field="${infos.reglements}"></textarea>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="bannerMessages">Messages de Bannière:</label>
+                        <textarea id="bannerMessages" name="bannerMessages" class="form-control" required placeholder="Enter banner messages" th:field="${infos.messagesBanniere}"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="bi bi-save me-2"></i>
+                        Mettre à Jour
+                    </button>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy; Copyright <strong><span>Library Management System</span></strong>
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+
+<!-- Initialize TinyMCE -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'lists advlist', // Ajoutez des plugins supplémentaires
+            //add preview
+            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat | preview',
+            height: 300 // Définissez la hauteur de l'éditeur
+        });
+
+    });
+</script>
+
+</body>
+
+</html>

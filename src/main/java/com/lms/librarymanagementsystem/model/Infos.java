@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 
 
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = "id")
+})
 public class Infos {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +24,6 @@ public class Infos {
     // Messages de bannière@Lob
     @Column(columnDefinition = "TEXT")
     private String messagesBanniere;
-
     @Column(columnDefinition = "TEXT")
     private String conditionEmprunt;
 

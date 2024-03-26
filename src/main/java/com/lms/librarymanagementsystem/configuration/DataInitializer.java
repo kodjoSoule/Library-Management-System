@@ -43,6 +43,9 @@ public class DataInitializer implements CommandLineRunner {
     private AuteurService auteurService;
     @Autowired
     ExamplaireService examplaireService;
+    @Autowired
+    InfosService infosService;
+
     public DataInitializer(LivreRepository livreRepository, UserRepository dbUserRepository) {
     }
     //Create function to return file image  from C:\Users\Kodjo\lmages\profile.jpg
@@ -75,7 +78,7 @@ public class DataInitializer implements CommandLineRunner {
         log.info("Administrateur "+soule.getUsername() +" créé avec succès");
 
         // Définir le nombre de livres à créer
-        int nombreDeLivres = 15; // Modifier ce nombre selon vos besoins
+        int nombreDeLivres = 35; // Modifier ce nombre selon vos besoins
         for (int i = 0; i < nombreDeLivres; i++) {
             // Création d'un nouveau livre
             Livre livre = new Livre();
@@ -112,6 +115,14 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        //infos
+        Infos infos = new Infos();
+        infos.setHeuresOuverture("Lundi - Vendredi: 8h - 18h, Samedi: 9h - 17h, Dimanche: Fermé");
+        infos.setReglements("Règlements de la bibliothèque");
+        infos.setMessagesBanniere("Messages de bannière");
+        infos.setConditionEmprunt("Conditions d'emprunt");
+        infos.setPenelites("Pénélités");
+        infosService.updateInfos(infos);
         createLivreTest();
         //1 Création d'un catégorie
         Categorie scienceFictionCategory = new Categorie();

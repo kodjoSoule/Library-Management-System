@@ -7,7 +7,6 @@ import com.lms.librarymanagementsystem.model.CategorieRequest;
 import com.lms.librarymanagementsystem.model.Livre;
 import com.lms.librarymanagementsystem.model.ResponseMessage;
 import com.lms.librarymanagementsystem.service.CategorieService;
-import com.lms.librarymanagementsystem.service.PostService;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -21,7 +20,7 @@ import static java.rmi.server.LogStream.log;
 
 @RestController
 @RequestMapping("/api" )
-public class CategorieController {
+public class CategorieControllerAPI {
 
     @Autowired
     private CategorieService categorieService;

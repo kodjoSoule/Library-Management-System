@@ -24,7 +24,6 @@ public class AuteurController {
         //show log
         System.out.println("currentPage: " + currentPage);
         System.out.println("pageSize: " + pageSize);
-
         Page<Auteur> auteurPage = auteurService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
         model.addAttribute("auteurs", auteurPage.getContent());
         model.addAttribute("currentPage", currentPage);

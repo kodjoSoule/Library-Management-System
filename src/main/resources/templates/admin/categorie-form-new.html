@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="admin/shared/head ::head">
+    <title>Library Management</title>
+</head>
+<body>
+<div th:replace="/admin/shared/header::header"></div>
+<div th:replace="/admin/shared/sidebar::sidebar"></div>
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Gestion des categories</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item">Categories</li>
+                <li class="breadcrumb-item active">Ajouter une nouvelle Categorie</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <section class="section">
+        <div class="row">
+            <div class="col">
+                <a href="/admin/categories" class="btn btn-primary mb-3">
+                    <i class="bi bi-arrow-left"></i> Retour
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Ajouter une nouvelle Categorie</h5>
+                        <form method="POST" th:action="@{/admin/categorie/add}"  class="row g-3" th:object="${categorie}">
+                            <div class="col-md-6">
+                                <label for="nom" class="form-label">Nom de la categorie</label>
+                                <input type="text" class="form-control" id="nom" name="nom" th:field="*{nom}" required>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary"
+                                >Ajouter la categorie</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy; Copyright <strong><span>Library Management System</span></strong>
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+<!-- Vendor JS Files -->
+<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+</body>
+
+</html>

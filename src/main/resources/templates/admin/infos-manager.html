@@ -3,6 +3,8 @@
 
 <head th:replace="admin/shared/head ::head">
     <title>Library Management</title>
+    <!-- Include TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
 <div th:replace="/admin/shared/header::header"></div>
@@ -14,34 +16,54 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item">Livres</li>
-                <li class="breadcrumb-item active">Listes des livres</li>
+                <li class="breadcrumb-item">Infos</li>
+                <li class="breadcrumb-item active">Gestion des informations</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
-
     <section class="section">
         <div class="row">
             <div class="col">
-                <form method="post" th:action="@{/infos/update}" >
-                    <input type="hidden"  />
-                    <label>Heures d'Ouverture:</label>
-                    <textarea ></textarea>
-
-                    <label>Règlements:</label>
-                    <textarea ></textarea>
-
-                    <label>Messages de Bannière:</label>
-                    <textarea ></textarea>
-
-                    <button type="submit">Mettre à Jour</button>
-                </form>
+<!--                show alert message for message-->
+                <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong th:text="${message}">Success</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             </div>
         </div>
+            <div class="row">
+                <div class="col">
+                    <h2 class="section-title text-info">Informations de la bibliothèque</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="info-card">
+                        <h3 class="info-title"><i class="bi bi-clock icon"></i> Heures d'Ouverture:</h3>
+                        <p class="info-text" th:text="${infos.getHeuresOuverture()}">9:00 AM - 5:00 PM</p>
+                    </div>
+                    <div class="info-card">
+                        <h3 class="info-title"><i class="bi bi-list-check icon"></i> Règlements:</h3>
+                        <p class="info-text" th:text="${infos.getReglements()}">Respectez le silence, retournez les livres à temps.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3 class="info-title"><i class="bi bi-megaphone icon"></i> Messages de Bannière:</h3>
+                        <p class="info-text" th:text="${infos.getMessagesBanniere()}">Bienvenue à notre bibliothèque!</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3 class="info-title"><i class="bi bi-currency-exchange icon"></i> Penalités:</h3>
+                        <p class="info-text" th:text="${infos.getPenelites()}">Des amendes sont applicables pour les retards.</p>
+                    </div>
+
+                    <div class="text-center">
+                        <a href="/admin/infos/infos-form-update" class="btn btn-primary btn-modify">Modifier les Informations</a>
+                    </div>
+                </div>
+            </div>
     </section>
-
 </main><!-- End #main -->
-
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
     <div class="copyright">

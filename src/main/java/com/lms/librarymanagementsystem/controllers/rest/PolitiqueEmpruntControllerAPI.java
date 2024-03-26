@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/politique-emprunt")
-public class APIPolitiqueEmpruntController {
+public class PolitiqueEmpruntControllerAPI {
     //crud
     @GetMapping("/")
     public String getAllPolitiqueEmprunt() {

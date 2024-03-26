@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/retours")
 @Qualifier("api")
-public class APIRetourController {
+public class RetourControllerAPI {
     // Ajoutez les méthodes pour les opérations sur les retours
 }

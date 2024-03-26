@@ -1,5 +1,6 @@
 package com.lms.librarymanagementsystem.service;
 
+import com.lms.librarymanagementsystem.model.Auteur;
 import com.lms.librarymanagementsystem.model.Categorie;
 import com.lms.librarymanagementsystem.model.Livre;
 import com.lms.librarymanagementsystem.repository.CategorieRepository;
@@ -7,6 +8,7 @@ import com.lms.librarymanagementsystem.repository.LivreRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,12 @@ public class CategorieService {
     }
 
     public void deleteCategorie(Long id) {
+        //remove all books from the category
+        Categorie categorie = categorieRepository.findById(id).orElse(null);
+        if (categorie != null) {
+            categorie.getLivres().clear();
+            categorieRepository.save(categorie);
+        }
         categorieRepository.deleteById(id);
     }
 
@@ -86,5 +94,14 @@ public class CategorieService {
             return true;
         }
         return false;
+    }
+
+
+    public Categorie getcategorieById(Long id) {
+        return categorieRepository.findById(id).orElse(null);
+    }
+
+    public Page<Categorie> findPaginated(PageRequest of) {
+        return categorieRepository.findAll(of);
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/exemplaires")
-public class APIExemplaireController {
+public class ExemplaireControllerAPI {
     @Autowired
     private ExemplaireService exemplaireService;
     //list all exemplaires

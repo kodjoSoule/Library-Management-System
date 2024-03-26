@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api/images")
 public class ImageControllerAPI {
     @Autowired
     private ImageService imageService;
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+    @PostMapping("/api/images/upload")
+    public ResponseEntity<String> uploadImage(@RequestBody ImageData imageData, @RequestParam("file") MultipartFile file) {
         try {
             ImageData result = imageService.uploadImage(file);
             if(result != null){
@@ -25,7 +24,7 @@ public class ImageControllerAPI {
         }
         return ResponseEntity.badRequest().body("Erreur lors du téléchargement de l'image");
     }
-    @GetMapping("/download/{fileName}")
+    @GetMapping("/api/images/download/{fileName}")
     public ResponseEntity<byte[]> downloadImage(@PathVariable String fileName) {
         try {
             byte[] imageBytes = imageService.downloadImage(fileName);
@@ -34,17 +33,9 @@ public class ImageControllerAPI {
             return ResponseEntity.notFound().build();
         }
     }
-
-    @GetMapping
-    public ResponseEntity<String> showMessafe() {
-        return ResponseEntity.ok("Images API is working!");
-    }
-    @GetMapping("/url/{fileName}")
+    @GetMapping("/api/images/url/{fileName}")
     public ResponseEntity<String> getImageUrl(@PathVariable String fileName) {
         String imageUrl = imageService.getImageUrl(fileName);
         return ResponseEntity.ok(imageUrl);
     }
-
-
-
 }

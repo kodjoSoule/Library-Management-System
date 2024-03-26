@@ -34,13 +34,7 @@ public class AdministrationController {
         model.addAttribute("mainContent", "dashboard");
         return "dashboard-layout";
     }
-    @GetMapping("/utilisateurs-manager")
-    public String utilisateurs(
-            Model model
-    ) {
-        model.addAttribute("mainContent", "dashboard");
-        return "dashboard-layout";
-    }
+
     @GetMapping("/categories-manager")
     public String categories(
             Model model

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head th:replace="admin/shared/head ::head">
-    <title>Library Management</title>
+    <title>User Management</title>
 </head>
 <body>
 <div th:replace="/admin/shared/header::header"></div>
@@ -10,12 +10,12 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Gestion des livres</h1>
+        <h1>User Management</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item">Livres</li>
-                <li class="breadcrumb-item active">Listes des livres</li>
+                <li class="breadcrumb-item">Users</li>
+                <li class="breadcrumb-item active">User List</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -25,56 +25,49 @@
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Liste des Livres </h5>
-                        <a href="/admin/livres/add" class="btn btn-primary mb-3">Ajouter un Livre</a>
-                        <table class="table table-striped">
+                        <h5 class="card-title">User List</h5>
+                        <a href="/admin/utilisateur/add" class="btn btn-primary mb-3">Add User</a>
+                        <table class="table table-striped" >
                             <thead>
                             <tr>
-                                <th>Titre</th>
-                                <th>Auteur</th>
+                                <th>Username</th>
+                                <th>Email</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
-                            <tbody th:if="${livres.isEmpty()}">
+                            <tbody th:if="${users.isEmpty()}">
                             <tr>
-                                <td colspan="3">Aucun livre en base de données</td>
+                                <td colspan="3">No users in the database</td>
                             </tr>
                             </tbody>
-                            <tbody th:unless="${livres.isEmpty()}">
-                            <tr th:each="livre : ${livres}">
-                                <td th:text="${livre.getTitre()}"></td>
-                                <td th:text="${livre.getAuteur().getNomComplet()}"></td>
+                            <tbody th:unless="${users.isEmpty()}">
+                            <tr th:each="user : ${users}">
+                                <td th:text="${user.getUsername()}"></td>
+                                <td th:text="${user.getEmail()}"></td>
                                 <td>
-<!--                                    "@{/livres/{id}(id=${livre.id})}"-->
-                                    <a th:href="@{/admin/livre/{id}(id=${livre.id})}" class="btn btn-info"><i class="bi bi-eye"></i></a>
-                                    <a th:href="@{/admin/livre/{id}/update(id=${livre.id})}" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
-                                    <a th:href="@{/admin/livre/{id}/delete(id=${livre.id})}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                                    <a th:href="@{/admin/utilisateur/{id}(id=${user.id})}" class="btn btn-info"><i class="bi bi-eye"></i></a>
+                                    <a th:href="@{/admin/utilisateur/{id}/update(id=${user.id})}" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
+                                    <a th:href="@{/admin/utilisateur/{id}/delete(id=${user.id})}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
                                 </td>
                             </tr>
-
                             </tbody>
-
                         </table>
-
-
                     </div>
                 </div>
             </div>
         </div>
-
         <!--        pagination &ndash;&gt;-->
         <div class="row">
             <div class="col-4 mx-auto">
                 <nav aria-label="Page navigation">
                     <ul class="pagination ">
                         <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
-                            <a th:href="@{/admin/livres(pageNo=${i})}" class="page-link" th:text="${i}"></a>
+                            <a th:href="@{/admin/utilisateurs-manager(pageNo=${i})}" class="page-link" th:text="${i}"></a>
                         </li>
                     </ul>
                 </nav>
             </div>
         </div>
-
     </section>
 
 </main><!-- End #main -->
@@ -82,7 +75,7 @@
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
     <div class="copyright">
-        &copy; Copyright <strong><span>Library Management System</span></strong>
+        &copy; Copyright <strong><span>User Management System</span></strong>
     </div>
 </footer><!-- End Footer -->
 

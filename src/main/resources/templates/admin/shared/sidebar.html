@@ -16,6 +16,16 @@
                 <li><a href="/admin/livres/add">Ajouter un Livre</a></li>
             </ul>
         </li>
+<!--        categorie-->
+        <li class="nav-item">
+            <a class="nav-link" data-bs-target="#categories-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-book"></i><span>Categories</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="categories-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li><a href="/admin/categories">Liste des Categories</a></li>
+                <li><a href="/admin/categorie/add">Ajouter une Categorie</a></li>
+            </ul>
+        </li>
         <li class="nav-item">
             <a class="nav-link" data-bs-target="#auteurs-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-pen"></i><span>Auteurs</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -35,12 +45,22 @@
                 <li><a href="/admin/emprunt/add">Emprunter une livre</a></li>
             </ul>
         </li>
+<!--        utilisateurs-->
+        <li class="nav-item">
+            <a class="nav-link" data-bs-target="#utilisateurs-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-person"></i><span>Utilisateurs</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="utilisateurs-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li><a href="/admin/utilisateurs-manager">Liste des Utilisateurs</a></li>
+                <li><a href="/admin/utilisateur/add">Ajouter un Utilisateur</a></li>
+            </ul>
+        </li>
         <li class="nav-item">
             <a class="nav-link" data-bs-target="#reglement-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-cash-coin"></i><span>Reglement</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="reglement-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                <li><a href="/admin/emprunts">Gestion de reglements</a></li>
+                <li><a href="/admin/infos-manager">Gestion des infos - reglements</a></li>
             </ul>
         </li>
     </ul>

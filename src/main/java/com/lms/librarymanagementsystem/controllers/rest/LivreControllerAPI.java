@@ -14,18 +14,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
-@Slf4j
 @RestController
-@RequestMapping( "/api")
-public class APILivreController {
+public class LivreControllerAPI {
     @Autowired
     private LivreService livreService;
     @Autowired
     private AuteurService auteurService;
 
     // Endpoint pour récupérer tous les livres
-    @GetMapping("/livres")
+    @GetMapping("/api/livres")
     public ResponseEntity<List<Livre>> getAllLivres() {
         List<Livre> livres = livreService.getAllLivres();
         return ResponseEntity.ok(livres);
@@ -33,7 +30,7 @@ public class APILivreController {
     // Endpoint pour ajouter un nouveau livre
     //test message
     // Endpoint pour ajouter un nouveau livre
-    @PostMapping("/v1/livre")
+    @PostMapping("/api/livre")
     public ResponseEntity<String> saveLivre(@RequestBody RequestLivre requestLivre) {
         Livre nouveauLivre = new Livre();
         nouveauLivre.setTitre(requestLivre.getTitre());
@@ -53,14 +50,10 @@ public class APILivreController {
         Livre savedLivre = livreService.saveLivre(nouveauLivre);
         return new ResponseEntity<>("Livre ajouté avec succès \n" + savedLivre, HttpStatus.CREATED);
     }
-    @PostMapping("/livre")
-    public ResponseEntity<Livre> saveLivre(@RequestBody Livre livre) {
-        Livre savedLivre = livreService.saveLivre(livre);
-        return new ResponseEntity<>(savedLivre, HttpStatus.CREATED);
-    }
+
 
     //test message
-    @PutMapping("/livre/{id}")
+    @PutMapping("/api/livre/{id}")
     public ResponseEntity<String> updateLivre() {
         return  new ResponseEntity<>("Livre modifié avec succès", HttpStatus.OK);
     }
@@ -68,7 +61,7 @@ public class APILivreController {
 
 
     // Endpoint pour récupérer un livre par son ID
-    @GetMapping("/livres/{id}")
+    @GetMapping("/api/livres/{id}")
     public ResponseEntity<Livre> getLivreById(@PathVariable("id") Long id) {
         Livre livre = livreService.getLivreById(id);
         if (livre == null) {
@@ -76,10 +69,8 @@ public class APILivreController {
         }
         return ResponseEntity.ok(livre);
     }
-
-
     // Endpoint pour mettre à jour un livre existant
-    @PutMapping("/{id}")
+    @PutMapping("/api/{id}")
     public ResponseEntity<Livre> updateLivre(@PathVariable("id") Long id, @RequestBody Livre livre) {
         Livre existingLivre = livreService.getLivreById(id);
         if (existingLivre == null) {
@@ -89,9 +80,8 @@ public class APILivreController {
         Livre updatedLivre = livreService.saveLivre(livre);
         return ResponseEntity.ok(updatedLivre);
     }
-
     // Endpoint pour supprimer un livre
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/{id}")
     public ResponseEntity<Void> deleteLivre(@PathVariable("id") Long id) {
         Livre existingLivre = livreService.getLivreById(id);
         if (existingLivre == null) {

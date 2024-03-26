@@ -36,7 +36,6 @@ public class Categorie {
             cascade ={
                     CascadeType.PERSIST,
                     CascadeType.MERGE
-
             }
     )
     private List<Livre> livres = new ArrayList<>();

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
-public class APIHomeController {
+public class HomeControllerAPI {
     @GetMapping("")
     public String home() {
         return new String ("Welcome to the Library Management System API!");

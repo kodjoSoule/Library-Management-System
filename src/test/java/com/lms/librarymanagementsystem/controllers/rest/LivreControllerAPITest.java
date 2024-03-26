@@ -18,9 +18,9 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-@WebMvcTest(APILivreController.class)
+@WebMvcTest(LivreControllerAPI.class)
 @AutoConfigureMockMvc
-class APILivreControllerTest {
+class LivreControllerAPITest {
         @Autowired
         private MockMvc mockMvc;
 

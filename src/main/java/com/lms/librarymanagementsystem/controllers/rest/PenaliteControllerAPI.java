@@ -5,6 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/penalites")
-public class APIPenaliteController {
+public class PenaliteControllerAPI {
     // Ajoutez les méthodes pour les opérations sur les pénalités
 }
