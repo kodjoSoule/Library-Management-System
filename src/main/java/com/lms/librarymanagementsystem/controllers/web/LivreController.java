@@ -54,34 +54,11 @@ public class LivreController {
         return "livres/listes";
     }
 
-//    @GetMapping("/admin/livres")
-//    public String getPaginatedLivresAdmin(
-//            @RequestParam("pageNo") Optional<Integer> page,
-//            @RequestParam("pageSize") Optional<Integer> size,
-//            Model model
-//    ) {
-//        int currentPage = page.orElse(1);
-//        int pageSize = size.orElse(5);
-//        Pageable pageable = PageRequest.of(currentPage - 1, pageSize) ;
-//        Page<Livre> livrePage = livreService.findPaginated(pageable);
-//        if (currentPage >= livrePage.getTotalPages()) {
-//            currentPage = 1;
-//            pageable = PageRequest.of(currentPage - 1, pageSize) ;
-//            livrePage = livreService.findPaginated(pageable);
-//
-//        }
-//        int totalPages = livrePage.getTotalPages();
-//        List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
-//        model.addAttribute("currentPage", currentPage);
-//        model.addAttribute("totalPages", livrePage.getTotalPages());
-//        model.addAttribute("pageSize", livrePage.getTotalElements());
-//        model.addAttribute("livres", livrePage);
-//        return "admin/livres-manager";
-//    }
+
 @GetMapping("/admin/livres")
 public String getPaginatedLivresAdmin(
         @RequestParam(name = "pageNo", defaultValue = "1") int pageNo,
-        @RequestParam(name = "pageSize", defaultValue = "25") int pageSize,
+        @RequestParam(name = "pageSize", defaultValue = "15") int pageSize,
         Model model
 ) {
     // Pour s'assurer que la valeur de pageNo est au moins égale à 1
@@ -125,20 +102,21 @@ public String getPaginatedLivresAdmin(
         return "admin/livre-form-update";
     }
     @GetMapping("/admin/livre/{id}/delete")
-    public String supprimerLivreAdmin(@PathVariable("id") Long id) {
-        livreService.supprimerLivre(id);
-        return "confirmation";
+    public String supprimerLivreAdmin(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            livreService.supprimerLivre(id);
+            redirectAttributes.addFlashAttribute("success", "Livre supprimé avec succès !");
+        }catch (Exception e){
+            redirectAttributes.addFlashAttribute("error", "Erreur lors de la suppression du livre. Veuillez réessayer.");
+            return "redirect:/admin/livres";
+        }
+        return "redirect:/admin/livres";
     }
     @DeleteMapping("/admin/livre/{id}/delete")
     public String deleteLivreAdmin(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         livreService.supprimerLivre(id);
         redirectAttributes.addFlashAttribute("success", "Livre supprimé avec succès !");
         return "redirect:/admin/livre-form-confirmation";
-    }
-    @PostMapping("/admin/livres/{id}/update")
-    public String modifierLivreAdmin(@PathVariable("id") Long id, @ModelAttribute("livre") Livre livre) {
-        livreService.modifierLivre(id, livre);
-        return "redirect:/admin/livres";
     }
 
     // Endpoint pour obtenir les détails d'un livre selectionné
@@ -155,7 +133,6 @@ public String getPaginatedLivresAdmin(
     }
 
     //Ajouter un livre
-    @Transactional
     @GetMapping("/admin/livres/add")
     public String showAjouterLivreFormAdmin(Model model) {
         //LivreRequest
@@ -243,20 +220,8 @@ public String getPaginatedLivresAdmin(
     public String showConfirmationDeleteSuccess() {
         return "/admin/livre-delete-success";
     }
-    @GetMapping("/admin/livres/{id}/modifier")
-    public String showModifierLivreForm(@PathVariable("id") Long id, Model model) {
-        Livre livre = livreService.getLivreById(id);
-        model.addAttribute("livre", livre);
-        return "livres/modifierLivre";
-    }
 
-    @PostMapping("/admin/livres/{id}/modifier")
-    public String modifierLivre(@PathVariable("id") Long id, @ModelAttribute("livre") Livre livre) {
-        livreService.modifierLivre(id, livre);
-        return "redirect:/livres";
-    }
-
-    @GetMapping("/admin/livres/{id}/supprimer")
+    @GetMapping("/admin/livres/{id}/delete")
     public String supprimerLivre(@PathVariable("id") Long id) {
         livreService.supprimerLivre(id);
         return "redirect:/livres";
