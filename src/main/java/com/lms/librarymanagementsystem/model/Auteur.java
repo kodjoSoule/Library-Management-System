@@ -2,6 +2,7 @@ package com.lms.librarymanagementsystem.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class Auteur {
     private Long id;
     private String nom;
     private String prenom;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateNaissance;
 
     public LocalDate getDateNaissance() {
@@ -63,6 +65,10 @@ public class Auteur {
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
+
+    @JsonIgnore
+
+
 
     public List<Livre> getLivres() {
         return livres;

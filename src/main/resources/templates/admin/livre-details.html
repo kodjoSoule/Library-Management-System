@@ -32,8 +32,8 @@
 <!--                <img src="https://img.freepik.com/vecteurs-libre/livre-ouvert-blanc_1308-22968.jpg?w=996&t=st=1711155872~exp=1711156472~hmac=3b67d7ca5601794082694a725e8e3825d4cb21c2421fc05298352405d8cd4c37" alt="Book Cover" style="max-width: 100%; height: auto;">-->
 <!--            </div>-->
             <div th:if="${livre.getImage() != null}" class="col-md-4">
-                <img th:src="@{/images/{filename}(filename=${livre.getImage().getName()})}"
-                     alt="Book Cover" style="max-width: 100%; height: auto;">
+                <img th:src="@{/images/download/{filename}(filename=${livre.getImage().getName()})}"
+                     alt="Livre Couverture" style="max-width: 100%; height: auto;">
             </div>
             <div class="col-md-8">
                 <div class="card" th:if="${livre}">

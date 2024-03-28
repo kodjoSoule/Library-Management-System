@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error 404 - Page Not Found</title>
+    <title>Erreur 404 - Page non trouvée</title>
     <!-- Inclure les liens vers les fichiers CSS de Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
@@ -13,24 +13,59 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
+            background-color: #f8f9fa; /* Couleur de fond */
         }
 
         .error-container {
             text-align: center;
+            background-color: #ffffff; /* Couleur de l'arrière-plan du conteneur */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); /* Ombre légère */
+        }
+
+        .error-container img {
+            max-width: 200px; /* Taille maximale de l'image */
+            margin-bottom: 20px; /* Marge en bas de l'image */
+        }
+
+        .error-container h1 {
+            color: #dc3545; /* Couleur du titre */
+        }
+
+        .error-container p {
+            color: #6c757d; /* Couleur du texte */
+        }
+
+        .error-container a {
+            color: #ffffff; /* Couleur du texte du lien */
+        }
+
+        .error-container a:hover {
+            color: #ffffff; /* Couleur du texte du lien au survol */
+            text-decoration: none; /* Supprimer la soulignement au survol */
+        }
+
+        .btn-primary {
+            background-color: #007bff; /* Couleur de fond du bouton */
+            border-color: #007bff; /* Couleur de la bordure du bouton */
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Couleur de fond du bouton au survol */
+            border-color: #0056b3; /* Couleur de la bordure du bouton au survol */
         }
     </style>
 </head>
 <body>
 <div class="error-container">
-    <img src="https://example.com/your-logo.png" alt="Your Logo" class="img-fluid" style="max-width: 150px;">
-    <h1 class="display-4">Error 404 - Page Not Found</h1>
-    <p class="lead">Sorry, the page you are looking for might be in another castle.</p>
-    <a href="/" class="btn btn-primary">Go to Home</a>
+    <img th:src="@{/logo.png}" alt="Votre Logo" class="img-fluid">
+    <h1 class="display-4">Erreur 404 - Page non trouvée</h1>
+    <p class="lead">Désolé, la page que vous recherchez est introuvable.</p>
+    <a href="/" class="btn btn-primary">Retourner à la page d'accueil</a>
 </div>
 
 <!-- Inclure les scripts de Bootstrap et jQuery -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEX2EBuwj6/6pD6L2L6UqDIWr/X+OrPCEQoL9" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-</body>
-</html>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin

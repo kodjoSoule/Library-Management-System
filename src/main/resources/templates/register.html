@@ -13,13 +13,18 @@
                 <h1 class="h4 mb-4 text-center">
                     Créer un compte
                 </h1>
+                <!-- Bloc pour afficher les erreurs de connexion -->
+                <div th:if="${param.error}" class="alert alert-danger">
+                    Identifiant ou mot de passe incorrect.
+                </div>
+
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="fullName" placeholder="Nom complet">
                     <label for="fullName">Nom complet</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="email" placeholder="Adresse e-mail">
-                    <label for="email">Adresse e-mail</label>
+                    <input type="username" class="form-control" id="username" placeholder="Nom utilisateur">
+                    <label for="username">Nom Utilisateur</label>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="password" class="form-control" id="password" placeholder="Mot de passe">

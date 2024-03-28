@@ -15,9 +15,23 @@ public class Utilisateur {
     private Long id;
 
     private String username;
-
+    private String firstName;
+    private String lastName;
     private String email;
     private String password;
     private String role;
     private boolean enabled;
+
+    public Utilisateur(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public Utilisateur() {
+
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

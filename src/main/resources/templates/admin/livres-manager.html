@@ -21,12 +21,22 @@
     </div><!-- End Page Title -->
 
     <section class="section">
+        <div th:if="${success != null}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong th:text="${success}"></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong th:text="${error}"></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         <div class="row">
             <div class="col">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Liste des Livres </h5>
-                        <a href="/admin/livres/add" class="btn btn-primary mb-3">Ajouter un Livre</a>
+                        <a href="/admin/livres/add" class="btn btn-primary mb-3">
+                            <i class="bi bi-plus me-2"></i>
+                            Ajouter un Livre</a>
                         <table class="table table-striped">
                             <thead>
                             <tr>

@@ -13,7 +13,7 @@ public class ImageControllerAPI {
     @Autowired
     private ImageService imageService;
     @PostMapping("/api/images/upload")
-    public ResponseEntity<String> uploadImage(@RequestBody ImageData imageData, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
             ImageData result = imageService.uploadImage(file);
             if(result != null){

@@ -40,10 +40,13 @@ public class CategorieController {
         return "/admin/categorie-form-new";
     }
     @PostMapping("/admin/categorie/add")
-    public String createcategorie(@ModelAttribute Categorie categorie, Model model, RedirectAttributes redirectAttributes) {
-        // Ajoutez le code pour enregistrer la catégorie
-        redirectAttributes.addFlashAttribute("message", "La catégorie a été ajoutée avec succès");
-        categorieService.saveCategorie(categorie);
+    public String createcategorie(@ModelAttribute Categorie categorie, RedirectAttributes redirectAttributes) {
+        try {
+            categorieService.saveCategorie(categorie);
+            redirectAttributes.addFlashAttribute("success", "La catégorie a été ajoutée avec succès");
+        }catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "La catégorie n'a pas pu être ajoutée");
+        }
         return "redirect:/admin/categories";
     }
     @GetMapping("/admin/categorie/{id}/update")
@@ -57,9 +60,13 @@ public class CategorieController {
     }
     @PostMapping("/admin/categorie/{id}/update")
     public String updatecategorie(@PathVariable Long id, @ModelAttribute Categorie categorie, RedirectAttributes redirectAttributes) {
-        categorie.setId(id);
-        categorieService.saveCategorie(categorie);
-        redirectAttributes.addFlashAttribute("message", "La catégorie a été modifiée avec succès");
+        try{
+            categorie.setId(id);
+            categorieService.saveCategorie(categorie);
+            redirectAttributes.addFlashAttribute("success", "La catégorie a été modifiée avec succès");
+        }catch (Exception e){
+            redirectAttributes.addFlashAttribute("error", "La catégorie n'a pas pu être modifiée");
+        }
         return "redirect:/admin/categories";
     }
     @PostMapping("/admin/categorie/update")
@@ -77,7 +84,7 @@ public class CategorieController {
     public String deletecategorie(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             categorieService.deleteCategorie(id);
-            redirectAttributes.addFlashAttribute("message", "La catégorie a été supprimée avec succès");
+            redirectAttributes.addFlashAttribute("success", "La catégorie a été supprimée avec succès");
         }catch (Exception e){
             redirectAttributes.addFlashAttribute("error", "La catégorie n'a pas pu être supprimée");
         }

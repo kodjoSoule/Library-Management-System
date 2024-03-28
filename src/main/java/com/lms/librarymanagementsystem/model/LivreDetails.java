@@ -1,10 +1,20 @@
 package com.lms.librarymanagementsystem.model;
 
+import com.lms.librarymanagementsystem.service.LivreService;
+import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
+@Data
 public class LivreDetails {
+    private Livre livre;
+    private Admin admin;
+    private Auteur auteurLivre;
+    private ImageData imageData;
+    private Categorie categorieLivre;
+
+    private int livreId ;
     private String isbn;
     private String titre;
     private String description;
@@ -145,4 +155,11 @@ public class LivreDetails {
     }
 
 
+    public void setLivre(Livre livre) {
+
+    }
+
+    public void setLivreId(Long id) {
+
+    }
 }

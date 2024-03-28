@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="admin/shared/head ::head">
+    <title>Library Management</title>
+</head>
+<body>
+<div th:replace="/admin/shared/header::header"></div>
+<div th:replace="/admin/shared/sidebar::sidebar"></div>
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>empruntDetail Details</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item">Emprunts</li>
+                <li class="breadcrumb-item active">Emprunt Details</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <section class="section">
+        <div class="row">
+            <div class="col">
+                <a href="/admin/emprunts" class="btn btn-primary mb-3">
+                    <i class="bi bi-arrow-left"></i>
+                    Retour
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Emprunt Details</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="book" class="form-label">Book</label>
+                                <p id="book" th:text="${emprunt.titreLivre}"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="user" class="form-label">User</label>
+                                <p id="user" th:text="${emprunt.nomAdherent} + ' ' + ${emprunt.prenomAdherent}"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="EmpruntDate" class="form-label">Emprunt Date</label>
+                                <p id="EmpruntDate" th:text="${emprunt.dateEmprunt}"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="returnDate" class="form-label">Expected Return Date</label>
+                                <p id="returnDate" th:text="${emprunt.dateRetourPrevue}"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="actualReturnDate" class="form-label">Actual Return Date</label>
+                                <p id="actualReturnDate" th:text="${emprunt.dateRetourEffectif}"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="returned" class="form-label">Returned</label>
+                                <p id="returned" th:text="${emprunt.retourne ? 'Yes' : 'No'}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <a href="#" class="btn btn-danger btn-sm">
+                    <i class="bi bi-trash"></i>
+                    Supprimer
+                </a>
+                <a href="#" class="btn btn-warning btn-sm">
+                    <i class="bi bi-pencil"></i>
+                    Modifier
+                </a>
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy; Copyright <strong><span>Library Management System</span></strong>
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+
+</body>
+
+</html>

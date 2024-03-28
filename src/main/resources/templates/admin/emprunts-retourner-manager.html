@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="admin/shared/head ::head">
+    <title>Library Management</title>
+</head>
+<body>
+<div th:replace="/admin/shared/header::header"></div>
+<div th:replace="/admin/shared/sidebar::sidebar"></div>
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Liste des Emprunts</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item">Livres</li>
+                <li class="breadcrumb-item active">Listes des Retour Emprunts</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col">
+                <div th:if="${success != null}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong th:text="${success}"></strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong th:text="${error}"></strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Liste des Emprunts Retourne</h5>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Livre</th>
+                                <th>Adhérent</th>
+                                <th>Emprunté le</th>
+                                <th>Retour Effectif</th>
+                                <th>Statut</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- Insérer les données de la liste des emprunts ici -->
+                            <tr>
+                                <td>Exemplaire 1</td>
+                                <td>Adhérent 1</td>
+                                <td>2021-10-01</td>
+                                <td>2021-10-15</td>
+                                <td>Retourné</td>
+                                <th>
+                                    <a href="#" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-backpack"></i>
+                                        Retourner
+                                    </a>
+                                    <a href="/admin/emprunt/1" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-eye"></i>
+                                        Afficher
+                                    </a>
+                                </th>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main><!-- End #main -->
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy; Copyright <strong><span>Library Management System</span></strong>
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+
+</body>
+
+</html>

@@ -30,6 +30,7 @@ public class HomeController {
         model.addAttribute("infos", infosService.getFirstInfos());
         return "/reglements/reglements";
     }
+    //page not found for error routes
 
     @GetMapping("/admin/infos-manager")
     public String infos(Model model) {

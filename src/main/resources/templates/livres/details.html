@@ -17,7 +17,8 @@
     <div class="row" th:if="${livre != null}">
         <div class="col-md-4">
             <div class="card">
-                <img src="https://ultimatecourses.com/assets/ebooks/nestjs-restful-crud-api-727998c7f01f9e59731d6f4d0b4d5a85425a297e3b873ee8299e5e7bb8acaafd.png" class="card-img-top" alt="Image du Livre">
+                <img th:src="@{/images/download/{filename}(filename=${livre.getImage().getName()})}"
+                     alt="Livre Couverture" style="max-width: 100%; height: auto;">
                 <div class="card-body text-center">
                     <h5 class="card-title">Disponibilité</h5>
                     <p th:if="${livre.estDisponible()}"><i class="bi bi-check-circle-fill text-success"></i> Disponible</p>

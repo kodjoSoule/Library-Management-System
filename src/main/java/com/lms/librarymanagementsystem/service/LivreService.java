@@ -77,4 +77,8 @@ public class LivreService {
         addExemplaireParNombre(livre, 1);
         saveLivre(livre);
     }
+
+    public boolean existsById(long livreId) {
+        return livreRepository.existsById(livreId);
+    }
 }

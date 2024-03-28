@@ -7,10 +7,15 @@
 //
 //@Controller
 //public class CustomErrorConfig implements ErrorController {
-//
 //    @RequestMapping("/error")
 //    public String handleError() {
 //        // Affiche le template d'erreur personnalisé
 //        return "error-404";
+//    }
+//    //exclus  routes begin by /api
+//    @RequestMapping("/api/error")
+//    public ResponseEntity<String> handleErrorApi() {
+//        // Affiche le template d'erreur personnalisé
+//        return ResponseEntity.notFound().build();
 //    }
 //}

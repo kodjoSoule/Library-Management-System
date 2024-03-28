@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,26 +31,53 @@ public class AuteurController {
         model.addAttribute("totalPages", auteurPage.getTotalPages());
         return "/admin/auteurs-manager";
     }
-    @GetMapping("/admin/auteurs-manager/add")
+    @GetMapping("/admin/auteur/add")
     public String add(Model model) {
-        // Avant de charger les données
         Auteur a = new Auteur();
         model.addAttribute("auteur", a);
-        // Une fois les données chargées
-
         return "/admin/auteur-form-new";
     }
-    @PostMapping("/admin/auteurs-manager/add")
-    public String addAuteur(@ModelAttribute("auteur") Auteur auteur){
 
-        auteurService.saveAuteur(auteur);
-        return "redirect:/admin/auteurs-manager";
+    @PostMapping("/admin/auteur/add")//OK
+    public String addAuteur(@ModelAttribute("auteur") Auteur auteur, RedirectAttributes redirectAttributes){
+        try{
+            auteurService.saveAuteur(auteur);
+            redirectAttributes.addFlashAttribute("success", "Auteur ajouté avec succès");
+
+        }catch (Exception e){
+            redirectAttributes.addFlashAttribute("error", "Erreur lors de l'ajout de l'auteur");
+        }
+        return "redirect:/admin/auteurs";
     }
-    @GetMapping("/admin/auteurs-manager/delete/{id}")
-    public String delete(@PathVariable Long id) {
-        auteurService.deleteAuteur(id);
-        return "redirect:/admin/auteurs-manager";
+    @GetMapping("/admin/auteur/{id}/delete")//ok
+    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try{
+            auteurService.deleteAuteur(id);
+            redirectAttributes.addFlashAttribute("success", "Auteur supprimé avec succès");
+        }catch (Exception e){
+            redirectAttributes.addFlashAttribute("error", "Erreur lors de la suppression de l'auteur");
+        }
+        return "redirect:/admin/auteurs";
     }
+    @GetMapping("/admin/auteur/{id}/update")//ok
+    public String update(@PathVariable int id, Model model) {
+        Auteur auteur = auteurService.getAuteurById(id);
+        model.addAttribute("auteur", auteur);
+
+        return "/admin/auteur-form-update";
+    }
+    @PostMapping("/admin/auteur/update")//ok
+    public String updateAuteur(@ModelAttribute("auteur") Auteur auteur, RedirectAttributes redirectAttributes){
+        try{
+            auteurService.saveAuteur(auteur);
+            redirectAttributes.addFlashAttribute("success", "Auteur modifié avec succès");
+
+        }catch (Exception e){
+            redirectAttributes.addFlashAttribute("error", "Erreur lors de la modification de l'auteur");
+        }
+        return "redirect:/admin/auteurs";
+    }
+
     @RequestMapping("/admin/auteurs-manager/edit")
     public String edit() {
         return "admin/auteurs-manager";
@@ -61,6 +89,12 @@ public class AuteurController {
             model.addAttribute("auteurId", auteurId);
         }
         return "admin/auteur-confirm-delete";
+    }
+    @GetMapping("/admin/auteur/{id}")
+    public String show(@PathVariable int id, Model model) {
+        Auteur auteur = auteurService.getAuteurById(id);
+        model.addAttribute("auteur", auteur);
+        return "/admin/auteur-show";
     }
 
     @RequestMapping("/show")

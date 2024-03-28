@@ -22,18 +22,30 @@
     <section class="section">
         <div class="row">
             <div class="col">
+                <div th:if="${success != null}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong th:text="${success}"></strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong th:text="${error}"></strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Liste des Emprunts</h5>
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th>Exemplaire</th>
+                                <th>Livre</th>
                                 <th>Adhérent</th>
                                 <th>Emprunté le</th>
-                                <th>Date de Retour Prévue</th>
-                                <th>Date de Retour Effectif</th>
+                                <th>Retour Effectif</th>
                                 <th>Statut</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -43,8 +55,17 @@
                                 <td>Adhérent 1</td>
                                 <td>2021-10-01</td>
                                 <td>2021-10-15</td>
-                                <td>2021-10-15</td>
                                 <td>Retourné</td>
+                                <th>
+                                    <a href="#" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-backpack"></i>
+                                        Retourner
+                                    </a>
+                                    <a href="/admin/emprunt/1" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-eye"></i>
+                                        Afficher
+                                    </a>
+                                </th>
                             </tr>
 
                             </tbody>

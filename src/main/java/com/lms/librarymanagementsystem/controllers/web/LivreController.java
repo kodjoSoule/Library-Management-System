@@ -34,24 +34,30 @@ public class LivreController {
     @Autowired
     ImageService imageService;
 
-    //liste des livres
-    // Endpoint pour obtenir une liste paginée de livres
     @GetMapping("/livres")
     public String getPaginatedLivres(
-            @RequestParam("pageNo") Optional<Integer> page,
-            @RequestParam("pageSize") Optional<Integer> size,
-            Model model
-    ) {
+            Model model, @RequestParam("pageNo") Optional<Integer> page,
+            @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);
-        int pageSize = size.orElse(5);
+        int pageSize = size.orElse(12);
         Page<Livre> livrePage = livreService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", livrePage.getTotalPages());
         model.addAttribute("pageSize", livrePage.getTotalElements());
         model.addAttribute("livres", livrePage);
-
         //model.addAttribute("imageBase64", convertToBase64(livrePage.getImage().getImageData()));
         return "livres/listes";
+    }
+    @GetMapping("/livre/{id}")
+    public String getLivreDetailsUser(
+            @PathVariable("id") Long id,
+            Model model
+    ) {
+        Livre livre = livreService.getLivreById(id);
+        Auteur auteur = livre.getAuteur();
+        model.addAttribute("auteur", auteur.getNom()+ " " + auteur.getPrenom());
+        model.addAttribute("livre", livre);
+        return "livres/details";
     }
 
 
@@ -89,13 +95,23 @@ public String getPaginatedLivresAdmin(
     model.addAttribute("totalPages", totalPages);
     model.addAttribute("pageSize", livrePage.getTotalElements());
     model.addAttribute("livres", livrePage.getContent());
-
     return "admin/livres-manager";
 }
-
-    @GetMapping("/admin/livre/{id}/update")
+ @GetMapping("/admin/livre/{id}/update")
     public String showModifierLivreFormAdmin(@PathVariable("id") Long id, Model model) {
+        Livre livre = livreService.getLivreById(id);
         LivreDetails livreDetails = new LivreDetails();
+        livreDetails.setLivreId(livre.getId());
+        livreDetails.setIsbn(livre.getIsbn());
+        livreDetails.setTitre(livre.getTitre());
+        livreDetails.setDescription(livre.getDescription());
+        livreDetails.setNbPages(livre.getNbPages());
+        livreDetails.setDatePublication(livre.getDatePublication());
+        livreDetails.setEditeur(livre.getEditeur());
+        livreDetails.setLangue(livre.getLangue());
+        livreDetails.setCategorie(String.valueOf(livre.getCategorie().getId()));
+        livreDetails.setAuteur(String.valueOf(livre.getAuteur().getId()));
+        livreDetails.setLivre(livre);
         model.addAttribute("livreRequest", livreDetails);
         model.addAttribute("categories", categorieService.getAllCategories());
         model.addAttribute("auteurs", auteurService.getAllAuteurs() );
@@ -226,4 +242,5 @@ public String getPaginatedLivresAdmin(
         livreService.supprimerLivre(id);
         return "redirect:/livres";
     }
+
 }

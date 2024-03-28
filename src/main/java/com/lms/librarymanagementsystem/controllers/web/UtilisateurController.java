@@ -28,7 +28,6 @@ public class UtilisateurController {
                             @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
-
         List<Utilisateur> users = new ArrayList<>();
         //create 10 utilisateur objects
         for (int i = 0; i < 10; i++) {
@@ -41,7 +40,6 @@ public class UtilisateurController {
             user.setEnabled(true);
             users.add(user);
         }
-
         Page<Utilisateur> utilisateursPage = utilisateurService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", utilisateursPage.getTotalPages());

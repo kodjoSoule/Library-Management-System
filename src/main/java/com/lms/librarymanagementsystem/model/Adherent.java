@@ -3,7 +3,7 @@ package com.lms.librarymanagementsystem.model;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Adherent extends User{
+public class Adherent extends Utilisateur{
     public Adherent() {
         super();
     }

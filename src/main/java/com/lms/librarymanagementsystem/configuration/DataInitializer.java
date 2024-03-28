@@ -2,16 +2,12 @@ package com.lms.librarymanagementsystem.configuration;
 
 import com.lms.librarymanagementsystem.model.*;
 import com.lms.librarymanagementsystem.repository.LivreRepository;
-import com.lms.librarymanagementsystem.repository.UserRepository;
 import com.lms.librarymanagementsystem.service.*;
 import jakarta.transaction.Transactional;
-import org.apache.catalina.Server;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -21,9 +17,10 @@ import java.util.List;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
+
+
     @Autowired
     private Environment env;
-
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(DataInitializer.class);
     @Autowired
     private  LivreService livreService;
@@ -45,14 +42,27 @@ public class DataInitializer implements CommandLineRunner {
     ExamplaireService examplaireService;
     @Autowired
     InfosService infosService;
+    @Autowired
+    UtilisateurService utilisateurService;
 
-    public DataInitializer(LivreRepository livreRepository, UserRepository dbUserRepository) {
-    }
     //Create function to return file image  from C:\Users\Kodjo\lmages\profile.jpg
     public File getImageFromSystem(){
         String path = "C:\\Users\\Kodjo\\lmages\\profile.jpg";
         File file = new File(path);
         return file;
+    }
+    public  void createUtilisateurs(){
+        for (int i = 0; i < 10; i++) {
+            Utilisateur user = new Utilisateur();
+            user.setUsername("user" + i);
+            user.setEmail("user" + i + "@example.com");
+            user.setFirstName("User" + i);
+            user.setLastName("Test");
+            user.setPassword("password" + i);
+            user.setRole("ROLE_USER");
+            user.setEnabled(true);
+            utilisateurService.saveUser(user);
+        }
     }
     public void createLivreTest(){
         // Création d'une catégorie
@@ -95,7 +105,7 @@ public class DataInitializer implements CommandLineRunner {
             livre.setAddedBy(soule); // Utilisateur qui ajoute le livre
             // Création d'une image pour le livre
             ImageData imageData = new ImageData();
-            imageData.setName( (i + 1) + ".png");
+            imageData.setName( "no_cover.jpg");
             imageData.setType("image/png");
             imageData.setFilePath("images/" + imageData.getName());
             //imageService.saveImage(imageData);
@@ -115,6 +125,10 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        //default user
+        //userService.createDefaultUser(new User(null, "admin", "admin", passwordEncoder().encode("password"), new ArrayList<>(Collections.singletonList("ROLE_ADMIN"))));
+
+        createUtilisateurs();
         //infos
         Infos infos = new Infos();
         infos.setHeuresOuverture("Lundi - Vendredi: 8h - 18h, Samedi: 9h - 17h, Dimanche: Fermé");
@@ -169,9 +183,9 @@ public class DataInitializer implements CommandLineRunner {
         sousOrange.setDatePublication(
                 LocalDate.of(2002, 12, 12)
         );
-        ImageData sousOrangeImage = new ImageData();
-        sousOrangeImage.setName("sous-orange.jpg");
-        sousOrange.setImage(sousOrangeImage);
+        ImageData coverImage = new ImageData();
+        coverImage.setName("no_cover.png");
+        sousOrange.setImage(coverImage);
         sousOrange.setCategorie(scienceFictionCategory);
         //sousOrange.setExemplaires(List.of(exemplaire1, exemplaire2));
         //sousOrange.addExemplaireParNombre(10);
@@ -181,8 +195,8 @@ public class DataInitializer implements CommandLineRunner {
         log.info("Livre créé avec succès");
         //5 creation d'un adherent
         Adherent adherent = new Adherent();
-        adherent.setNom("Coulibaly");
-        adherent.setPrenom("Mamadou");
+        adherent.setLastName("Coulibaly");
+        adherent.setFirstName("Mamadou");
         adherent.setUsername("mamadou");
         adherent.setPassword("mamadou");
         adherentService.saveAdherent(adherent);
@@ -242,7 +256,7 @@ public class DataInitializer implements CommandLineRunner {
             //liste des adhérents
             List<Adherent> adherents = adherentService.getAllAdherants();
             for (Adherent adherent1 : adherents) {
-                log.info("Adhérent : " + adherent1.getNom() + " " + adherent1.getPrenom());
+                log.info("Adhérent : " + adherent1.getFullName());
                 //liste des emprunts
                 List<Emprunt> emprunts = empruntService.getEmpruntsByAdherent(adherent1);
                 if (emprunts.isEmpty()) {

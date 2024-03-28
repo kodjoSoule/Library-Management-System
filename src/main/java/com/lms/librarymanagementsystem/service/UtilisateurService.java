@@ -68,4 +68,8 @@ public class UtilisateurService implements UserDetailsService {
         return utilisateurRepository.findAll(Pageable);
 
     }
+
+    public boolean existsById(long userId) {
+        return utilisateurRepository.existsById(userId);
+    }
 }

@@ -30,10 +30,10 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Mise a jour du Livre</h5>
-                        <form method="POST" th:action="@{/admin/livres/add}"  class="row g-3" th:object="${livreRequest}">
+                        <form method="POST" th:action="@{/admin/livre/update}"  class="row g-3" th:object="${livreRequest}">
                             <div class="col-md-6 mb-3">
                                 <label for="isbn" class="form-label">ISBN</label>
-                                <input type="text" class="form-control" id="isbn" name="isbn" required th:field="*{isbn}">
+                                <input type="text" class="form-control" id="isbn" name="isbn" required th:field="*{isbn}"  />
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="titre" class="form-label">Titre</label>
@@ -95,14 +95,12 @@
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Sélection de la catégorie -->
                             <div class="col-md-6 mb-3">
                                 <div class="row">
                                     <div class="col">
                                         <label for="categorie" class="form-label">Catégorie</label>
                                         <select class="form-select" id="categorie" name="categorie"
-
                                         >
                                             <option value="">Sélectionner une catégorie...</option>
                                             <!-- Afficher les catégories existantes -->

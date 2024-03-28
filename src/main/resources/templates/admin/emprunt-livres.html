@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="admin/shared/head ::head">
+    <title>Library Management</title>
+</head>
+<body>
+<div th:replace="/admin/shared/header::header"></div>
+<div th:replace="/admin/shared/sidebar::sidebar"></div>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Emprunter un livre</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item">Emprunts</li>
+                <li class="breadcrumb-item active">Emrpunter un livre</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div th:if="${success != null}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong th:text="${success}"></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong th:text="${error}"></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="stepper-wrapper">
+                    <div class="stepper-item ">
+                        <div class="step-counter">1</div>
+                        <div class="step-name">Selectionner un livre</div>
+                    </div>
+                    <div class="stepper-item">
+                        <div class="step-counter">2</div>
+                        <div class="step-name">Selectionner un utilisateur</div>
+                    </div>
+                    <div class="stepper-item active">
+                        <div class="step-counter">3</div>
+                        <div class="step-name">Confirmation</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Selectionner un livre
+                        </h5>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Auteur</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody th:if="${livres.isEmpty()}">
+                            <tr>
+                                <td colspan="3">Aucun livre en base de données</td>
+                            </tr>
+                            </tbody>
+                            <tbody th:unless="${livres.isEmpty()}">
+                            <tr th:each="livre : ${livres}">
+                                <td th:text="${livre.getTitre()}"></td>
+                                <td th:text="${livre.getAuteur().getNomComplet()}"></td>
+                                <td>
+                                    <a th:href="@{/admin/emprunt/users(livreId=${livre.id})}" class="btn btn-success"><i class="bi bi-book-half"></i> Emprunter</a>
+                                </td>
+                            </tr>
+
+                            </tbody>
+
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--        pagination &ndash;&gt;-->
+        <div class="row">
+            <div class="col-4 mx-auto">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination ">
+                        <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
+                            <a th:href="@{/admin/emprunt/livres(pageNo=${i})}" class="page-link" th:text="${i}"></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </section>
+
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy; Copyright <strong><span>Library Management System</span></strong>
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+
+</body>
+
+</html>

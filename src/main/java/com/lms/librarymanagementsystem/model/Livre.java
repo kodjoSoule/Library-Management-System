@@ -140,4 +140,13 @@ public class Livre {
     public void setCategorie(Categorie categorie) {
         this.categorie = categorie;
     }
+
+
+    public Auteur getAuteur() {
+        return auteur;
+    }
+
+    public void setAuteur(Auteur auteur) {
+        this.auteur = auteur;
+    }
 }

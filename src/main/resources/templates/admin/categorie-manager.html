@@ -22,8 +22,13 @@
     <section class="section">
         <div class="row">
             <div class="col">
-                <div th:if="${message}" class="alert alert-success" role="alert">
-                    <span th:text="${message}"></span>
+                <div th:if="${success != null}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong th:text="${success}"></strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong th:text="${error}"></strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>
         </div>
