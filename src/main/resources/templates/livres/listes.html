@@ -18,7 +18,7 @@
     <div th:if="${livres != null }">
         <div class="row">
             <div th:each="livre : ${livres}" class="col-3">
-                <div class=" card rounded-2 my-5 box-shadow">
+                <div class=" card  my-5 box-shadow">
                     <img th:src="@{/images/download/{filename}(filename=${livre.getImage().getName()})}"
                          class="card-img-top img-fluid" alt="Image du livre">
                     <div class="card-body">
@@ -30,7 +30,7 @@
 
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <a th:href="@{/livre/{id}(id=${livre.id})}" class="btn btn-sm btn-outline-secondary">En Savoir Plus</a>
+                                <a th:href="@{/livre/{id}(id=${livre.id})}" class="btn btn-primary">En Savoir Plus</a>
                             </div>
 
                             <div th:if="${livre.estDisponible()}">

@@ -1,6 +1,7 @@
 package com.lms.librarymanagementsystem.service;
 
 import com.lms.librarymanagementsystem.model.Adherent;
+import com.lms.librarymanagementsystem.model.Utilisateur;
 import com.lms.librarymanagementsystem.repository.AdherantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -35,5 +36,8 @@ public class AdherantService {
 
     public List<Adherent> getAllAdherants() {
         return adherentRepository.findAll();
+    }
+
+    public void saveUtilisateur(Utilisateur utilisateur) {
     }
 }

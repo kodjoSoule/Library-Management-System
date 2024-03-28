@@ -149,4 +149,9 @@ public class Livre {
     public void setAuteur(Auteur auteur) {
         this.auteur = auteur;
     }
+
+    public void descrementeNbExemplaireDisponible() {
+        //dimunier le nombre d'exemplaire disponible -1
+        this.exemplaires.remove(0);
+    }
 }

@@ -43,32 +43,28 @@
                                 <th>Livre</th>
                                 <th>Adhérent</th>
                                 <th>Emprunté le</th>
-                                <th>Retour Effectif</th>
-                                <th>Statut</th>
+                                <th>Retour Prevue</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <!-- Insérer les données de la liste des emprunts ici -->
-                            <tr>
-                                <td>Exemplaire 1</td>
-                                <td>Adhérent 1</td>
-                                <td>2021-10-01</td>
-                                <td>2021-10-15</td>
-                                <td>Retourné</td>
+                            <tbody th:if="${emprunts.size() > 0}">
+                            <tr th:each="emprunt : ${emprunts}">
+                                <td th:text="${emprunt.getExemplaire().getLivre().getTitre()}"></td>
+                                <td th:text="${emprunt.getUtilisateur().getFullName()}"></td>
+                                <td th:text="${emprunt.dateEmprunt}"></td>
+                                <td th:text="${emprunt.dateRetourPrevue}"></td>
                                 <th>
-                                    <a href="#" class="btn btn-primary btn-sm">
-                                        <i class="bi bi-backpack"></i>
+                                    <a  th:href="@{'/admin/emprunt/retour/' + ${emprunt.id}}" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-back "></i>
                                         Retourner
-                                    </a>
-                                    <a href="/admin/emprunt/1" class="btn btn-primary btn-sm">
-                                        <i class="bi bi-eye"></i>
-                                        Afficher
                                     </a>
                                 </th>
                             </tr>
-
                             </tbody>
+                            <tbody th:if="${emprunts.size() == 0}">
+                            <tr>
+                                <td colspan="5" class="text-center">Aucun emprunt en cours</td>
+                            </tr>
                         </table>
                     </div>
                 </div>

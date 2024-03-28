@@ -47,10 +47,11 @@ public class EmpruntController {
         }
         int totalPages = empruntPage.getTotalPages();
         List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+        log.info("empruntPage: {}", empruntPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", empruntPage.getTotalPages());
         model.addAttribute("pageSize", empruntPage.getTotalElements());
-        model.addAttribute("emprunts", empruntPage);
+        model.addAttribute("emprunts", empruntPage.getContent());
         return "admin/emprunt-manager";
     }
 
@@ -81,7 +82,7 @@ public class EmpruntController {
     public String getPaginatedUsers(
             @RequestParam("pageNo") Optional<Integer> page,
             @RequestParam("pageSize") Optional<Integer> size,
-            @RequestParam(value = "livreId", defaultValue = "0") int livreId,
+            @RequestParam(value = "examplaireId", defaultValue = "0") int livreId,
             Model model
     ) {
         if (livreId == 0 ) {
@@ -114,9 +115,9 @@ public class EmpruntController {
         model.addAttribute("livres", livrePage);
         return "admin/emprunt-livres";
     }
-    @PostMapping("/admin/emprunt/ajouter")
+    @PostMapping("/admin/emprunt/add")
     public String createEmprunt(@ModelAttribute("empruntDetails") EmpruntDetails empruntDetails, RedirectAttributes redirectAttributes) {
-        Emprunt emprunt = empruntDetails.getEmprunt();
+
         log.info("empruntDetails: {}", empruntDetails);
 //        emprunt.setDateRetourPrevue(emprunt.getDateEmprunt().plusDays(7));
 //        emprunt.setRetourne(false);
@@ -125,7 +126,17 @@ public class EmpruntController {
 //        emprunt.setAdherent(adherent);
 //        emprunt.setExemplaire(empruntDetails.getLivre().getExemplaires().get(0));
 
+        Emprunt emprunt = new Emprunt();
+        Utilisateur utilisateur = new Utilisateur();
+        Livre sousOrange = new Livre();
+
+        emprunt.setUtilisateur(utilisateur);
+        emprunt.setExemplaire(s);
+        emprunt.setDateEmprunt(LocalDate.now());
+        emprunt.setDateRetourPrevue(LocalDate.now().plusDays(7));
+        log.info("Emprunt1 créé avec succès");
         try{
+
             empruntService.saveEmprunt(emprunt);
             redirectAttributes.addFlashAttribute("success", "Emprunt ajouté avec succès");
 
@@ -134,41 +145,49 @@ public class EmpruntController {
         }
         return "redirect:/admin/emprunt/livres";
     }
-//    @GetMapping("/admin/emprunt/add")
-//    public String createEmpruntForm(@RequestParam("livreId") int livreId ,@RequestParam("userId") int userId ,  Model model) {
-//        if (livreId == 0 || userId == 0) {
-//            return "redirect:/admin/emprunt/livres";
-//        }
-////        if(!livreService.existsById((long) livreId) || !utilisateurService.existsById((long) userId)){
-////            return "redirect:/admin/emprunt/livres";
-////        }
-////        Livre livre = livreService.getLivreById((long) livreId);
-////        log.info("livre: {}", livre);
-////
-////        Utilisateur utilisateur = utilisateurService.getUserById((long) userId);
-////        log.info("utilisateur: {}", utilisateur);
-//        //EmpruntDetails empruntDetails = new EmpruntDetails();
-//        //model.addAttribute("empruntDetails",empruntDetails );
-//        //return "admin/emprunt-form-new";
-//        return "about";
-//    }
-
+    @GetMapping("/admin/emprunt/add")
+    public String createEmpruntForm(@RequestParam("livreId") int livreId ,@RequestParam("userId") int userId ,  Model model) {
+        if (livreId == 0 || userId == 0) {
+            return "redirect:/admin/emprunt/livres";
+        }
+        if(!livreService.existsById((long) livreId) || !utilisateurService.existsById((long) userId)){
+            return "redirect:/admin/emprunt/livres";
+        }
+        Livre livre = livreService.getLivreById((long) livreId);
+        log.info("livre: {}", livre);
+        Utilisateur utilisateur = utilisateurService.getUserById((long) userId);
+        log.info("utilisateur: {}", utilisateur);
+        EmpruntDetails empruntDetails = new EmpruntDetails();
+        empruntDetails.setLivreId(livre.getId());
+        empruntDetails.setUtilisateurId(utilisateur.getId());
+        empruntDetails.setTitreLivre(livre.getTitre());
+        empruntDetails.setIsbnLivre(livre.getIsbn());
+        empruntDetails.setAuteurLivre(livre.getAuteur().getNomComplet());
+        empruntDetails.setEditeurLivre(livre.getEditeur());
+        empruntDetails.setCategorieId(livre.getCategorie().getId());
+        empruntDetails.setNomAdherent(utilisateur.getFullName());
+        empruntDetails.setDateEmprunt(LocalDate.now());
+        empruntDetails.setDateRetourPrevue(LocalDate.now().plusDays(7));
+        empruntDetails.setRetourne(false);
+        empruntDetails.setCategorieLivre(livre.getCategorie().getNom());
+        model.addAttribute("empruntDetails",empruntDetails );
+        return "admin/emprunt-form-new";
+    }
     @GetMapping("/admin/emprunt/{id}")
     public String showEmpruntDetails(@PathVariable("id") Long id, Model model) {
         //for testing
         EmpruntDetails empruntDetails = new EmpruntDetails();
-        empruntDetails.setId(1L);
+        empruntDetails.setEmpruntId(1L);
         empruntDetails.setDateEmprunt(LocalDate.now());
         empruntDetails.setDateRetourPrevue(LocalDate.now().plusDays(7));
         empruntDetails.setRetourne(false);
-        empruntDetails.setAdmin(new Admin());
         empruntDetails.setNomAdherent("John Doe");
         empruntDetails.setPrenomAdherent("Jane Doe");
         empruntDetails.setRetourne(false);
         empruntDetails.setTitreLivre("Le seigneur des anneaux");
         empruntDetails.setAuteurLivre("J.R.R. Tolkien");
         empruntDetails.setIsbnLivre("978-2-07-061282-6");
-        empruntDetails.setCategorieLivre("Fantasy");
+
         empruntDetails.setEditeurLivre("Gallimard");
         model.addAttribute("emprunt", empruntDetails);
         return "admin/emprunt-show";

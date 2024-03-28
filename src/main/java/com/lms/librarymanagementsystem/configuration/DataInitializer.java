@@ -30,7 +30,7 @@ public class DataInitializer implements CommandLineRunner {
     private CategorieService categorieService;
 
     @Autowired
-    private AdherantService adherentService;
+    private UtilisateurService UtilisateurService;
     @Autowired
     private AdminService adminService;
 
@@ -193,13 +193,13 @@ public class DataInitializer implements CommandLineRunner {
         livreService.addExemplaireParNombre(sousOrange, 5);
         livreService.saveLivre(sousOrange);
         log.info("Livre créé avec succès");
-        //5 creation d'un adherent
-        Adherent adherent = new Adherent();
-        adherent.setLastName("Coulibaly");
-        adherent.setFirstName("Mamadou");
-        adherent.setUsername("mamadou");
-        adherent.setPassword("mamadou");
-        adherentService.saveAdherent(adherent);
+        //5 creation d'un Utilisateur
+        Utilisateur Utilisateur = new Utilisateur();
+        Utilisateur.setLastName("Coulibaly");
+        Utilisateur.setFirstName("Mamadou");
+        Utilisateur.setUsername("mamadou");
+        Utilisateur.setPassword("mamadou");
+        UtilisateurService.saveUtilisateur(Utilisateur);
         log.info("Adhérent créé avec succès");
 
         if(sousOrange.getExemplaires().isEmpty()){
@@ -207,7 +207,7 @@ public class DataInitializer implements CommandLineRunner {
         }else {
             //6 creation d'un emprunt
             Emprunt emprunt = new Emprunt();
-            emprunt.setAdherent(adherent);
+            emprunt.setUtilisateur(Utilisateur);
             Exemplaire exemplaire1 = sousOrange.getExemplaires().get(0);
             emprunt.setExemplaire(exemplaire1);
             emprunt.setDateEmprunt(LocalDate.now());
@@ -216,7 +216,7 @@ public class DataInitializer implements CommandLineRunner {
             log.info("Emprunt1 créé avec succès");
 
             Emprunt emprunt2 = new Emprunt();
-            emprunt2.setAdherent(adherent);
+            emprunt2.setUtilisateur(Utilisateur);
             Exemplaire exemplaire2 = sousOrange.getExemplaires().get(1);
             emprunt2.setExemplaire(exemplaire2);
             emprunt2.setDateEmprunt(LocalDate.now());
@@ -254,11 +254,11 @@ public class DataInitializer implements CommandLineRunner {
                 log.info("Exemplaire : " + exemplaire.getId() + ", Status : " + exemplaire.getStatus());
             }
             //liste des adhérents
-            List<Adherent> adherents = adherentService.getAllAdherants();
-            for (Adherent adherent1 : adherents) {
-                log.info("Adhérent : " + adherent1.getFullName());
+            List<Utilisateur> utilisateurs = UtilisateurService.getAllUtilisateurs();
+            for (Utilisateur utilisateur1 : utilisateurs) {
+                log.info("Adhérent : " + utilisateur1.getFullName());
                 //liste des emprunts
-                List<Emprunt> emprunts = empruntService.getEmpruntsByAdherent(adherent1);
+                List<Emprunt> emprunts = empruntService.getEmpruntsByUtilisateur(utilisateur1);
                 if (emprunts.isEmpty()) {
                     log.info("Aucun emprunt pour cet adhérent");
                 }else {
@@ -267,7 +267,7 @@ public class DataInitializer implements CommandLineRunner {
                     }
                 }
                 //liste des retours de livres de adhérent
-                List<Emprunt> retours = empruntService.getRetoursByAdherent(adherent1);
+                List<Emprunt> retours = empruntService.getRetoursByUtilisateur(utilisateur1);
                 if(retours.isEmpty()){
                     log.info("Aucun retour pour cet adhérent");
                 }else {
@@ -287,77 +287,55 @@ public class DataInitializer implements CommandLineRunner {
         }
 
 
-//        // Création d'un adhérent
-//        Adherent adherent = new Adherent();
-//        adherent.setNom("Nom de l'Adhérent");
-//        adherent.setPrenom("Prénom de l'Adhérent");
-//        adherent.setUsername("adherent");
-//        adherent.setPassword("adherent");
-//
-//        adherentService.saveAdherent(adherent);
-//        // Création d'un administrateur
-//        Admin admin1 = new Admin();
-//        admin1.setNom("Nom de l'Administrateur");
-//        admin1.setPrenom("Prénom de l'Administrateur");
-//        admin1.setUsername("admin");
-//        admin1.setPassword("admin");
-//        adminService.saveAdmin(admin1);
-//        //creation d'un livre
-//        Livre livre2 = new Livre();
-//        livre2.setIsbn("ISBN123456");
-//        livre2.setTitre("Titre du Livre 2 Empruntee");
-//        livre2.setAuteur(auteur);
-//        livre2.setAddedBy(admin1);
-//        livre2.setImage(imageLivre);
-//        //date de publication 2002-12-12
-//        livre2.setDatePublication(LocalDate.of(2002, 12, 12));
-//        livre2.setCategorie(category1);
-//        livre2.setExemplaires(List.of(exemplaire1, exemplaire2));
-//        livreService.save(livre2);
-//        // Création d'exemplaires pour le livre
-//        Exemplaire exemplaire3 = new Exemplaire();
-//        exemplaire3.setStatus("Emprunté");
-//        exemplaire3.setDateDeRetourPrevue(LocalDate.now().plusDays(14));
-//
-
-
-
+        // Création d'un adhérent
+        Utilisateur Utilisateur1 = new Utilisateur();
+        Utilisateur.setFirstName("Nom de l'Adhérent");
+        Utilisateur.setLastName("Prénom de l'Adhérent");
+        Utilisateur.setUsername("Utilisateur");
+        Utilisateur.setPassword("Utilisateur");
+        UtilisateurService.saveUtilisateur(Utilisateur1);
+        // Création d'un administrateur
+        Admin admin1 = new Admin();
+        admin1.setNom("Nom de l'Administrateur");
+        admin1.setPrenom("Prénom de l'Administrateur");
+        admin1.setUsername("admin");
+        admin1.setPassword("admin");
+        adminService.saveAdmin(admin1);
 
         // Emprunt d'un exemplaire par l'administrateur à l'adhérent
-//        Emprunt emprunt = new Emprunt();
-//        emprunt.setAdherent(adherent);
-//        emprunt.setExemplaire(exemplaire3); // Remplacez 1L par l'ID du livre réel
-//        emprunt.setDateEmprunt(LocalDate.now());
-//        emprunt.setDateRetourPrevue(LocalDate.now().plusDays(14)); // Retour prévu dans 14 jours
-//        empruntService.saveEmprunt(emprunt);
-//
+        Emprunt emprunt = new Emprunt();
+        emprunt.setUtilisateur(Utilisateur);
+        emprunt.setExemplaire(sousOrange.getExemplaires().get(1)); // Remplacez 1L par l'ID du livre réel
+        emprunt.setDateEmprunt(LocalDate.now());
+        emprunt.setDateRetourPrevue(LocalDate.now().plusDays(14)); // Retour prévu dans 14 jours
+        empruntService.saveEmprunt(emprunt);
         // Affichage de la liste des emprunts de l'adhérent
-        //GetAdherant parID
-//        Adherent adherent1 = adherentService.getAdherantById(1);
+        //GetUtilisateur parID
+        Utilisateur Utilisateur2 = UtilisateurService.getUtilisateurById(1);
 
-//        List<Emprunt> empruntsAdherent = empruntService.getEmpruntsByAdherent(adherent1);
-//        System.out.println("Liste des emprunts de l'adhérent :");
-//        for (Emprunt e : empruntsAdherent) {
-//            System.out.println("ID Emprunt : " + e.getId() +
-//                    ", Livre : " + e.getExemplaire().getLivre().getTitre() +
-//                    ", Date de Retour Prévue : " + e.getDateRetourPrevue());
-//        }
-//        // Exemple d'emprunt par l'administrateur à l'adhérent
-//        Emprunt empruntAdmin = new Emprunt();
-//        empruntAdmin.setAdherent(adherent);
-//        empruntAdmin.setExemplaire(exemplaire3); // Remplacez 2L par l'ID du livre réel
-//        empruntAdmin.setDateEmprunt(LocalDate.now());
-//        empruntAdmin.setDateRetourPrevue(LocalDate.now().plusDays(14)); // Retour prévu dans 14 jours
-//        empruntService.saveEmprunt(empruntAdmin);
-//
-//        // Affichage de la liste des emprunts de l'adhérent après l'emprunt par l'administrateur
-//        List<Emprunt> empruntsAdherentApresAdmin = empruntService.getEmpruntsByAdherent(adherent1);
-//        System.out.println("Liste des emprunts de l'adhérent après l'emprunt par l'administrateur :");
-//        for (Emprunt e : empruntsAdherentApresAdmin) {
-//            System.out.println("ID Emprunt : " + e.getId() +
-//                    ", Livre : " + e.getExemplaire().getLivre().getTitre() +
-//                    ", Date de Retour Prévue : " + e.getDateRetourPrevue());
-//        }
+        List<Emprunt> empruntsUtilisateur = empruntService.getEmpruntsByUtilisateur(Utilisateur2);
+        System.out.println("Liste des emprunts de l'adhérent :");
+        for (Emprunt e : empruntsUtilisateur) {
+            System.out.println("ID Emprunt : " + e.getId() +
+                    ", Livre : " + e.getExemplaire().getLivre().getTitre() +
+                    ", Date de Retour Prévue : " + e.getDateRetourPrevue());
+        }
+        // Exemple d'emprunt par l'administrateur à l'adhérent
+        Emprunt empruntAdmin = new Emprunt();
+        empruntAdmin.setUtilisateur(Utilisateur);
+        empruntAdmin.setExemplaire(sousOrange.getExemplaires().get(1)); // Remplacez 2L par l'ID du livre réel
+        empruntAdmin.setDateEmprunt(LocalDate.now());
+        empruntAdmin.setDateRetourPrevue(LocalDate.now().plusDays(14)); // Retour prévu dans 14 jours
+        empruntService.saveEmprunt(empruntAdmin);
+
+        // Affichage de la liste des emprunts de l'adhérent après l'emprunt par l'administrateur
+        List<Emprunt> empruntsUtilisateurApresAdmin = empruntService.getEmpruntsByUtilisateur(Utilisateur1);
+        System.out.println("Liste des emprunts de l'adhérent après l'emprunt par l'administrateur :");
+        for (Emprunt e : empruntsUtilisateurApresAdmin) {
+            System.out.println("ID Emprunt : " + e.getId() +
+                    ", Livre : " + e.getExemplaire().getLivre().getTitre() +
+                    ", Date de Retour Prévue : " + e.getDateRetourPrevue());
+        }
 
         //show address of server and port
         log.info("Server started +"+env.getProperty("server.host") +"on port "+env.getProperty("server.port"));

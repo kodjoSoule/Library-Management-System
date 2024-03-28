@@ -7,16 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UtilisateurService implements UserDetailsService {
+public class UtilisateurService {
     private final UtilisateurRepository utilisateurRepository;
 
     @Autowired
@@ -24,17 +21,6 @@ public class UtilisateurService implements UserDetailsService {
         this.utilisateurRepository = utilisateurRepository;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Utilisateur utilisateur = utilisateurRepository.findByUsername(username);
-        if (utilisateur == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        return User.withUsername(utilisateur.getUsername())
-                .password(utilisateur.getPassword())
-                .roles(utilisateur.getRole())
-                .build();
-    }
 
     public List<Utilisateur> getAllUsers() {
         return utilisateurRepository.findAll();
@@ -71,5 +57,17 @@ public class UtilisateurService implements UserDetailsService {
 
     public boolean existsById(long userId) {
         return utilisateurRepository.existsById(userId);
+    }
+
+    public Utilisateur getUtilisateurById(int i) {
+        return utilisateurRepository.findById((long) i).get();
+    }
+
+    public void saveUtilisateur(Utilisateur utilisateur) {
+        utilisateurRepository.save(utilisateur);
+    }
+
+    public List<Utilisateur> getAllUtilisateurs() {
+        return utilisateurRepository.findAll();
     }
 }

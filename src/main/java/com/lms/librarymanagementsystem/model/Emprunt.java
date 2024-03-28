@@ -1,11 +1,13 @@
 package com.lms.librarymanagementsystem.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 
 
 @Entity
+@Data
 public class Emprunt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,8 +15,12 @@ public class Emprunt {
     @ManyToOne
     private Exemplaire exemplaire;
 
+//    @ManyToOne
+//    private Adherent adherent ;
     @ManyToOne
-    private Adherent adherent ;
+    private Utilisateur utilisateur ;
+
+
     @ManyToOne
     @JoinColumn(name = "admin_id")
     private Admin admin;
@@ -39,7 +45,6 @@ public class Emprunt {
     public void setExemplaire(Exemplaire exemplaireEmprunte) {
         exemplaireEmprunte.setStatus("Emprunte");
         this.exemplaire = exemplaireEmprunte;
-
     }
     //constructeur
     public Emprunt() {
@@ -48,13 +53,9 @@ public class Emprunt {
         this.dateRetourPrevue = LocalDate.now().plusDays(14);
     }
 
-    public Adherent getAdherent() {
-        return adherent;
-    }
 
-    public void setAdherent(Adherent adherent) {
-        this.adherent = adherent;
-    }
+
+
 
     public Admin getAdmin() {
         return admin;

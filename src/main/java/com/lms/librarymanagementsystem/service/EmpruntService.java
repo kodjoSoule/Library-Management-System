@@ -1,6 +1,6 @@
 package com.lms.librarymanagementsystem.service;
 
-import com.lms.librarymanagementsystem.model.Adherent;
+import com.lms.librarymanagementsystem.model.Utilisateur;
 import com.lms.librarymanagementsystem.model.Emprunt;
 import com.lms.librarymanagementsystem.model.Utilisateur;
 import com.lms.librarymanagementsystem.repository.EmpruntRepository;
@@ -26,15 +26,21 @@ public class EmpruntService {
         empruntRepository.save(emprunt);
     }
 
-    public List<Emprunt> getEmpruntsByAdherent(Utilisateur user1) {
-        return empruntRepository.findByAdherent(user1);
-    }
 
-    public List<Emprunt> getRetoursByAdherent(Adherent user1) {
-        return empruntRepository.findByAdherentAndRetourne(user1, true);
-    }
 
     public Page<Emprunt> findPaginated(Pageable pageable) {
         return empruntRepository.findAll(pageable);
+    }
+
+    public List<Emprunt> getEmpruntsByUtilisateur(Utilisateur utilisateur2) {
+        return empruntRepository.findByUtilisateur(utilisateur2);
+    }
+
+    public List<Emprunt> getRetoursByUtilisateur(Utilisateur utilisateur1) {
+        return empruntRepository.findByUtilisateurAndRetourne(utilisateur1, true);
+    }
+
+    public Emprunt getEmpruntsById(Long emprundId) {
+        return empruntRepository.findById(emprundId).orElse(null);
     }
 }
