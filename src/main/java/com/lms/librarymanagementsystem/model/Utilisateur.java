@@ -33,4 +33,8 @@ public class Utilisateur {
     public String getFullName() {
         return firstName + " " + lastName;
     }
+
+    public Utilisateur orElseThrow(Object o) {
+    return null;
+    }
 }
