@@ -41,12 +41,10 @@ public class Livre {
     private Auteur auteur;
 
 
-    @JsonBackReference
-    @OneToMany(
-            mappedBy = "livre", cascade = CascadeType.ALL, orphanRemoval = true)
+    private int nbExemplaires;
 
-    @JsonIgnore
-    private List<Exemplaire> exemplaires = new ArrayList<>() ;
+    private int nbExemplairesEmpruntes;
+
 
     @ManyToOne(
             cascade = {
@@ -80,10 +78,6 @@ public class Livre {
     private Categorie categorie;
 
 
-    public void setExemplaires(List<Exemplaire> exemplaires) {
-        this.exemplaires = exemplaires;
-    }
-
     public String getNomCategorie() {
         return categorie != null ? categorie.getNom() : null;
     }
@@ -93,36 +87,8 @@ public class Livre {
     public String getImageUrl() {
         return image != null ? image.getFilePath() : null;
     }
-
-//    public void setExemplaires(List<Exemplaire> exemplaires) {
-//        this.exemplaires = exemplaires;
-//    }
-
-    public Admin getAddedBy() {
-        return addedBy;
-    }
-
-    public void setAddedBy(Admin addedBy) {
-        this.addedBy = addedBy;
-    }
-
-
-    // Constructeur
-
-    // Méthode pour obtenir le nombre d'exemplaires
-    public int getNombreExemplaires() {
-        return exemplaires.size();
-    }
-
-    // Méthode pour vérifier la disponibilité du livre
     public boolean estDisponible() {
-        return exemplaires.stream().anyMatch(Exemplaire::estDisponible);
-    }
-
-    // Méthode pour ajouter un exemplaire associé à ce livre
-    public void addExemplaire(Exemplaire exemplaire) {
-        this.exemplaires.add(exemplaire);
-        exemplaire.setLivre(this);
+        return nbExemplaires > 0;
     }
   @Override
   public String toString() {
@@ -131,27 +97,11 @@ public class Livre {
                 ", isbn='" + isbn + '\'' +
                 ", titre='" + titre + '\'' +
                 ", auteur=" + auteur +
-                ", exemplaires=" + exemplaires +
+                ", nbExemplaires=" + nbExemplaires +
                 ", addedBy=" + addedBy +
                 '}';
   }
-
-
-    public void setCategorie(Categorie categorie) {
-        this.categorie = categorie;
-    }
-
-
-    public Auteur getAuteur() {
-        return auteur;
-    }
-
-    public void setAuteur(Auteur auteur) {
-        this.auteur = auteur;
-    }
-
-    public void descrementeNbExemplaireDisponible() {
-        //dimunier le nombre d'exemplaire disponible -1
-        this.exemplaires.remove(0);
-    }
+  public int getNombreExemplaireDispinible() {
+        return nbExemplaires - nbExemplairesEmpruntes;
+  }
 }

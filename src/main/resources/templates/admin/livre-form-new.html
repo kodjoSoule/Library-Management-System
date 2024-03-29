@@ -47,11 +47,16 @@
                                             required th:field="*{description}"
                                 ></textarea>
                             </div>
+
                             <div class="col-md-6 mb-3">
                                 <label for="nbPages" class="form-label">Nombre de Pages</label>
                                 <input type="number" class="form-control" id="nbPages" name="nbPages" required
-                                        th:field="*{nbPages}"
-                                >
+                                        th:field="*{nbPages}"  min="1" >
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="nbExemplaire" class="form-label">Nombre de exemplaires</label>
+                                <input type="number" class="form-control" id="nbExemplaire" name="nbExemplaire" required
+                                       th:field="*{nbExemplaires}" value="1" min="1" >
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="datePublication" class="form-label">Date de Publication</label>

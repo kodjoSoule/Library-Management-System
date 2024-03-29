@@ -1,9 +1,7 @@
 package com.lms.librarymanagementsystem.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -13,15 +11,16 @@ public class Utilisateur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String username;
     private String firstName;
     private String lastName;
     private String email;
+    @JsonIgnore
     private String password;
+    @Transient
+    @JsonIgnore
+    private String confirmPassword;
     private String role;
-    private boolean enabled;
-
     public Utilisateur(String username, String password) {
         this.username = username;
         this.password = password;

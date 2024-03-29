@@ -64,6 +64,10 @@
                         <p th:if="${livre.getCategorie()}">
                             <strong>Category: </strong><span th:text="${livre.getCategorie().getNom()}"></span>
                         </p>
+<!--                        nombre examplaire-->
+                        <p>
+                            <strong>Nombre d'exemplaires: </strong><span th:text="${livre.nbExemplaires}"></span>
+                        </p>
                         <p>
                             <strong>Description: </strong><span th:text="${livre.description}"></span>
                         </p>

@@ -36,7 +36,21 @@
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Liste des Emprunts</h5>
+                        <h5 class="card-title">
+                            <a class="btn btn-primary" href="/admin/emprunts">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Liste des Emprunts En Cours
+                            </a>
+                            <a class="btn btn-outline-success" href="/admin/emprunts/retour">
+                                <i class="bi bi-backward "></i>
+                                Liste des Retours d'Emprunts
+                            </a>
+                            <a class="btn btn-outline-info" href="/admin/emprunts?all=true">
+                                Liste Tous
+                            </a>
+
+                        </h5>
+
                         <table class="table table-striped">
                             <thead>
                             <tr>
@@ -44,15 +58,17 @@
                                 <th>Adhérent</th>
                                 <th>Emprunté le</th>
                                 <th>Retour Prevue</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody th:if="${emprunts.size() > 0}">
-                            <tr th:each="emprunt : ${emprunts}">
-                                <td th:text="${emprunt.getExemplaire().getLivre().getTitre()}"></td>
+                            <tr th:each="emprunt : ${emprunts}" th:class="${emprunt.retourne ? 'table-success' : ''}">
+                                <td th:text="${emprunt.getLivre().getTitre()}"></td>
                                 <td th:text="${emprunt.getUtilisateur().getFullName()}"></td>
                                 <td th:text="${emprunt.dateEmprunt}"></td>
                                 <td th:text="${emprunt.dateRetourPrevue}"></td>
+                                <th th:text="${emprunt.getRetourne() ? 'Retourné' : 'Non Retourné'}"></th>
                                 <th>
                                     <a  th:href="@{'/admin/emprunt/retour/' + ${emprunt.id}}" class="btn btn-primary btn-sm">
                                         <i class="bi bi-back "></i>
@@ -70,6 +86,18 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-4 mx-auto">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination ">
+                        <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
+                            <a th:href="@{/admin/emprunts(pageNo=${i})}" class="page-link" th:text="${i}"></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
     </section>
 </main><!-- End #main -->
 <!-- ======= Footer ======= -->

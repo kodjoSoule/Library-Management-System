@@ -12,4 +12,6 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
     Utilisateur findByUsername(String username);
     Page<Utilisateur> findAll(Pageable pageable);
 
+    Object countUtilisateursByRole(String admin);
+
 }

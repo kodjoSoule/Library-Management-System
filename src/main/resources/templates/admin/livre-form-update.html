@@ -27,6 +27,18 @@
         </div>
         <div class="row">
             <div class="col">
+                <div th:if="${success != null}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong th:text="${success}"></strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong th:text="${error}"></strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Mise a jour du Livre</h5>
@@ -49,6 +61,12 @@
                                 <label for="nbPages" class="form-label">Nombre de Pages</label>
                                 <input type="number" class="form-control" id="nbPages" name="nbPages" required
                                         th:field="*{nbPages}"
+                                >
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="nbExemplaires" class="form-label">Nombre de exemplaires</label>
+                                <input type="number" class="form-control" id="nbExemplaires" name="nbExemplaires" required
+                                       th:field="*{nbExemplaires}"
                                 >
                             </div>
                             <div class="col-md-6 mb-3">

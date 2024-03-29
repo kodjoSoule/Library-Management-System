@@ -6,13 +6,13 @@ import java.time.LocalDate;
 
 @Data
 public class EmpruntDetails {
-    private Long empruntId;
-    private Long livreId ;
-    private Long adherentId ;
-    private Long exemplaireId ;
-    private Long adminId ;
-    private Long utilisateurId ;
-    private Long categorieId ;
+    private long empruntId;
+    private long livreId ;
+    private long adherentId ;
+    private long exemplaireId ;
+    private long adminId ;
+    private long utilisateurId ;
+    private long categorieId ;
     private boolean prolonge;
     private boolean retourne;
     private LocalDate dateEmprunt;

@@ -149,21 +149,11 @@ public String getPaginatedLivresAdmin(
     }
 
     //Ajouter un livre
+
     @GetMapping("/admin/livres/add")
     public String showAjouterLivreFormAdmin(Model model) {
-        //LivreRequest
         LivreDetails livreDetails = new LivreDetails();
-        livreDetails.setAuteur("1");
-        livreDetails.setNewAuteur("");
-        livreDetails.setNewCategorie("");
-        livreDetails.setCategorie("1");
-        livreDetails.setIsbn("1234567890");
-        livreDetails.setLangue("fr");
-        livreDetails.setNbPages(100);
-        livreDetails.setEditeur("Kana");
-        livreDetails.setTitre("Naruto, tome 1: Le chemin du ninja");
         livreDetails.setAdminID(1L);
-        livreDetails.setDescription("Découvrez le début de l'aventure de Naruto, un jeune ninja qui rêve de devenir le plus grand ninja de son village."); // Description du livre Naruto
         model.addAttribute("livreDetails", livreDetails);
         model.addAttribute("categories", categorieService.getAllCategories());
         model.addAttribute("auteurs", auteurService.getAllAuteurs() );
@@ -217,6 +207,7 @@ public String getPaginatedLivresAdmin(
         livre.setIsbn(livreDetails.getIsbn());
         livre.setLangue(livreDetails.getLangue());
         livre.setNbPages(livreDetails.getNbPages());
+        livre.setNbExemplaires(livreDetails.getNbExemplaires());
         livre.setEditeur(livreDetails.getEditeur());
         livre.setTitre(livreDetails.getTitre());
         livre.setDatePublication(livreDetails.getDatePublication());
@@ -242,5 +233,7 @@ public String getPaginatedLivresAdmin(
         livreService.supprimerLivre(id);
         return "redirect:/livres";
     }
+
+
 
 }

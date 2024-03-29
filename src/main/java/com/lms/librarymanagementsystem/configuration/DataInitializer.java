@@ -38,8 +38,7 @@ public class DataInitializer implements CommandLineRunner {
     private EmpruntService empruntService;
     @Autowired
     private AuteurService auteurService;
-    @Autowired
-    ExamplaireService examplaireService;
+
     @Autowired
     InfosService infosService;
     @Autowired
@@ -60,7 +59,6 @@ public class DataInitializer implements CommandLineRunner {
             user.setLastName("Test");
             user.setPassword("password" + i);
             user.setRole("ROLE_USER");
-            user.setEnabled(true);
             utilisateurService.saveUser(user);
         }
     }
@@ -202,23 +200,20 @@ public class DataInitializer implements CommandLineRunner {
         UtilisateurService.saveUtilisateur(Utilisateur);
         log.info("Adhérent créé avec succès");
 
-        if(sousOrange.getExemplaires().isEmpty()){
+        if(sousOrange.estDisponible()){
             log.info("Aucun exemplaire disponible pour l'emprunt");
         }else {
             //6 creation d'un emprunt
             Emprunt emprunt = new Emprunt();
             emprunt.setUtilisateur(Utilisateur);
-            Exemplaire exemplaire1 = sousOrange.getExemplaires().get(0);
-            emprunt.setExemplaire(exemplaire1);
+            emprunt.setLivre(sousOrange);
             emprunt.setDateEmprunt(LocalDate.now());
             emprunt.setDateRetourPrevue(LocalDate.now().plusDays(14)); // Retour prévu dans 14 jours
             empruntService.saveEmprunt(emprunt);
             log.info("Emprunt1 créé avec succès");
-
             Emprunt emprunt2 = new Emprunt();
             emprunt2.setUtilisateur(Utilisateur);
-            Exemplaire exemplaire2 = sousOrange.getExemplaires().get(1);
-            emprunt2.setExemplaire(exemplaire2);
+            emprunt2.setLivre(sousOrange);
             emprunt2.setDateEmprunt(LocalDate.now());
             emprunt2.setDateRetourPrevue(LocalDate.now().plusDays(14)); // Retour prévu dans 14 jours
             empruntService.saveEmprunt(emprunt2);
@@ -226,7 +221,6 @@ public class DataInitializer implements CommandLineRunner {
             //8 creation d'un retour d'emprunt 1
             emprunt.setRetourne(true);
             emprunt.setDateRetourEffectif(LocalDate.now());
-            emprunt.getExemplaire().setStatus("Disponible");
             empruntService.saveEmprunt(emprunt);
             log.info("Retour d'emprunt créé avec succès");
         }
@@ -243,16 +237,12 @@ public class DataInitializer implements CommandLineRunner {
             //image details
             log.info("Image : " + livre.getImage().getFilePath());
             //nombre d'exemplaires
-            log.info("Nombre d'exemplaires : " + livre.getExemplaires().size());
+            log.info("Nombre d'exemplaires : " + livre.getNbExemplaires());
             //nombre d'exemplaires disponibles
             log.info("Nombre d'exemplaires disponibles : " +
-                    livre.getExemplaires().stream().filter(exemplaire -> exemplaire.estDisponible()).count()
+                    livre.getNombreExemplaireDispinible()
             );
 
-            //details d'exemplaires
-            for (Exemplaire exemplaire : livre.getExemplaires()) {
-                log.info("Exemplaire : " + exemplaire.getId() + ", Status : " + exemplaire.getStatus());
-            }
             //liste des adhérents
             List<Utilisateur> utilisateurs = UtilisateurService.getAllUtilisateurs();
             for (Utilisateur utilisateur1 : utilisateurs) {
@@ -263,7 +253,7 @@ public class DataInitializer implements CommandLineRunner {
                     log.info("Aucun emprunt pour cet adhérent");
                 }else {
                     for (Emprunt emprunt1 : emprunts) {
-                        log.info("Emprunt : " + emprunt1.getId() + ", Livre : " + emprunt1.getExemplaire().getLivre().getTitre() + ", Date de Retour Prévue : " + emprunt1.getDateRetourPrevue());
+                        log.info("Emprunt : " + emprunt1.getId() + ", Livre : " + emprunt1.getLivre().getTitre() + ", Date de Retour Prévue : " + emprunt1.getDateRetourPrevue());
                     }
                 }
                 //liste des retours de livres de adhérent
@@ -272,18 +262,13 @@ public class DataInitializer implements CommandLineRunner {
                     log.info("Aucun retour pour cet adhérent");
                 }else {
                     for (Emprunt retour : retours) {
-                        log.info("Retour : " + retour.getId() + ", Livre : " + retour.getExemplaire().getLivre().getTitre() + ", Date de Retour : " + retour.getDateRetourEffectif());
+                        log.info("Retour : " + retour.getId() + ", Livre : " + retour.getLivre().getTitre() + ", Date de Retour : " + retour.getDateRetourEffectif());
 
                     }
                 }
             }
             //nombre d'exemplaires
-            log.info("Nombre d'exemplaires : " + livre.getExemplaires().size());
-            //details d'exemplaires
-            for (Exemplaire exemplaire : livre.getExemplaires()) {
-                log.info("Exemplaire : " + exemplaire.getId() + ", Status : " + exemplaire.getStatus());
-            }
-
+            log.info("Nombre d'exemplaires : " + livre.getNbExemplaires());
         }
 
 
@@ -305,7 +290,7 @@ public class DataInitializer implements CommandLineRunner {
         // Emprunt d'un exemplaire par l'administrateur à l'adhérent
         Emprunt emprunt = new Emprunt();
         emprunt.setUtilisateur(Utilisateur);
-        emprunt.setExemplaire(sousOrange.getExemplaires().get(1)); // Remplacez 1L par l'ID du livre réel
+        emprunt.setExemplaire(sousOrange); // Remplacez 1L par l'ID du livre réel
         emprunt.setDateEmprunt(LocalDate.now());
         emprunt.setDateRetourPrevue(LocalDate.now().plusDays(14)); // Retour prévu dans 14 jours
         empruntService.saveEmprunt(emprunt);
@@ -317,13 +302,13 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("Liste des emprunts de l'adhérent :");
         for (Emprunt e : empruntsUtilisateur) {
             System.out.println("ID Emprunt : " + e.getId() +
-                    ", Livre : " + e.getExemplaire().getLivre().getTitre() +
+                    ", Livre : " + e.getLivre().getTitre() +
                     ", Date de Retour Prévue : " + e.getDateRetourPrevue());
         }
         // Exemple d'emprunt par l'administrateur à l'adhérent
         Emprunt empruntAdmin = new Emprunt();
         empruntAdmin.setUtilisateur(Utilisateur);
-        empruntAdmin.setExemplaire(sousOrange.getExemplaires().get(1)); // Remplacez 2L par l'ID du livre réel
+        empruntAdmin.setExemplaire(sousOrange); // Remplacez 2L par l'ID du livre réel
         empruntAdmin.setDateEmprunt(LocalDate.now());
         empruntAdmin.setDateRetourPrevue(LocalDate.now().plusDays(14)); // Retour prévu dans 14 jours
         empruntService.saveEmprunt(empruntAdmin);
@@ -333,7 +318,7 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("Liste des emprunts de l'adhérent après l'emprunt par l'administrateur :");
         for (Emprunt e : empruntsUtilisateurApresAdmin) {
             System.out.println("ID Emprunt : " + e.getId() +
-                    ", Livre : " + e.getExemplaire().getLivre().getTitre() +
+                    ", Livre : " + e.getLivre().getTitre() +
                     ", Date de Retour Prévue : " + e.getDateRetourPrevue());
         }
 

@@ -40,7 +40,6 @@ public class UtilisateurService {
             existingUser.setEmail(user.getEmail());
             existingUser.setPassword(user.getPassword());
             existingUser.setRole(user.getRole());
-            existingUser.setEnabled(user.isEnabled());
             utilisateurRepository.save(existingUser);
         });
     }
@@ -69,5 +68,17 @@ public class UtilisateurService {
 
     public List<Utilisateur> getAllUtilisateurs() {
         return utilisateurRepository.findAll();
+    }
+
+    public Object countUtilisateurs() {
+        return utilisateurRepository.count();
+    }
+
+    public Object countUtilisateursRoleAdmin() {
+        return utilisateurRepository.countUtilisateursByRole("ADMIN");
+    }
+
+    public void updateUser(Utilisateur user) {
+        utilisateurRepository.save(user);
     }
 }

@@ -13,6 +13,7 @@ public class LivreDetails {
     private Auteur auteurLivre;
     private ImageData imageData;
     private Categorie categorieLivre;
+    private int nbExemplaires = 1;
 
     private int livreId ;
     private String isbn;

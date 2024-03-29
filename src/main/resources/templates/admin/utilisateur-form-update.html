@@ -18,38 +18,54 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
+
     <section class="section">
         <div class="row">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <form th:action="@{/admin/utilisateurs-manager/{id}/update(id=${user.id})}" th:object="${user}" method="post">
-                            <div class="form-group mb-2">
-                                <label for="username">Username</label>
-                                <input type="text" th:field="*{username}" class="form-control" id="username" placeholder="Enter username">
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email address</label>
-                                <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="Enter email">
-                            </div>
-                            <div class="form-group mb-2">
-                                <label for="password">Password</label>
-                                <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="Password">
-                            </div>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save"></i>
-                                Mise a jour
-                            </button>
-                            <button type="reset" class="btn btn-secondary"
-                                    href="/admin/utilisateurs-manager"
-                            >
-                                <i class="bi bi-x"></i>
-                                Annuler
-                            </button>
-                        </form>
-                    </div>
-                </div>
+            <div th:if="${success != null}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong th:text="${success}"></strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+            <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong th:text="${error}"></strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="row">
+            <form th:action="@{/admin/utilisateur/update}" th:object="${user}" method="post">
+                <input type="hidden" th:field="*{id}"/>
+                <div class="form-group mb-2">
+                    <label for="username">Username</label>
+                    <input type="text" th:field="*{username}" class="form-control" id="username" placeholder="Enter username">
+                </div>
+                <div class="form-group mb-2">
+                    <label for="firstName">First Name</label>
+                    <input type="text" th:field="*{firstName}" class="form-control" id="firstName" placeholder="Enter first name">
+                </div>
+                <div class="form-group mb-2">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" th:field="*{lastName}" class="form-control" id="lastName" placeholder="Enter last name">
+                </div>
+                <div class="form-group mb-2">
+                    <label for="email">Email address</label>
+                    <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="Enter email">
+                </div>
+                <div class="form-group mb-2">
+                    <label for="password">Password</label>
+                    <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="Password">
+                </div>
+                <div class="form-group mb-2">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" th:field="*{confirmPassword}" class="form-control" id="confirmPassword" placeholder="Confirm password">
+                </div>
+                <div class="form-group mb-2">
+                    <label for="role">Role</label>
+                    <select class="form-select" th:field="*{role}" id="role">
+                        <option value="USER">User</option>
+                        <option value="ADMIN">Admin</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
         </div>
     </section>
 </main><!-- End #main -->

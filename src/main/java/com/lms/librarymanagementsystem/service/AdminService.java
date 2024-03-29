@@ -15,6 +15,7 @@ public class AdminService {
     }
 
     public Admin getAdminById(Long id) {
+
         return adminRepository.findById(id).orElse(null);
     }
 }

@@ -2,7 +2,10 @@ package com.lms.librarymanagementsystem.repository;
 
 import com.lms.librarymanagementsystem.model.Emprunt;
 import com.lms.librarymanagementsystem.model.Utilisateur;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,4 +19,12 @@ public interface EmpruntRepository extends JpaRepository<Emprunt, Long> {
 
 
     List<Emprunt> findByUtilisateurAndRetourne(Utilisateur utilisateur1, boolean b);
+
+    //sql query SELECT COUNT(*) FROM Emprunt e WHERE e.date_retour_prevue < CURRENT_DATE AND e.retourne = false
+    @Query("SELECT COUNT(e) FROM Emprunt e WHERE e.dateRetourPrevue < CURRENT_DATE AND e.retourne = false")
+    int countEmpruntsEnRetard();
+
+    Page<Emprunt> findByRetourne(boolean b, Pageable pageable);
+    @Query("SELECT e FROM Emprunt e ORDER BY e.dateEmprunt DESC")
+    List<Emprunt> findThreeRecentEmprunts(Pageable pageable);
 }

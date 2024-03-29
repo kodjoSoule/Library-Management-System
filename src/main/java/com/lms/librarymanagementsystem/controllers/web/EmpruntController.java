@@ -1,9 +1,11 @@
 package com.lms.librarymanagementsystem.controllers.web;
 
 import com.lms.librarymanagementsystem.model.*;
+import com.lms.librarymanagementsystem.service.AdminService;
 import com.lms.librarymanagementsystem.service.EmpruntService;
 import com.lms.librarymanagementsystem.service.LivreService;
 import com.lms.librarymanagementsystem.service.UtilisateurService;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,16 +32,29 @@ public class EmpruntController {
     private LivreService livreService;
     @Autowired
     private UtilisateurService utilisateurService;
+    @Autowired
+    private AdminService adminService;
+
     @GetMapping("/admin/emprunts")
     public String getPaginatedEmprunts(
             @RequestParam("pageNo") Optional<Integer> page,
             @RequestParam("pageSize") Optional<Integer> size,
+            @RequestParam("all") Optional<Boolean> all,
             Model model
     ) {
+
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize) ;
         Page<Emprunt> empruntPage = empruntService.findPaginated(pageable);
+        //Liste des emprunt en cours
+        if (all.orElse(false)) {
+            empruntPage = empruntService.findEmpruntEnCoursPaginated(pageable);
+
+        } else {
+            empruntPage = empruntService.findPaginated(pageable);
+        }
+
         if (currentPage >= empruntPage.getTotalPages()) {
             currentPage = 1;
             pageable = PageRequest.of(currentPage - 1, pageSize) ;
@@ -63,26 +78,43 @@ public class EmpruntController {
     ) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
-        Pageable pageable = PageRequest.of(currentPage - 1, pageSize) ;
-        Page<Emprunt> empruntPage = empruntService.findPaginated(pageable);
-        if (currentPage >= empruntPage.getTotalPages()) {
-            currentPage = 1;
-            pageable = PageRequest.of(currentPage - 1, pageSize) ;
-            empruntPage = empruntService.findPaginated(pageable);
-        }
-        int totalPages = empruntPage.getTotalPages();
-        List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+        Page<Emprunt> empruntRetournerPage = empruntService.findEmpruntRetournerPaginated(PageRequest.of(currentPage - 1, pageSize));
+        log.info("**********************************");
+        log.info("**********************************");
+        log.info("**********************************");
+        log.info("empruntRetournerPage: {}", empruntRetournerPage.getContent());
+
         model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", empruntPage.getTotalPages());
-        model.addAttribute("pageSize", empruntPage.getTotalElements());
-        model.addAttribute("emprunts", empruntPage);
+        model.addAttribute("totalPages", empruntRetournerPage.getTotalPages());
+        model.addAttribute("emprunts", empruntRetournerPage.getContent());
         return "admin/emprunts-retourner-manager";
     }
+    @GetMapping("/admin/emprunt/retour/{id}")
+    public String getPaginatedEmpruntsRetournerUnLivre(
+            @PathVariable("id") Long id,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (!empruntService.existsById(id)) {
+            redirectAttributes.addFlashAttribute("error", "Emprunt non trouvé");
+            return "redirect:/admin/emprunts";
+        }
+        Emprunt emprunt = empruntService.getEmpruntById(id);
+        emprunt.setRetourne(true);
+        emprunt.setDateRetourEffectif(LocalDate.now());
+        try{
+            empruntService.saveEmprunt(emprunt);
+            redirectAttributes.addFlashAttribute("success", "Emprunt retourné avec succès");
+        }catch (Exception e){
+            redirectAttributes.addFlashAttribute("error", "Erreur lors du retour de l'emprunt");
+        }
+        return "redirect:/admin/emprunts";
+    }
+
     @GetMapping("/admin/emprunt/users")
     public String getPaginatedUsers(
             @RequestParam("pageNo") Optional<Integer> page,
             @RequestParam("pageSize") Optional<Integer> size,
-            @RequestParam(value = "examplaireId", defaultValue = "0") int livreId,
+            @RequestParam(value = "livreId", defaultValue = "0") int livreId,
             Model model
     ) {
         if (livreId == 0 ) {
@@ -115,28 +147,24 @@ public class EmpruntController {
         model.addAttribute("livres", livrePage);
         return "admin/emprunt-livres";
     }
+    @Transactional
     @PostMapping("/admin/emprunt/add")
-    public String createEmprunt(@ModelAttribute("empruntDetails") EmpruntDetails empruntDetails, RedirectAttributes redirectAttributes) {
-
-        log.info("empruntDetails: {}", empruntDetails);
-//        emprunt.setDateRetourPrevue(emprunt.getDateEmprunt().plusDays(7));
-//        emprunt.setRetourne(false);
-//        Adherent adherent = new Adherent();
-//        adherent = (Adherent) empruntDetails.getUtilisateur();
-//        emprunt.setAdherent(adherent);
-//        emprunt.setExemplaire(empruntDetails.getLivre().getExemplaires().get(0));
-
-        Emprunt emprunt = new Emprunt();
-        Utilisateur utilisateur = new Utilisateur();
-        Livre sousOrange = new Livre();
-
-        emprunt.setUtilisateur(utilisateur);
-        emprunt.setExemplaire(s);
-        emprunt.setDateEmprunt(LocalDate.now());
-        emprunt.setDateRetourPrevue(LocalDate.now().plusDays(7));
-        log.info("Emprunt1 créé avec succès");
+    public String createEmprunt(@ModelAttribute("emprunt") Emprunt emprunt, RedirectAttributes redirectAttributes) {
+        log.info("**************************************************");
+        log.info("**************************************************");
+        log.info("**************************************************");
+        log.info("**************************************************");
+        log.info("**************************************************");
+        log.info("**************************************************");
+        log.info("**************************************************");
+        log.info("emprunt: {}", emprunt);
         try{
-
+            Utilisateur utilisateur = utilisateurService.getUserById((long) emprunt.getUtilisateurId());
+            Livre livre = livreService.getLivreById((long)emprunt.getLivreId());
+            Admin admin = adminService.getAdminById((long) emprunt.getAdminId());
+            emprunt.setUtilisateur(utilisateur);
+            emprunt.setLivre(livre);
+            emprunt.setAdmin(admin);
             empruntService.saveEmprunt(emprunt);
             redirectAttributes.addFlashAttribute("success", "Emprunt ajouté avec succès");
 
@@ -157,20 +185,14 @@ public class EmpruntController {
         log.info("livre: {}", livre);
         Utilisateur utilisateur = utilisateurService.getUserById((long) userId);
         log.info("utilisateur: {}", utilisateur);
-        EmpruntDetails empruntDetails = new EmpruntDetails();
-        empruntDetails.setLivreId(livre.getId());
-        empruntDetails.setUtilisateurId(utilisateur.getId());
-        empruntDetails.setTitreLivre(livre.getTitre());
-        empruntDetails.setIsbnLivre(livre.getIsbn());
-        empruntDetails.setAuteurLivre(livre.getAuteur().getNomComplet());
-        empruntDetails.setEditeurLivre(livre.getEditeur());
-        empruntDetails.setCategorieId(livre.getCategorie().getId());
-        empruntDetails.setNomAdherent(utilisateur.getFullName());
-        empruntDetails.setDateEmprunt(LocalDate.now());
-        empruntDetails.setDateRetourPrevue(LocalDate.now().plusDays(7));
-        empruntDetails.setRetourne(false);
-        empruntDetails.setCategorieLivre(livre.getCategorie().getNom());
-        model.addAttribute("empruntDetails",empruntDetails );
+        Emprunt emprunt = new Emprunt();
+        emprunt.setLivre(livre);
+        emprunt.setUtilisateur(utilisateur);
+        emprunt.setDateEmprunt(LocalDate.now());
+        emprunt.setDateRetourPrevue(LocalDate.now().plusDays(7));
+        emprunt.setRetourne(false);
+        emprunt.setDateRetourEffectif(null);
+        model.addAttribute("emprunt", emprunt);
         return "admin/emprunt-form-new";
     }
     @GetMapping("/admin/emprunt/{id}")

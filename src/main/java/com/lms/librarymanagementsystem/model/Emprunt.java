@@ -1,5 +1,6 @@
 package com.lms.librarymanagementsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,13 +14,10 @@ public class Emprunt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    private Exemplaire exemplaire;
+    private Livre livre;
 
-//    @ManyToOne
-//    private Adherent adherent ;
     @ManyToOne
     private Utilisateur utilisateur ;
-
 
     @ManyToOne
     @JoinColumn(name = "admin_id")
@@ -30,6 +28,16 @@ public class Emprunt {
     private LocalDate dateRetourEffectif;
 
 
+    @Transient
+    @JsonIgnore
+    private int adminId ;
+    @Transient
+    @JsonIgnore
+    private int utilisateurId ;
+    @Transient
+    @JsonIgnore
+    private int livreId ;
+
     public Long getId() {
         return id;
     }
@@ -38,13 +46,12 @@ public class Emprunt {
         this.id = id;
     }
 
-    public Exemplaire getExemplaire() {
-        return exemplaire;
+    public Livre getExemplaire() {
+        return livre ;
     }
 
-    public void setExemplaire(Exemplaire exemplaireEmprunte) {
-        exemplaireEmprunte.setStatus("Emprunte");
-        this.exemplaire = exemplaireEmprunte;
+    public void setExemplaire(Livre livreEmprunter) {
+        livre = livreEmprunter;
     }
     //constructeur
     public Emprunt() {

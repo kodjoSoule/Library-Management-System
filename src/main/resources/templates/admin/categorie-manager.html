@@ -56,7 +56,7 @@
                             <tr th:each="categorie : ${categories}">
                                 <td th:text="${categorie.nom}"></td>
                                 <td>
-                                    <a th:href="@{/admin/categorie/{id}(id=${categorie.id})}" class="btn btn-info"><i class="bi bi-eye"></i></a>
+<!--                                    <a th:href="@{/admin/categorie/{id}(id=${categorie.id})}" class="btn btn-info"><i class="bi bi-eye"></i></a>-->
                                     <a th:href="@{/admin/categorie/{id}/update(id=${categorie.id})}" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
                                     <a th:href="@{/admin/categorie/{id}/delete(id=${categorie.id})}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
                                 </td>
