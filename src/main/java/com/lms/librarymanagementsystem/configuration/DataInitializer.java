@@ -1,5 +1,6 @@
 package com.lms.librarymanagementsystem.configuration;
 
+import com.lms.librarymanagementsystem.configuration.security.CustomUserDetailsService;
 import com.lms.librarymanagementsystem.model.*;
 import com.lms.librarymanagementsystem.repository.LivreRepository;
 import com.lms.librarymanagementsystem.service.*;
@@ -44,6 +45,9 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     UtilisateurService utilisateurService;
 
+    @Autowired
+    CustomUserDetailsService customUserDetailsService;
+
     //Create function to return file image  from C:\Users\Kodjo\lmages\profile.jpg
     public File getImageFromSystem(){
         String path = "C:\\Users\\Kodjo\\lmages\\profile.jpg";
@@ -59,7 +63,8 @@ public class DataInitializer implements CommandLineRunner {
             user.setLastName("Test");
             user.setPassword("password" + i);
             user.setRole("ROLE_USER");
-            utilisateurService.saveUser(user);
+            customUserDetailsService.createUtlisateur(user);
+            //utilisateurService.saveUser(user);
         }
     }
     public void createLivreTest(){

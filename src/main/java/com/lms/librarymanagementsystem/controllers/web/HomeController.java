@@ -109,12 +109,9 @@ public class HomeController {
         return "dashboard-layout";
     }
 
-    @GetMapping("/settings-manager")
-    public String settings(
-            Model model
-    ) {
-        model.addAttribute("mainContent", "dashboard");
-        return "dashboard-layout";
+    //access-denied
+    @GetMapping("/access-denied")
+    public String accessDenied() {
+        return "access-denied";
     }
-
 }

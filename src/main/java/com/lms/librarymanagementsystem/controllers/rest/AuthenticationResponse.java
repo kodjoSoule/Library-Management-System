@@ -1,8 +1,5 @@
-package com.lms.librarymanagementsystem.configuration.security;
+package com.lms.librarymanagementsystem.controllers.rest;
 
-import lombok.Data;
-
-@Data
 public class AuthenticationResponse {
     private final String jwt;
 
@@ -13,5 +10,4 @@ public class AuthenticationResponse {
     public String getJwt() {
         return jwt;
     }
-
 }

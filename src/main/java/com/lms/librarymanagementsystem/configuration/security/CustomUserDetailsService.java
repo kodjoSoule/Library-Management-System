@@ -1,31 +1,74 @@
 package com.lms.librarymanagementsystem.configuration.security;
 
+
 import com.lms.librarymanagementsystem.model.Utilisateur;
+
 import com.lms.librarymanagementsystem.repository.UtilisateurRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.function.Supplier;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-
-    private final UtilisateurRepository utilisateurRepository;
+    @Autowired
+    private UtilisateurRepository utilisateurRepository ;
 
     @Autowired
-    public CustomUserDetailsService(UtilisateurRepository utilisateurRepository) {
-        this.utilisateurRepository = utilisateurRepository;
-    }
+    private PasswordEncoder passwordEncoder;
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Utilisateur utilisateur = utilisateurRepository.findByUsername(username)
-                .orElseThrow((Supplier<UsernameNotFoundException>) () ->
-                        new UsernameNotFoundException("Utilisateur non trouvé avec le nom d'utilisateur: " + username)
-                );
-        return UserDetailsImpl.build(utilisateur);
+        Utilisateur user = utilisateurRepository.findByUsername(username);
+        return new User(user.getUsername(), user.getPassword(), getGrantedAuthorities(user.getRole()));
+    }
+
+    private List<GrantedAuthority> getGrantedAuthorities(String role) {
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+        return authorities;
+    }
+    //create new user
+
+    public void createUserIfNeeded(
+            Utilisateur dbUser
+    ) {
+        // Check if user already exists
+        if (utilisateurRepository.findByUsername("admin") != null){
+            // If user does not exist, create it
+            utilisateurRepository.save(dbUser);
+        }
+    }
+
+
+    @PostConstruct
+    public void createUserIfNeeded() {
+        String defaultAdminUsername = "Mohamed";
+        Utilisateur existingUser = utilisateurRepository.findByUsername(defaultAdminUsername);
+        if (existingUser == null) {
+            Utilisateur adminUser = new Utilisateur();
+            adminUser.setEmail("Mohamed@gmail.com");
+            adminUser.setFirstName("Mohamed");
+            adminUser.setLastName("Ben");
+            adminUser.setUsername(defaultAdminUsername);
+            adminUser.setPassword(passwordEncoder.encode("Passer123")); // replace "adminPassword" with the actual password
+            adminUser.setRole("ADMIN");
+            utilisateurRepository.save(adminUser);
+        }
+    }
+
+    public void createUtlisateur(Utilisateur utilisateur){
+        utilisateur.setPassword(passwordEncoder.encode(utilisateur.getPassword()));
+        utilisateurRepository.save(utilisateur);
     }
 }

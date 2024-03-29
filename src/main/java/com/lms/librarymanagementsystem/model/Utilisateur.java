@@ -30,6 +30,14 @@ public class Utilisateur {
 
     }
 
+    public Utilisateur(String mohamed, String ben, String mail, String admin, String adminPassword) {
+        this.firstName = mohamed;
+        this.lastName = ben;
+        this.email = mail;
+        this.username = admin;
+        this.password = adminPassword;
+    }
+
     public String getFullName() {
         return firstName + " " + lastName;
     }

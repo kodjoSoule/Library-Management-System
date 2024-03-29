@@ -1,5 +1,8 @@
-package com.lms.librarymanagementsystem.configuration.security;
+package com.lms.librarymanagementsystem.controllers.rest;
 
+import lombok.Data;
+
+@Data
 public class AuthenticationRequest {
     private String username;
     private String password;
@@ -12,11 +15,4 @@ public class AuthenticationRequest {
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 }

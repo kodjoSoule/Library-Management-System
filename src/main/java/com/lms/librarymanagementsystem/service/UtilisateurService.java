@@ -81,4 +81,8 @@ public class UtilisateurService {
     public void updateUser(Utilisateur user) {
         utilisateurRepository.save(user);
     }
+
+    public Utilisateur findByUsername(String username) {
+        return utilisateurRepository.findByUsername(username);
+    }
 }
