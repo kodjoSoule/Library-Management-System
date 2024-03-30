@@ -2,8 +2,8 @@
 FROM openjdk:17
 
 # Copy the JAR package into the image
-ARG JAR_FILE=target/Library-Management-System-0.0.1-SNAPSHOT.jar.jar
-COPY ${JAR_FILE} Library-Management-System-0.0.1-SNAPSHOT.jar.jar
+ARG JAR_FILE=target/Library-Management-System-0.0.1-SNAPSHOT.jar
+COPY ${JAR_FILE} Library-Management-System-0.0.1-SNAPSHOT.jar
 
 # Expose the application port
 EXPOSE 8091
