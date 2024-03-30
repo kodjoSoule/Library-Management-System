@@ -4,13 +4,13 @@ FROM openjdk:17
 # Copy the JAR package into the image
 #ARG JAR_FILE=target/*.jar
 #COPY ${JAR_FILE} app.jar
-COPY ./target/*.jar app.jar
+COPY ./target/Library-Management-System-0.0.1-SNAPSHOT.jar Library-Management-System-0.0.1-SNAPSHOT.jar
 
 # Expose the application port
-EXPOSE 8091
+EXPOSE 80
 
 # Run the App
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "/Library-Management-System-0.0.1-SNAPSHOT.jar"]
 
 #mvn clean package -Pprod -DskipTests
 #docker build -t lms_app:latest .
