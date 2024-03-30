@@ -1,27 +1,8 @@
-version: '3.8'
+version: '3.7'
 services:
-  spring-app:
-    image: lmsapp:latest
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "8080:8080"
-    depends_on:
-      - mysql-db
-    environment:
-      SPRING_PROFILES_ACTIVE: "test"
-    networks:
-      - backend
-  mysql-db:
-    image: "mysql:latest"
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: db_lms
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-    ports:
-      - "3406:3306"
-    networks:
-      - backend
-networks:
-  backend:
-    driver: bridge
+      - 8091:7580

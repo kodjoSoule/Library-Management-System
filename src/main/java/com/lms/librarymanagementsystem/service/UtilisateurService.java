@@ -1,6 +1,5 @@
 package com.lms.librarymanagementsystem.service;
 
-import com.lms.librarymanagementsystem.model.Auteur;
 import com.lms.librarymanagementsystem.model.Utilisateur;
 import com.lms.librarymanagementsystem.repository.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +25,9 @@ public class UtilisateurService {
         return utilisateurRepository.findAll();
     }
 
-    public void saveUser(Utilisateur user) {
+    public Utilisateur saveUser(Utilisateur user) {
         utilisateurRepository.save(user);
+        return user;
     }
 
     public Utilisateur getUserById(Long id) {

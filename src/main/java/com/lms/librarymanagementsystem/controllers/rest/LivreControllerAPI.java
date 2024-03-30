@@ -61,7 +61,7 @@ public class LivreControllerAPI {
 
 
     // Endpoint pour récupérer un livre par son ID
-    @GetMapping("/api/livres/{id}")
+    @GetMapping("/api/livre/{id}")
     public ResponseEntity<Livre> getLivreById(@PathVariable("id") Long id) {
         Livre livre = livreService.getLivreById(id);
         if (livre == null) {

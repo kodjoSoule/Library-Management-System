@@ -1,16 +1,18 @@
-FROM openjdk:17-jdk-alpine
+# Use a base image with Java 17
+FROM openjdk:17
 
-MAINTAINER souleymanekodjo@gmail.com
+# Copy the JAR package into the image
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
 
-# Ajouter le jar construit dans le conteneur
-COPY ./target/Library-Management-System-0.0.1-SNAPSHOT.jar Library-Management-System-0.0.1-SNAPSHOT.jar
-#Expose the port
+# Expose the application port
+EXPOSE 8091
 
-EXPOSE 8080
-
-# Commande d'entrée
-ENTRYPOINT ["java", "-jar", "/Library-Management-System-0.0.1-SNAPSHOT.jar"]
+# Run the App
+ENTRYPOINT ["java", "-jar", "/app.jar"]
 
 #mvn clean package -Pprod -DskipTests
 #docker build -t lms_app:latest .
 #docker run -p 8080:8080 lms_app:latest
+
+
