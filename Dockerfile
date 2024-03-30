@@ -6,7 +6,7 @@ MAINTAINER souleymanekodjo@gmail.com
 COPY ./target/Library-Management-System-0.0.1-SNAPSHOT.jar Library-Management-System-0.0.1-SNAPSHOT.jar
 #Expose the port
 
-EXPOSE 8080
+EXPOSE 8091
 
 # Commande d'entrée
 ENTRYPOINT ["java", "-jar", "/Library-Management-System-0.0.1-SNAPSHOT.jar"]
