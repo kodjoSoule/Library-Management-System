@@ -9,7 +9,7 @@ COPY ${JAR_FILE} app.jar
 EXPOSE 8091
 
 # Run the App
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "/Library-Management-System-0.0.1-SNAPSHOT.jar"]
 
 #mvn clean package -Pprod -DskipTests
 #docker build -t lms_app:latest .
