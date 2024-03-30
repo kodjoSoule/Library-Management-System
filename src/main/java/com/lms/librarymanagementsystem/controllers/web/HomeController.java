@@ -2,12 +2,13 @@ package com.lms.librarymanagementsystem.controllers.web;
 
 import com.lms.librarymanagementsystem.model.Emprunt;
 import com.lms.librarymanagementsystem.model.Infos;
-import com.lms.librarymanagementsystem.service.EmpruntService;
-import com.lms.librarymanagementsystem.service.InfosService;
-import com.lms.librarymanagementsystem.service.LivreService;
-import com.lms.librarymanagementsystem.service.UtilisateurService;
+import com.lms.librarymanagementsystem.model.Penalite;
+import com.lms.librarymanagementsystem.model.Utilisateur;
+import com.lms.librarymanagementsystem.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
@@ -27,10 +28,17 @@ public class HomeController {
     UtilisateurService utilisateurService;
     @Autowired
     EmpruntService empruntService;
+    @Autowired
+    PenaliteService penaliteService;
     @GetMapping
     public String home(Model model) {
         model.addAttribute("message", "" +
                 "Bienvenue sur la page d'accueil de la bibliothèque en ligne. Vous pouvez consulter les livres disponibles, ");
+
+
+        model.addAttribute("topEmprunteLivres", livreService.getTopEmprunteLivres());
+        model.addAttribute("infos", infosService.getFirstInfos());
+        model.addAttribute("recentEmprunts", empruntService.getThreeRecentEmprunts());
         return "home";
     }
     @GetMapping("/about")
@@ -84,13 +92,15 @@ public class HomeController {
     @GetMapping("/admin/dashboard")
     public String administration(Model model) {
         List<Emprunt> recentEmprunts = empruntService.getThreeRecentEmprunts();
+        List<Emprunt> retardsEmprunts = empruntService.getRetardsEmprunts();
+        List<Utilisateur> utilisateursRoleAdmin = utilisateurService.getUtilisateursByRole("ADMIN");
         model.addAttribute("topEmprunteLivres", livreService.getTopEmprunteLivres());
         model.addAttribute("recentEmprunts", recentEmprunts);
         model.addAttribute("livresCount", livreService.countLivres());
         model.addAttribute("utilisateursCount", utilisateurService.countUtilisateurs());
         model.addAttribute("empruntsCount", empruntService.countEmprunts());
-        model.addAttribute("administrateurCount", utilisateurService.countUtilisateursRoleAdmin());
-        model.addAttribute("empruntsEnRetard", empruntService.countEmpruntsEnRetard());
+        model.addAttribute("administrateurCount", utilisateursRoleAdmin.size());
+        model.addAttribute("empruntsEnRetard", retardsEmprunts.size());
         return "admin/dashboard";
     }
     @GetMapping("/admin/livres-manager")
@@ -114,4 +124,37 @@ public class HomeController {
     public String accessDenied() {
         return "access-denied";
     }
+
+    //user profile
+    @GetMapping("/user/user-profile")
+    public String userProfile(Model model, RedirectAttributes redirectAttributes) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails)principal).getUsername();
+            Utilisateur user = utilisateurService.findByUsername(username);
+            if (user != null) {
+                List<Penalite> penalites = penaliteService.getPenalitesByUtilisateur(user);
+                if (penalites != null) {
+                    model.addAttribute("penalites", penalites);
+                }
+                model.addAttribute("user", user);
+                model.addAttribute("messages", user.getMessages());
+                model.addAttribute("livresEmpruntes", empruntService.getEmpruntsByUtilisateur(user));
+                return "user-profile";
+            }
+        }
+        redirectAttributes.addFlashAttribute("message", "Vous devez vous connecter pour accéder à votre profil");
+        return "redirect:/";
+    }
+    @GetMapping("/user/{id}/edit-profile")
+    public String editProfile(@PathVariable Long id, Model model) {
+        Utilisateur user = utilisateurService.findById(id);
+        if (user != null) {
+            model.addAttribute("user", user);
+            return "user-edit-profile";
+        }
+        return "redirect:/";
+    }
+
+
 }

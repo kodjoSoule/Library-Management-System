@@ -8,6 +8,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -61,7 +62,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             adminUser.setFirstName("Mohamed");
             adminUser.setLastName("Ben");
             adminUser.setUsername(defaultAdminUsername);
-            adminUser.setPassword(passwordEncoder.encode("Passer123")); // replace "adminPassword" with the actual password
+            adminUser.setPassword(passwordEncoder.encode("Mohamed")); // replace "adminPassword" with the actual password
             adminUser.setRole("ADMIN");
             utilisateurRepository.save(adminUser);
         }
@@ -69,6 +70,17 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public void createUtlisateur(Utilisateur utilisateur){
         utilisateur.setPassword(passwordEncoder.encode(utilisateur.getPassword()));
+        utilisateur.setRole("USER");
         utilisateurRepository.save(utilisateur);
+    }
+
+    public String getCurrentUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            return ((UserDetails)principal).getUsername();
+        } else {
+            return principal.toString();
+        }
     }
 }

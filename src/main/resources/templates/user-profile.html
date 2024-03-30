@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+    <title>User Profile</title>
+</head>
+<body>
+<header class="p-3 bg-dark text-white" th:replace="fragments/header :: header">
+</header>
+<div class="container mt-5">
+    <h1 class="mb-4">User Profile</h1>
+
+    <!-- Tabulation -->
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="personal-tab" data-bs-toggle="pill" data-bs-target="#personal" type="button" role="tab" aria-controls="personal" aria-selected="true">Personal Information</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="messages-tab" data-bs-toggle="pill" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">Messages</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="penalties-tab" data-bs-toggle="pill" data-bs-target="#penalties" type="button" role="tab" aria-controls="penalties" aria-selected="false">Penalties</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="livre-emprunts-tab" data-bs-toggle="pill" data-bs-target="#livreemprunts" type="button" role="tab" aria-controls="livre-emprunts" aria-selected="false">Livre Emprunts</button>
+        </li>
+    </ul>
+
+    <!-- Tab content -->
+    <div class="tab-content" id="pills-tabContent">
+        <!-- Personal Information Tab -->
+        <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+            <section class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">Informations Personnelles</h2>
+                    <p class="card-text"><strong>Nom d'utilisateur :</strong> <span th:text="${#authentication.name}">chargement ...</span></p>
+                    <p class="card-text"><strong>Prénom :</strong> <span th:text="${user.getFirstName()}">chargement ...</span></p>
+                    <p class="card-text"><strong>Nom :</strong> <span th:text="${user.getLastName()}">chargement ...</span></p>
+                    <p class="card-text"><strong>Email :</strong> <span th:text="${user.getEmail()}">chargement ...</span></p>
+                    <p class="card-text"><strong>Rôle :</strong> <span th:text="${user.getRole()}">chargement ...</span></p>
+                    <a href="/user/{id}/edit-profile" class="btn btn-primary">Modifier le Profil</a>
+                </div>
+            </section>
+        </div>
+
+        <div class="tab-pane fade" id="livre-emprunts" role="tabpanel" aria-labelledby="livre-emprunts-tab">
+        </div>
+
+        <div class="tab-pane fade" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+            <section class="card mb-4">
+                <div class="card-body" th:if="${messages.size() > 0}">
+                    <h2 class="card-title">Messages</h2>
+                    <ul class="list-group">
+                        <li class="list-group-item" th:each="message : ${messages}">
+                            <strong class="me-2"
+                                    th:text="${message.getContent()}">Message</strong>
+                            <span class="badge bg-secondary"
+                                    th:text="${message.getCreatedAt()}">Date</span>
+
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body" th:if="${messages.size() == 0}">
+                    <h2 class="card-title">Messages</h2>
+                    <p class="card-text">Pas de messages</p>
+                </div>
+            </section>
+
+        </div>
+
+
+        <div class="tab-pane fade" id="penalties" role="tabpanel" aria-labelledby="penalties-tab">
+            <section class="card mb-4">
+                <div class="card-body" th:if="${penalites !=null}">
+                    <h2 class="card-title">Penalties</h2>
+                    <ul class="list-group">
+                        <li class="list-group" th:each="penalite : ${penalites}">
+                            <strong class="me-2"
+                                    th:text="${penalite.getRaison()}">Raison</strong>
+                            <span class="badge bg-secondary"
+                                  th:text="${penalite.getCreatedAt() != null ? penalite.getCreatedAt().toString() : 'N/A'}">Date</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body" th:if="${penalites.size() ==0}">
+                    <h2 class="card-title">Penalties</h2>
+
+                    <p class="card-text">No penalties</p>
+                </div>
+
+            </section>
+        </div>
+        <div class="tab-pane fade" id="livreemprunts" role="tabpanel" aria-labelledby="livre-emprunts-tab">
+            <section class="card mb-4" th:if="${livreemprunts != null}">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        Livres Empruntés
+                    </h2>
+                    <ul class="list-group">
+                        <li class="list-group-item" th:each="livreemprunt : ${livreemprunts}">
+                            <span th:text="${livreemprunt}">
+                                Titre du Livre
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <section class="card mb-4" th:if="${livreemprunts == null}">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        Livres Empruntés
+                    </h2>
+                    <p class="card-text">
+                        Pas de livres empruntés
+                    </p>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<!-- Vendor JS Files -->
+<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+
+</body>
+</html>

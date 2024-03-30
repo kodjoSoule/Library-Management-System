@@ -53,7 +53,8 @@ public class Livre {
             }
     )
     @JoinColumn(name = "added_by")
-    private Admin addedBy;
+    private  Utilisateur addedBy;
+    //private Admin addedBy;
 
     public Categorie getCategorie() {
         return categorie;

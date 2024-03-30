@@ -32,8 +32,8 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     private UtilisateurService UtilisateurService;
-    @Autowired
-    private AdminService adminService;
+    //@Autowired
+    //private AdminService adminService;
 
     @Autowired
     private EmpruntService empruntService;
@@ -44,25 +44,37 @@ public class DataInitializer implements CommandLineRunner {
     InfosService infosService;
     @Autowired
     UtilisateurService utilisateurService;
+    @Autowired
+    MessageSender messageSender;
 
     @Autowired
     CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    MessageService messageService;
+    @Autowired
+    PenaliteService penaliteService;
 
-    //Create function to return file image  from C:\Users\Kodjo\lmages\profile.jpg
-    public File getImageFromSystem(){
-        String path = "C:\\Users\\Kodjo\\lmages\\profile.jpg";
-        File file = new File(path);
-        return file;
-    }
     public  void createUtilisateurs(){
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             Utilisateur user = new Utilisateur();
             user.setUsername("user" + i);
-            user.setEmail("user" + i + "@example.com");
+            user.setEmail("soule.soft@gmail.com");
             user.setFirstName("User" + i);
             user.setLastName("Test");
             user.setPassword("password" + i);
-            user.setRole("ROLE_USER");
+            user.setRole("USER");
+            Message message = new Message();
+            message.setContent("Message de bienvenue "+ user.getFullName());
+            message.setUtilisateur(user);
+            Penalite penalite = new Penalite();
+            penalite.setRaison("Motif de la pénalité");
+            penalite.setNiveau(1);
+            penalite.setUtilisateur(user);
+            penaliteService.savePenalite(penalite);
+            user.setPenalite(penalite);
+            messageService.saveMessage(message);
+            //messageSender.sendEmail(user.getEmail(), "Bienvenue", message.getContent());
+            user.setMessage(message);
             customUserDetailsService.createUtlisateur(user);
             //utilisateurService.saveUser(user);
         }
@@ -81,13 +93,15 @@ public class DataInitializer implements CommandLineRunner {
         auteurService.saveAuteur(victorHugo);
         log.info("Auteur "+victorHugo.getNom() +" créé avec succès");
         // Création d'un administrateur
-        Admin soule = new Admin();
+        //Admin soule = new Admin();
+        Utilisateur soule = new Utilisateur();
         soule.setNom("Souleymane");
+        soule.setLastName("Diallo");
         soule.setPrenom("Diallo")  ;
         soule.setEmail("soule@example.com");
         soule.setUsername("soule");
         soule.setPassword("soule");
-        adminService.saveAdmin(soule);
+        utilisateurService.saveUtilisateur(soule);
         log.info("Administrateur "+soule.getUsername() +" créé avec succès");
 
         // Définir le nombre de livres à créer
@@ -163,13 +177,13 @@ public class DataInitializer implements CommandLineRunner {
         auteurService.saveAuteur(auteur);
         log.info("Auteur créé avec succès");
         //3 Création d'un utilisateur
-        Admin administrateur = new Admin();
+        Utilisateur administrateur = new Utilisateur();
         administrateur.setUsername("djiguiba");
         administrateur.setPassword("djiguiba");
         administrateur.setNom("Djiguiba");
         administrateur.setPrenom("Kouyaté");
         administrateur.setEmail("Djiguiba@example.com");
-        adminService.saveAdmin(administrateur);
+        utilisateurService.saveUtilisateur(administrateur);
         log.info("Utilisateur créé avec succès");
 
         //4 Création d'un livre
@@ -212,15 +226,18 @@ public class DataInitializer implements CommandLineRunner {
             Emprunt emprunt = new Emprunt();
             emprunt.setUtilisateur(Utilisateur);
             emprunt.setLivre(sousOrange);
-            emprunt.setDateEmprunt(LocalDate.now());
-            emprunt.setDateRetourPrevue(LocalDate.now().plusDays(14)); // Retour prévu dans 14 jours
+            //date moins 2 jours
+            emprunt.setDateEmprunt(LocalDate.now().minusDays(2));
+            emprunt.setDateRetourPrevue(LocalDate.now().minusDays(1)); // Retour prévu dans 14 jours
+            emprunt.setAdmin(administrateur);
             empruntService.saveEmprunt(emprunt);
             log.info("Emprunt1 créé avec succès");
             Emprunt emprunt2 = new Emprunt();
             emprunt2.setUtilisateur(Utilisateur);
             emprunt2.setLivre(sousOrange);
-            emprunt2.setDateEmprunt(LocalDate.now());
-            emprunt2.setDateRetourPrevue(LocalDate.now().plusDays(14)); // Retour prévu dans 14 jours
+            emprunt2.setDateEmprunt(LocalDate.now().minusDays(2));
+            emprunt2.setDateRetourPrevue(LocalDate.now().minusDays(1)); // Retour prévu dans 14 jours
+            emprunt2.setAdmin(administrateur);
             empruntService.saveEmprunt(emprunt2);
             log.info("Emprunt 2 créé avec succès");
             //8 creation d'un retour d'emprunt 1
@@ -285,19 +302,19 @@ public class DataInitializer implements CommandLineRunner {
         Utilisateur.setPassword("Utilisateur");
         UtilisateurService.saveUtilisateur(Utilisateur1);
         // Création d'un administrateur
-        Admin admin1 = new Admin();
+        Utilisateur admin1 = new Utilisateur();
         admin1.setNom("Nom de l'Administrateur");
         admin1.setPrenom("Prénom de l'Administrateur");
         admin1.setUsername("admin");
         admin1.setPassword("admin");
-        adminService.saveAdmin(admin1);
+        utilisateurService.saveUtilisateur(admin1);
 
         // Emprunt d'un exemplaire par l'administrateur à l'adhérent
         Emprunt emprunt = new Emprunt();
         emprunt.setUtilisateur(Utilisateur);
         emprunt.setExemplaire(sousOrange); // Remplacez 1L par l'ID du livre réel
-        emprunt.setDateEmprunt(LocalDate.now());
-        emprunt.setDateRetourPrevue(LocalDate.now().plusDays(14)); // Retour prévu dans 14 jours
+        emprunt.setDateEmprunt(LocalDate.now().minusDays(2));
+        emprunt.setDateRetourPrevue(LocalDate.now()); // Retour prévu dans 14 jours
         empruntService.saveEmprunt(emprunt);
         // Affichage de la liste des emprunts de l'adhérent
         //GetUtilisateur parID
@@ -314,8 +331,8 @@ public class DataInitializer implements CommandLineRunner {
         Emprunt empruntAdmin = new Emprunt();
         empruntAdmin.setUtilisateur(Utilisateur);
         empruntAdmin.setExemplaire(sousOrange); // Remplacez 2L par l'ID du livre réel
-        empruntAdmin.setDateEmprunt(LocalDate.now());
-        empruntAdmin.setDateRetourPrevue(LocalDate.now().plusDays(14)); // Retour prévu dans 14 jours
+        empruntAdmin.setDateEmprunt(LocalDate.now().minusDays(2));
+        empruntAdmin.setDateRetourPrevue(LocalDate.now().minusDays(1)); // Retour prévu dans 14 jours
         empruntService.saveEmprunt(empruntAdmin);
 
         // Affichage de la liste des emprunts de l'adhérent après l'emprunt par l'administrateur

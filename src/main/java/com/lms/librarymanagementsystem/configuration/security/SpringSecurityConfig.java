@@ -1,26 +1,29 @@
 package com.lms.librarymanagementsystem.configuration.security;
 
-import com.lms.librarymanagementsystem.model.Utilisateur;
-import jakarta.annotation.PostConstruct;
+import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
 @EnableWebSecurity
@@ -32,64 +35,56 @@ public class SpringSecurityConfig {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
 
-    @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
+
+    private String jwtKey ="357638792F423F4428472B4B6250655368566D597133743677397A2443264629";
 
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> {
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/login").permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/user/**").hasRole("USER");
+                    auth.requestMatchers("/api/**").authenticated();
                     auth.anyRequest().permitAll();
                 })
+                //use the custom login form
                 .formLogin(
-                        Customizer.withDefaults()
+                        formLogin -> formLogin
+                                .loginPage("/login")
+                                .defaultSuccessUrl("/")
                 )
-                .logout(logout -> logout.logoutSuccessUrl("/"))
-                .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(accessDeniedHandler))
-                ;
-
-        // Désactiver le formulaire de connexion par défaut pour les requêtes API
-        http.formLogin().disable();
-        // Ajouter le filtre JWT avant le filtre d'authentification par session utilisateur
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
+                .logout(
+                        logout -> logout
+                                .logoutUrl("/logout")
+                                .logoutSuccessUrl("/")
+                ).exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(accessDeniedHandler));
         return http.build();
     }
 
+    @Bean
+    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeRequests(authorize -> authorize
+                        .requestMatchers("/api/login").permitAll()
+                        .requestMatchers("/api/**").authenticated()
+                        .anyRequest().permitAll()
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                //CustomJwtDecoder
+                .oauth2ResourceServer(
+                        oauth2 -> oauth2.jwt(Customizer.withDefaults())
+                )
+                .authenticationProvider(authenticationProvider())
+                .httpBasic(Customizer.withDefaults());
 
-//    @Bean
-//    public UserDetailsService users() {
-//        // créer un utilisateur "user" et un utilisateur "admin"
-//        UserDetails user = User
-//                .builder()
-//                .username("user")
-//                .password(passwordEncoder().encode("user"))
-//                // ajouter un rôle à l'utilisateur "user"
-//                .roles("USER").build();
-//        // créer un utilisateur "admin" et un utilisateur "admin"
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password(passwordEncoder().encode("admin"))
-//                // ajouter un rôle à l'utilisateur "user" et "admin"
-//                .roles("USER", "ADMIN").build();
-//        // retourner une liste d'utilisateurs
-//        return new InMemoryUserDetailsManager(user, admin);
-//    }
-//    @Bean
-//    public DaoAuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-//        authProvider.setUserDetailsService(users());
-//        authProvider.setPasswordEncoder(passwordEncoder());
-//        return authProvider;
-//    }
-
+        return http.build();
+    }
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -97,18 +92,18 @@ public class SpringSecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }
-//    @PostConstruct
-//    public void createAdminUserIfNeeded() {
-//        customUserDetailsService.createUserIfNeeded(
-//                new Utilisateur(
-//                        "Mohamed",
-//                        "Ben",
-//                        "Moahamed@gmail.com",
-//                        "mohamed",
-//                        passwordEncoder.encode("mohamed")
-//                )
-//        );
-//    }
 
+    //hk
+    @Bean
+    public JwtEncoder jwtEncoder() {
+
+        return new NimbusJwtEncoder(new ImmutableSecret<>(this.jwtKey.getBytes()));
+    }
+
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        SecretKeySpec secretKey = new SecretKeySpec(this.jwtKey.getBytes(), 0, this.jwtKey.getBytes().length, "RSA");
+        return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
+    }
 
 }

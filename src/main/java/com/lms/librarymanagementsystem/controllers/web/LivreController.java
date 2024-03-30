@@ -1,5 +1,6 @@
 package com.lms.librarymanagementsystem.controllers.web;
 
+import com.lms.librarymanagementsystem.configuration.security.CustomUserDetailsService;
 import com.lms.librarymanagementsystem.model.*;
 import com.lms.librarymanagementsystem.service.*;
 import jakarta.transaction.Transactional;
@@ -29,10 +30,14 @@ public class LivreController {
     CategorieService categorieService;
     @Autowired
     AuteurService auteurService ;
+    //@Autowired
+    //AdminService adminService;
     @Autowired
-    AdminService adminService;
+    UtilisateurService adminService;
     @Autowired
     ImageService imageService;
+    @Autowired
+    CustomUserDetailsService customUserDetailsService;
 
     @GetMapping("/livres")
     public String getPaginatedLivres(
@@ -175,7 +180,7 @@ public String getPaginatedLivresAdmin(
         }
         Categorie categorie = null;
         Auteur auteur = null;
-        Admin admin = null;
+        Utilisateur admin = null;
         if ("new".equals(livreDetails.getCategorie())) {
             Categorie newCategorie = new Categorie();
             newCategorie.setNom(livreDetails.getCategorie());
@@ -195,11 +200,9 @@ public String getPaginatedLivresAdmin(
             redirectAttributes.addFlashAttribute("error", "Erreur lors de la création du livre. Veuillez réessayer.");
             return "redirect:/admin/livres/add";
         }
-        admin = adminService.getAdminById(2L);
-        Admin ozoAdmin = adminService.saveAdmin(admin);
-        log.info("Catégorie: " + categorie.getNom());
-        log.info("Auteur: " + auteur);
-        log.info("Admin: " + ozoAdmin);
+
+        String adminUsername = customUserDetailsService.getCurrentUsername();
+        Utilisateur adminBiblio = adminService.findByUsername(adminUsername);
 
         Livre livre = new Livre();
         livre.setAuteur(auteur);
@@ -212,7 +215,7 @@ public String getPaginatedLivresAdmin(
         livre.setTitre(livreDetails.getTitre());
         livre.setDatePublication(livreDetails.getDatePublication());
         livre.setDescription(livreDetails.getDescription());
-        livre.setAddedBy(ozoAdmin);
+        livre.setAddedBy(adminBiblio);
         livre.setImage(imageData);
         livreService.saveLivre(livre);
         redirectAttributes.addFlashAttribute("success", "Livre ajouté avec succès !");

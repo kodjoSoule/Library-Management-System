@@ -13,4 +13,11 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.sendRedirect("/access-denied");
     }
+
+    //gerer l'acces refusé api rest qui commnet par /api
+    public void handleApi(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
+    }
+
+
 }

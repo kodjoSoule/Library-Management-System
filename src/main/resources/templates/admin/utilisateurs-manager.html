@@ -61,7 +61,7 @@
                                 <td th:text="${user.getUsername()}"></td>
                                 <td th:text="${user.getEmail()}"></td>
                                 <td>
-                                    <a th:href="@{/admin/utilisateur/{id}(id=${user.id})}" class="btn btn-info"><i class="bi bi-eye"></i></a>
+<!--                                    <a th:href="@{/admin/utilisateur/{id}(id=${user.id})}" class="btn btn-info"><i class="bi bi-eye"></i></a>-->
                                     <a th:href="@{/admin/utilisateur/{id}/update(id=${user.id})}" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
                                     <a th:href="@{/admin/utilisateur/{id}/delete(id=${user.id})}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
                                 </td>

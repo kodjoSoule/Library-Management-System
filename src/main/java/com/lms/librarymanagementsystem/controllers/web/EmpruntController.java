@@ -1,10 +1,8 @@
 package com.lms.librarymanagementsystem.controllers.web;
 
+import com.lms.librarymanagementsystem.configuration.security.CustomUserDetailsService;
 import com.lms.librarymanagementsystem.model.*;
-import com.lms.librarymanagementsystem.service.AdminService;
-import com.lms.librarymanagementsystem.service.EmpruntService;
-import com.lms.librarymanagementsystem.service.LivreService;
-import com.lms.librarymanagementsystem.service.UtilisateurService;
+import com.lms.librarymanagementsystem.service.*;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,9 @@ public class EmpruntController {
     @Autowired
     private UtilisateurService utilisateurService;
     @Autowired
-    private AdminService adminService;
+    CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private MessageSender messageSender;
 
     @GetMapping("/admin/emprunts")
     public String getPaginatedEmprunts(
@@ -47,7 +47,6 @@ public class EmpruntController {
         int pageSize = size.orElse(5);
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize) ;
         Page<Emprunt> empruntPage = empruntService.findPaginated(pageable);
-        //Liste des emprunt en cours
         if (all.orElse(false)) {
             empruntPage = empruntService.findEmpruntEnCoursPaginated(pageable);
 
@@ -70,25 +69,6 @@ public class EmpruntController {
         return "admin/emprunt-manager";
     }
 
-    @GetMapping("/admin/emprunts/retour")
-    public String getPaginatedEmpruntsRetour(
-            @RequestParam("pageNo") Optional<Integer> page,
-            @RequestParam("pageSize") Optional<Integer> size,
-            Model model
-    ) {
-        int currentPage = page.orElse(1);
-        int pageSize = size.orElse(5);
-        Page<Emprunt> empruntRetournerPage = empruntService.findEmpruntRetournerPaginated(PageRequest.of(currentPage - 1, pageSize));
-        log.info("**********************************");
-        log.info("**********************************");
-        log.info("**********************************");
-        log.info("empruntRetournerPage: {}", empruntRetournerPage.getContent());
-
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", empruntRetournerPage.getTotalPages());
-        model.addAttribute("emprunts", empruntRetournerPage.getContent());
-        return "admin/emprunts-retourner-manager";
-    }
     @GetMapping("/admin/emprunt/retour/{id}")
     public String getPaginatedEmpruntsRetournerUnLivre(
             @PathVariable("id") Long id,
@@ -150,24 +130,18 @@ public class EmpruntController {
     @Transactional
     @PostMapping("/admin/emprunt/add")
     public String createEmprunt(@ModelAttribute("emprunt") Emprunt emprunt, RedirectAttributes redirectAttributes) {
-        log.info("**************************************************");
-        log.info("**************************************************");
-        log.info("**************************************************");
-        log.info("**************************************************");
-        log.info("**************************************************");
-        log.info("**************************************************");
-        log.info("**************************************************");
-        log.info("emprunt: {}", emprunt);
         try{
             Utilisateur utilisateur = utilisateurService.getUserById((long) emprunt.getUtilisateurId());
             Livre livre = livreService.getLivreById((long)emprunt.getLivreId());
-            Admin admin = adminService.getAdminById((long) emprunt.getAdminId());
+            //Admin admin = adminService.getAdminById((long) emprunt.getAdminId());
+            String AdminUsername = customUserDetailsService.getCurrentUsername();
+            Utilisateur admin = utilisateurService.findByUsername(AdminUsername);
             emprunt.setUtilisateur(utilisateur);
             emprunt.setLivre(livre);
             emprunt.setAdmin(admin);
             empruntService.saveEmprunt(emprunt);
+            messageSender.sendEmail(utilisateur.getEmail(), "Emprunt de livre", "Vous avez emprunté le livre : " + livre.getTitre());
             redirectAttributes.addFlashAttribute("success", "Emprunt ajouté avec succès");
-
         }catch (Exception e){
             redirectAttributes.addFlashAttribute("error", "Erreur lors de l'ajout de l'emprunt");
         }

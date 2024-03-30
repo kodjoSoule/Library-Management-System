@@ -8,13 +8,16 @@
         <div class="col-md-8">
             <h2 class="display-4">Bienvenue à la Bibliothèque</h2>
             <p class="lead">
-                Découvrez un monde de connaissances, d'aventures et d'imagination à travers notre collection de livres soigneusement sélectionnés.
+                Bienvenue sur notre plateforme de gestion de bibliothèque en ligne. Nous mettons à votre disposition une vaste collection de livres couvrant divers domaines de la connaissance. Vous trouverez également une collection spéciale pour les développeurs, comprenant des livres sur Java, JavaScript, TypeScript, PHP, Spring Boot et bien d'autres.
             </p>
             <p>
-                La Bibliothèque est bien plus qu'un simple espace de rangement de livres. C'est un lieu où les esprits curieux se rencontrent, où les histoires prennent vie et où l'apprentissage devient une aventure passionnante.
+                Notre plateforme est développée en interne et utilise des technologies modernes telles que Spring Boot pour le backend, Thymeleaf pour les templates HTML et Bootstrap pour le design.
             </p>
             <p>
-                Rejoignez-nous dans cette quête infinie de savoir et d'émerveillement. Explorez nos rayons, découvrez de nouveaux auteurs, et plongez-vous dans des mondes fascinants à chaque page tournée.
+                Nous sommes fiers de notre application et de la manière dont elle contribue à gérer efficacement notre bibliothèque. Nous espérons que vous apprécierez de l'utiliser autant que nous avons apprécié de la développer.
+            </p>
+            <p>
+                Développé par [Nom du développeur] et l'équipe de [Nom de l'entreprise].
             </p>
         </div>
         <div class="col-md-4">
@@ -22,39 +25,7 @@
         </div>
     </div>
 
-    <!-- Mises en avant -->
-    <div class="mt-5">
-        <h3>Mises en avant</h3>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    <img th:src="@{/biblio_book.jpg}"  alt="Mise en avant 1" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">Les Classiques</h5>
-                        <p class="card-text">Explorez notre collection de classiques littéraires qui ont résisté à l'épreuve du temps.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    <img th:src="@{/biblio_book.jpg}"  alt="Mise en avant 2" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">Nouveautés</h5>
-                        <p class="card-text">Découvrez les dernières publications des auteurs contemporains les plus en vogue.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    <img th:src="@{/biblio_book.jpg}"  alt="Mise en avant 3" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">Aventures Jeunesse</h5>
-                        <p class="card-text">Pour nos jeunes lecteurs, une collection spéciale d'aventures captivantes vous attend.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>

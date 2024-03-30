@@ -66,34 +66,9 @@
 
                         </div>
                     </div><!-- End Utilisateur Card -->
-                    <!-- Utilisateur Card -->
-                    <div class="col-xxl-4 col-md-6">
-                        <div class="card info-card utilisateur-card">
-
-                            
-
-                            <div class="card-body">
-                                <h5 class="card-title">Administrateur <span>| Today</span></h5>
-                                <div class="d-flex align-items-center">
-                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-person"></i>
-                                    </div>
-                                    <div class="ps-3">
-                                        <h6 th:text="${administrateursCount}">
-                                            Chargement...
-                                        </h6>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div><!-- End Utilisateur Card -->
                     <!-- Emprunt Card -->
                     <div class="col-xxl-4 col-md-6">
                         <div class="card info-card emprunt-card">
-
-                            
-
                             <div class="card-body">
                                 <h5 class="card-title">Emprunts <span>| Today</span></h5>
 
@@ -127,7 +102,7 @@
                                         <i class="bi bi-clock"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6 th:text="${retardsCount}">
+                                        <h6 th:text="${empruntsEnRetard}">
                                             Chargement...
                                         </h6>
                                     </div>

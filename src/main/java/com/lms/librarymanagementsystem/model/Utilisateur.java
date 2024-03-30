@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
 public class Utilisateur {
@@ -21,6 +23,14 @@ public class Utilisateur {
     @JsonIgnore
     private String confirmPassword;
     private String role;
+
+
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    private List<Message> messages;
+
+    @OneToOne(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    private Penalite penalite;
+
     public Utilisateur(String username, String password) {
         this.username = username;
         this.password = password;
@@ -44,5 +54,31 @@ public class Utilisateur {
 
     public Utilisateur orElseThrow(Object o) {
     return null;
+    }
+
+    public void setMessage(Message message) {
+
+    }
+    @Override
+    public String toString() {
+        return "Utilisateur{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
+
+    public void setNom(String nom) {
+        this.lastName = nom;
+    }
+
+    public void setPrenom(String firstName) {
+        this.firstName = firstName;
+
     }
 }

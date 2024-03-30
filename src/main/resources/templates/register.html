@@ -2,10 +2,11 @@
 <html lang="en" xmlns:th="">
 <head th:replace="fragments/head :: head"></head>
 <body>
+<header th:replace="fragments/header :: header"></header>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-4 mx-auto">
-            <form class="shadow p-3 mb-5 bg-body rounded">
+            <form class="shadow p-3 mb-5 bg-body rounded" th:action="@{/register}" method="post" th:object="${user}">
                 <p class="text-center mb-4">
                     <img class="img-thumbnail" th:src="@{/logo.png}" alt="Biblitheque Logo" width="80">
                     <span class="h3">Bibliotheque HK</span>
@@ -19,15 +20,35 @@
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="fullName" placeholder="Nom complet">
-                    <label for="fullName">Nom complet</label>
+                    <input type="text" class="form-control" id="firstName" placeholder="Prenom"
+                           th:field="*{firstName}"
+                    >
+                    <label for="firstName">Prenom </label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="username" class="form-control" id="username" placeholder="Nom utilisateur">
-                    <label for="username">Nom Utilisateur</label>
+                    <input type="text" class="form-control" id="fullName" placeholder="Nom complet"
+                           th:field="*{lastName}"
+                    >
+                    <label for="fullName">Nom</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="password" placeholder="Mot de passe">
+                    <input type="username" class="form-control" id="username" placeholder="Nom utilisateur"
+                            th:field="*{username}"
+                    >
+                    <label for="username">
+                        Nom Utilisateur</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="email" placeholder="Nom utilisateur"
+                           th:field="*{email}"
+                    >
+                    <label for="email">
+                        Email</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="password" placeholder="Mot de passe"
+                           th:field="*{password}"
+                    >
                     <label for="password">Mot de passe</label>
                 </div>
                 <button class="w-100 btn btn-lg btn-primary mb-3" type="submit">S'inscrire</button>

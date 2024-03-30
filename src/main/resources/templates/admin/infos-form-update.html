@@ -33,7 +33,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <form method="post" th:action="@{/admin/infos/update}" th:object="${infos}">
+                <form method="post" th:action="@{/admin/infos/update}" th:object="${infos}" accept-charset="UTF-8">
                     <div class="form-group mb-2">
                         <label for="openingHours">Heures d'Ouverture:</label>
                         <textarea th:field="${infos.heuresOuverture}" id="openingHours" name="openingHours" class="form-control" required placeholder="Enter opening hours"></textarea>

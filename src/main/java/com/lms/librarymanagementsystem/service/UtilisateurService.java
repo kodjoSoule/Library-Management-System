@@ -85,4 +85,12 @@ public class UtilisateurService {
     public Utilisateur findByUsername(String username) {
         return utilisateurRepository.findByUsername(username);
     }
+
+    public Utilisateur findById(Long id) {
+        return utilisateurRepository.findById(id).orElse(null);
+    }
+
+    public List<Utilisateur> getUtilisateursByRole(String admin) {
+        return utilisateurRepository.findUtilisateursByRole(admin);
+    }
 }

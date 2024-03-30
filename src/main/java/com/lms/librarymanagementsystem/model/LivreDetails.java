@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 public class LivreDetails {
     private Livre livre;
-    private Admin admin;
+    private Utilisateur admin;
     private Auteur auteurLivre;
     private ImageData imageData;
     private Categorie categorieLivre;

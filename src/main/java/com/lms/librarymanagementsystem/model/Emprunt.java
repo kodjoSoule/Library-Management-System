@@ -21,7 +21,8 @@ public class Emprunt {
 
     @ManyToOne
     @JoinColumn(name = "admin_id")
-    private Admin admin;
+    private Utilisateur admin;
+    //private Admin admin;
     private boolean retourne;
     private LocalDate dateEmprunt;
     private LocalDate dateRetourPrevue;
@@ -64,13 +65,6 @@ public class Emprunt {
 
 
 
-    public Admin getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
-    }
 
     public LocalDate getDateEmprunt() {
         return dateEmprunt;

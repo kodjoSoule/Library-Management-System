@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -81,5 +82,14 @@ public class EmpruntService {
     public List<Emprunt> getThreeRecentEmprunts() {
         Pageable pageable = PageRequest.of(0, 3);
         return empruntRepository.findThreeRecentEmprunts(pageable);
+    }
+
+    public List<Emprunt> getRetardsEmprunts() {
+        List<Emprunt> retardsEmprunts = empruntRepository.findRetardsEmprunts(LocalDate.now());
+        return retardsEmprunts;
+    }
+
+    public Page<Emprunt> findByRetourne(boolean b, PageRequest of) {
+        return empruntRepository.findByRetourne(b, of);
     }
 }

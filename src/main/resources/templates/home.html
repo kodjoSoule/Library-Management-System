@@ -10,7 +10,6 @@
         <p>Il est actuellement <span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy HH:mm')}">Date et heure</span></p>
         <hr>
         <h1 th:text="${message}">
-
         </h1>
         <p class="mb-0">La bibliothèque est ouverte du lundi au vendredi de 8h à 18h et le samedi de 9h à 13h.</p>
     </div>
@@ -51,74 +50,42 @@
     <!--    end carousel-->
 
     <!-- Section des livres en vedette -->
-    <div class="row">
+    <div class="row mt-2">
         <div class="col">
             <h2 class="text-center">Livres en Vedette</h2>
         </div>
     </div>
     <div class="row mb-5 mt-2" >
-        <div class="col-md-4">
+        <div class="col-md-4" th:each="livre : ${topEmprunteLivres}">
             <div class="card">
-                <img src="https://picsum.photos/600/400" class="card-img-top" alt="Livre 1">
+                <img th:src="@{/images/download/{filename}(filename=${livre.getImage().getName()})}" class="card-img-top" alt="Livre 1">
                 <div class="card-body">
-                    <h5 class="card-title">Livre Fascinant</h5>
-                    <p class="card-text">Découvrez ce livre captivant qui vous emmènera dans un voyage extraordinaire.</p>
-                    <a href="#" class="btn btn-primary">En savoir plus</a>
+                    <h5 class="card-title
+                    " th:text="${livre.getTitre()}">Livre 1</h5>
+                    <p class="card-text" th:text="${livre.getCategorie().getNom()}">Découvrez ce livre captivant.</p>
+                    <p class="card-text" th:text="${livre.getAuteur().getNomComplet()}">Découvrez ce livre captivant.</p>
+                    <a th:href="@{|/livre/${livre.id}|}" class="btn btn-primary">En savoir plus</a>
                 </div>
-            </div>
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <img src="https://picsum.photos/601/400" class="card-img-top" alt="Livre 2">
-                <div class="card-body">
-                    <h5 class="card-title">Aventures Inoubliables</h5>
-                    <p class="card-text">Plongez-vous dans des aventures inoubliables avec ce livre captivant.</p>
-                    <a href="#" class="btn btn-primary">En savoir plus</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <img src="https://picsum.photos/602/400" class="card-img-top" alt="Livre 3">
-                <div class="card-body">
-                    <h5 class="card-title">Secrets Mystérieux</h5>
-                    <p class="card-text">Explorez les secrets mystérieux cachés dans les pages de ce livre passionnant.</p>
-                    <a href="#" class="btn btn-primary">En savoir plus</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section des événements -->
-    <div class="row">
-        <div class="col">
-            <h2 class="text-center">Événements à Venir</h2>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card mb-3">
-                <img src="https://picsum.photos/603/400" class="card-img-top" alt="Événement 1">
-                <div class="card-body">
-                    <h5 class="card-title">Rencontrez un Auteur</h5>
-                    <p class="card-text">Assistez à notre prochain événement pour rencontrer un auteur renommé et discuter de son dernier livre.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card mb-3">
-                <img src="https://picsum.photos/604/400" class="card-img-top" alt="Événement 2">
-                <div class="card-body">
-                    <h5 class="card-title">Club de Lecture</h5>
-                    <p class="card-text">Rejoignez notre club de lecture mensuel et partagez vos impressions sur les derniers livres.</p>
-                </div>
-            </div>
-        </div>
+<!--        <div class="col-md-4">-->
+<!--            <div class="card">-->
+<!--                <img src="https://picsum.photos/601/400" class="card-img-top" alt="Livre 2">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-title">Aventures Inoubliables</h5>-->
+<!--                    <p class="card-text">Plongez-vous dans des aventures inoubliables avec ce livre captivant.</p>-->
+<!--                    <a href="#" class="btn btn-primary">En savoir plus</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
 
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>
 
-<script th:src="@{/js/bootstrap.bundle.min.js}"></script></body>
+<!-- Vendor JS Files -->
+<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+
 </html>

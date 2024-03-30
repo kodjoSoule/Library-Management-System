@@ -20,7 +20,12 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/reglements}">Reglements</a>
                     </li>
-                    <li class="nav-item" >
+
+<!--                    <li class="nav-item" >-->
+<!--                        <a class="nav-link" th:href="@{/admin}">Administration</a>-->
+<!--                    </li>-->
+
+                    <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                         <a class="nav-link" th:href="@{/admin}">Administration</a>
                     </li>
                     <li class="nav-item">
@@ -29,76 +34,29 @@
 
                 </ul>
                 <ul class="nav d-flex">
+
                     <li class="nav-item me-2" th:if="${#authorization.expression('isAuthenticated()')}">
-                        <span
-                                class="rounded-circle text-info p-2"  th:text="${#authentication.name}"></span>
-                        <a class="
-                                btn btn-danger"
-                           th:href="@{/logout}">Logout</a>
+                        <a href="/user/user-profile" class="btn btn-primary bg-white">
+                            <img class="bi bi-person-circle me-2" th:src="@{/user-logo.png}" style="width: 30px; height: 30px;">
+                            <strong
+                                    class="rounded-circle text-info p-2"  th:text="${#authentication.name}">
+                            </strong>
+                        </a>
+                        <form class="d-inline" th:action="@{/logout}" method="post">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                            <button class="btn btn-danger">Logout</button>
+                        </form>
+<!--                        <a class="-->
+<!--                                btn btn-danger"-->
+<!--                           th:href="@{/logout}">Logout</a>-->
                     </li>
                     <li class="nav-item me-2" th:unless="${#authorization.expression('isAuthenticated()')}">
+<!--                        register-->
+                        <a class="btn btn-primary" th:href="@{/register}">Register</a>
                         <a class="btn btn-primary" th:href="@{/login}">Login</a>
+
                     </li>
                 </ul>
-
-                <div class="dropdown d-none">
-                    <a class="dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="ms-4">
-                                <img th:src="@{/user-logo.png}" alt="Profile" class="rounded-circle">
-                                class="rounded-circle text-info"> Bouba Coulibaly</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" aria-labelledby="userDropdown">
-                        <li class="dropdown-header">
-                            <h6>Bouba Coulibaly</h6>
-                            <span>Etudiant</span>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                                <i class="bi bi-person"></i>
-                                <span>My Profile</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                                <i class="bi bi-envelope"></i>
-                                <span>Messages</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <i class="bi bi-gear"></i>
-                                <span>Settings</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <i class="bi bi-question-circle"></i>
-                                <span>Help</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <i class="bi bi-box-arrow-right"></i>
-                                <span>Sign Out</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </div>
     </nav>

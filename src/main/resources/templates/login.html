@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="">
 <head th:replace="fragments/head :: head"></head>
 <body>
+<header th:replace="fragments/header :: header"></header>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-4 mx-auto">
@@ -22,20 +23,19 @@
                     <input type="username" name="username" class="form-control" id="floatingInput" placeholder="Nom d'utilisateur">
                     <label for="floatingInput">Nom d'utilisateur</label>
                 </div>
-
-
                 <div class="form-floating mb-3">
                     <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Mot de passe">
                     <label for="floatingPassword">Mot de passe</label>
                 </div>
                 <button class="w-100 btn btn-lg btn-primary mb-3" type="submit">Se connecter</button>
-                <div class="text-center">
-                    <p class="small">Pas de compte? <a th:href="@{/register}">Créer un compte</a></p>
-                </div>
+<!--                <div class="text-center">-->
+<!--                    <p class="small">Pas de compte? <a th:href="@{/register}">Créer un compte</a></p>-->
+<!--                </div>-->
             </form>
         </div>
     </div>
 </div>
-
+<footer th:replace="fragments/footer :: footer"></footer>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script></body>
 </body>
 </html>
