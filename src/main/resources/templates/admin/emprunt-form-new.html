@@ -67,11 +67,12 @@
                                     <p><strong>Adhérent :</strong>
                                         <input type="text" class="form-control" value="Nom Adhérent Prénom Adhérent" disabled th:value="${emprunt.getUtilisateur().getFullName()}"/>
                                     </p>
-                                    <p><strong>Date d'emprunt :</strong>
-                                        <input type="date" class="form-control" value="2022-01-01"  th:field="*{emprunt.dateEmprunt}" >
+                                    <p th:if="${emprunt.dateEmprunt != null}"><strong>Date d'emprunt :</strong>
+                                        <input type="text" class="form-control" value="2022-01-01"  disabled th:value="${emprunt.dateEmprunt}" >
                                     </p>
-                                    <p><strong>Date de retour prévue :</strong>
-                                        <input type="date" class="form-control" value="2022-01-15"  th:field="*{emprunt.dateRetourPrevue}" >
+                                    <p th:if="${emprunt.dateRetourPrevue != null}"
+                                    ><strong>Date de retour prévue :</strong>
+                                        <input type="text" class="form-control" value="2022-01-15"  disabled th:value="${emprunt.dateRetourPrevue}" >
                                     </p>
                                 </div>
                             </div>

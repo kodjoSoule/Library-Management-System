@@ -68,9 +68,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
 
-    public void createUtlisateur(Utilisateur utilisateur){
+    public void createUtlisateur(Utilisateur utilisateur) {
         utilisateur.setPassword(passwordEncoder.encode(utilisateur.getPassword()));
-        utilisateur.setRole("USER");
+        if (utilisateur.getRole() == null)
+            utilisateur.setRole("USER");
         utilisateurRepository.save(utilisateur);
     }
 

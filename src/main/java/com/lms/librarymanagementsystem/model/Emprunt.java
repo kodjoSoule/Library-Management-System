@@ -67,25 +67,16 @@ public class Emprunt {
 
 
 
-    public LocalDate getDateEmprunt() {
-        return dateEmprunt;
+    public Date getDateEmprunt()
+    {
+        return java.sql.Date.valueOf(dateEmprunt);
     }
+
 
     public void setDateEmprunt(LocalDate dateEmprunt) {
         this.dateEmprunt = dateEmprunt;
     }
 
-    public Date getDateRetourPrevue()
-    {
-        return java.sql.Date.valueOf(dateRetourPrevue);
-    }
-
-
-
-
-    public Date getDateRetourEffectif() {
-        return java.sql.Date.valueOf(dateRetourEffectif);
-    }
 
     public void setDateRetourEffectif(LocalDate dateRetourEffectif) {
         this.dateRetourEffectif = dateRetourEffectif;

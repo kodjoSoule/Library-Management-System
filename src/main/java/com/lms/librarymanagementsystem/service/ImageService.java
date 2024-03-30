@@ -18,6 +18,7 @@ public class ImageService {
     private final ImageDataRepository imageDataRepository;
     private final Path rootLocation; // Ce chemin devra être configuré
 
+
     private static final String IMAGE_FOLDER = "src/main/resources/static/images";
     private static final String IMAGE_URL_PREFIX = "/images/";
     @Autowired
@@ -47,6 +48,10 @@ public class ImageService {
         if (imageData != null) {
             return imageData.getFilePath();
         }
+        return null;
+    }
+
+    public Object getImageById(long l) {
         return null;
     }
 }

@@ -83,4 +83,20 @@ public class EmpruntService {
     public Page<Emprunt> findByRetourne(boolean b, PageRequest of) {
         return empruntRepository.findByRetourne(b, of);
     }
+
+    public Emprunt createEmprunt(Emprunt emprunt) {
+        return empruntRepository.save(emprunt);
+    }
+
+    public List<Emprunt> getAllEmprunts() {
+        return empruntRepository.findAll();
+    }
+
+    public Emprunt updateEmprunt(Long id, Emprunt emprunt) {
+        return empruntRepository.save(emprunt);
+    }
+
+    public void deleteEmprunt(Long id) {
+        empruntRepository.deleteById(id);
+    }
 }

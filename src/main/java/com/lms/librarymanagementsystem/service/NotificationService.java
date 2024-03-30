@@ -25,8 +25,8 @@ public class NotificationService {
     UtilisateurService utilisateurService;
 
 
-    //@Scheduled(cron = "0 0 * * * *")
-    @Scheduled(fixedDelay = 5000)
+
+    @Scheduled(cron = "0 0 0 * * SUN")
     public void notifierRetardsEmprunts() {
         log.info("Exécution de la tâche planifiée pour notifier les retards d'emprunts");
         List<Emprunt> retardsEmprunts = empruntService.getRetardsEmprunts();
@@ -76,24 +76,5 @@ public class NotificationService {
             log.info("Exécution de la tâche planifiée pour notifier les retards d'emprunts");
         }
     }
-    // Exécuter cette méthode lorsque un compte est créé
-    @Scheduled(fixedDelay = 5000)
-    public void notifierCreationCompte() {
 
-    }
-
-
-    @Scheduled(fixedDelay = 5000)
-    public void notifierEnvoiMessage() {
-
-    }
-
-
-    @Scheduled(fixedDelay = 10000)
-    public void testerToutesLesDixSecondes() {
-        // Logique pour exécuter le test
-        log.info("Test exécuté à : " + LocalDateTime.now());
-        List<Emprunt> retardsEmprunts = empruntService.getRetardsEmprunts();
-        System.out.println("Nombre de retards d'emprunts : " + retardsEmprunts.size());
-    }
 }

@@ -21,15 +21,15 @@ public class LivreControllerAPI {
     @Autowired
     private AuteurService auteurService;
 
-    // Endpoint pour récupérer tous les livres
+
     @GetMapping("/api/livres")
     public ResponseEntity<List<Livre>> getAllLivres() {
         List<Livre> livres = livreService.getAllLivres();
         return ResponseEntity.ok(livres);
     }
-    // Endpoint pour ajouter un nouveau livre
-    //test message
-    // Endpoint pour ajouter un nouveau livre
+
+
+
     @PostMapping("/api/livre")
     public ResponseEntity<String> saveLivre(@RequestBody RequestLivre requestLivre) {
         Livre nouveauLivre = new Livre();
@@ -52,15 +52,7 @@ public class LivreControllerAPI {
     }
 
 
-    //test message
-    @PutMapping("/api/livre/{id}")
-    public ResponseEntity<String> updateLivre() {
-        return  new ResponseEntity<>("Livre modifié avec succès", HttpStatus.OK);
-    }
 
-
-
-    // Endpoint pour récupérer un livre par son ID
     @GetMapping("/api/livre/{id}")
     public ResponseEntity<Livre> getLivreById(@PathVariable("id") Long id) {
         Livre livre = livreService.getLivreById(id);
@@ -69,8 +61,8 @@ public class LivreControllerAPI {
         }
         return ResponseEntity.ok(livre);
     }
-    // Endpoint pour mettre à jour un livre existant
-    @PutMapping("/api/{id}")
+
+    @PutMapping("/api/livre/{id}")
     public ResponseEntity<Livre> updateLivre(@PathVariable("id") Long id, @RequestBody Livre livre) {
         Livre existingLivre = livreService.getLivreById(id);
         if (existingLivre == null) {
@@ -81,7 +73,7 @@ public class LivreControllerAPI {
         return ResponseEntity.ok(updatedLivre);
     }
     // Endpoint pour supprimer un livre
-    @DeleteMapping("/api/{id}")
+    @DeleteMapping("/api/livre/{id}")
     public ResponseEntity<Void> deleteLivre(@PathVariable("id") Long id) {
         Livre existingLivre = livreService.getLivreById(id);
         if (existingLivre == null) {

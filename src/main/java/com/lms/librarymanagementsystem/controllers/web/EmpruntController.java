@@ -177,7 +177,7 @@ public class EmpruntController {
         emprunt.setLivre(livre);
         emprunt.setUtilisateur(utilisateur);
         emprunt.setDateEmprunt(LocalDate.now());
-        emprunt.setDateRetourPrevue(LocalDate.now().plusDays(7));
+        emprunt.setDateRetourPrevue(LocalDate.now().plusDays(21));
         emprunt.setRetourne(false);
         emprunt.setDateRetourEffectif(null);
         model.addAttribute("emprunt", emprunt);
