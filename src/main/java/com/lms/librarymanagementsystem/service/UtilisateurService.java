@@ -93,4 +93,12 @@ public class UtilisateurService {
     public List<Utilisateur> getUtilisateursByRole(String admin) {
         return utilisateurRepository.findUtilisateursByRole(admin);
     }
+
+    public Page<Utilisateur> findPaginatedAndFiltered(PageRequest of, String s) {
+        return utilisateurRepository.findByUsernameContainingIgnoreCase(s, of);
+    }
+
+    public Page<Utilisateur> findByUsernameContainingIgnoreCase(String s, PageRequest of) {
+        return utilisateurRepository.findByUsernameContainingIgnoreCase(s, of);
+    }
 }

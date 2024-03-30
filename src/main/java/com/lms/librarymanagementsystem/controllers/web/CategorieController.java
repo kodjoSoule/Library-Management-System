@@ -19,10 +19,20 @@ public class CategorieController {
         this.categorieService = categorieService;
     }
     @GetMapping("/admin/categories")
-    public String getAllCategories(Model model, @RequestParam("pageNo") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
+    public String getAllCategories(Model model, @RequestParam("pageNo") Optional<Integer> page, @RequestParam("size") Optional<Integer> size,
+                                   @RequestParam("search") Optional<String> search
+    ) {
             int currentPage = page.orElse(1);
             int pageSize = size.orElse(5);
-        Page<Categorie> categoriePage = categorieService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+
+        Page<Categorie> categoriePage ;
+        if (search.isPresent()){
+            categoriePage = categorieService.findByNomContainingIgnoreCase(search.get(), PageRequest.of(currentPage - 1, pageSize));
+        }else{
+            categoriePage = categorieService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        }
+
+                //= categorieService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
         model.addAttribute("categories", categoriePage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", categoriePage.getTotalPages());

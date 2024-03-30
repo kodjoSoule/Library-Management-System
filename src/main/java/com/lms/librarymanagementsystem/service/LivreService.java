@@ -69,4 +69,8 @@ public class LivreService {
         Pageable pageable = PageRequest.of(0, 3); // Nombre de livres à afficher
         return livreRepository.findTopEmprunteLivres(pageable);
     }
+
+    public Page<Livre> findPaginatedAndFiltered(PageRequest of, String s) {
+        return livreRepository.findByTitreContainingIgnoreCase(s, of);
+    }
 }

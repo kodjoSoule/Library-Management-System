@@ -104,4 +104,8 @@ public class CategorieService {
     public Page<Categorie> findPaginated(PageRequest of) {
         return categorieRepository.findAll(of);
     }
+
+    public Page<Categorie> findByNomContainingIgnoreCase(String s, PageRequest of) {
+        return categorieRepository.findByNomContainingIgnoreCase(s, of);
+    }
 }

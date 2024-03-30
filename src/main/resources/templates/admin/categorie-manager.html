@@ -37,6 +37,10 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Liste des categories</h5>
+                        <form th:action="@{/admin/categories-manager}" method="get" class="form-inline my-2 my-lg-0">
+                            <input class="form-control mr-sm-2 mb-1" type="search" placeholder="Rechercher une categorie" aria-label="Search" name="search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
+                        </form>
                         <a href="/admin/categorie/add" class="btn btn-primary mb-3">
                             <i class="bi bi-plus-lg me-2"></i>
                             Ajouter une categorie</a>

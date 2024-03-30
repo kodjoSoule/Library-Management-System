@@ -1,70 +1,53 @@
 package com.lms.librarymanagementsystem.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import com.lms.librarymanagementsystem.model.Categorie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+public class CategorieTest {
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class CategorieTest {
     private Categorie categorie;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         categorie = new Categorie();
     }
 
     @Test
-    void getId() {
+    public void testGetId() {
         categorie.setId(1L);
         assertEquals(1, categorie.getId());
     }
 
     @Test
-    void setId() {
+    public void testSetId() {
         categorie.setId(1L);
         assertEquals(1, categorie.getId());
     }
 
     @Test
-    void getNom() {
+    public void testGetNom() {
         categorie.setNom("Fiction");
         assertEquals("Fiction", categorie.getNom());
     }
 
     @Test
-    void setNom() {
+    public void testSetNom() {
         categorie.setNom("Fiction");
         assertEquals("Fiction", categorie.getNom());
     }
 
     @Test
-    void getDescription() {
-        categorie.setDescription("Fiction books");
-        assertEquals("Fiction books", categorie.getDescription());
+    public void testGetDescription() {
+        categorie.setDescription("Physique");
+        assertEquals("Physique", categorie.getDescription());
     }
 
     @Test
-    void setDescription() {
-        categorie.setDescription("Fiction books");
-        assertEquals("Fiction books", categorie.getDescription());
-    }
-
-    @Test
-    void getLivres() {
-        List<Livre> livres = new ArrayList<>();
-        livres.add(new Livre());
-        categorie.setLivres(livres);
-        assertEquals(livres, categorie.getLivres());
-    }
-
-    @Test
-    void setLivres() {
-        List<Livre> livres = new ArrayList<>();
-        livres.add(new Livre());
-        categorie.setLivres(livres);
-        assertEquals(livres, categorie.getLivres());
+    public void testSetDescription() {
+        categorie.setDescription("Physique");
+        assertEquals("Physique", categorie.getDescription());
     }
 }

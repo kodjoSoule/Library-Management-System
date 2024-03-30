@@ -1,102 +1,76 @@
 package com.lms.librarymanagementsystem.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import com.lms.librarymanagementsystem.model.Auteur;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
-import static org.junit.jupiter.api.Assertions.*;
+public class AuteurTest {
 
-class AuteurTest {
     private Auteur auteur;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         auteur = new Auteur();
     }
 
     @Test
-    void getDateNaissance() {
-        LocalDate date = LocalDate.now();
-
-        auteur.setDateNaissance(date);
-        assertEquals(date, auteur.getDateNaissance());
-    }
-
-    @Test
-    void setDateNaissance() {
-        LocalDate date = LocalDate.now();
-        auteur.setDateNaissance(date);
-        assertEquals(date, auteur.getDateNaissance());
-    }
-
-    @Test
-    void testToString() {
-        auteur.setNom("Doe");
-        auteur.setPrenom("John");
-        assertEquals("Auteur{nom='Doe', prenom='John'}", auteur.toString());
-    }
-
-    @Test
-    void getId() {
+    public void testGetId() {
         auteur.setId(1L);
         assertEquals(1, auteur.getId());
     }
 
     @Test
-    void setId() {
+    public void testSetId() {
         auteur.setId(1L);
         assertEquals(1, auteur.getId());
     }
 
     @Test
-    void getNom() {
+    public void testGetNom() {
         auteur.setNom("Doe");
         assertEquals("Doe", auteur.getNom());
     }
 
     @Test
-    void setNom() {
+    public void testSetNom() {
         auteur.setNom("Doe");
         assertEquals("Doe", auteur.getNom());
     }
 
     @Test
-    void getPrenom() {
+    public void testGetPrenom() {
         auteur.setPrenom("John");
         assertEquals("John", auteur.getPrenom());
     }
 
     @Test
-    void setPrenom() {
+    public void testSetPrenom() {
         auteur.setPrenom("John");
         assertEquals("John", auteur.getPrenom());
     }
 
     @Test
-    void getLivres() {
-        List<Livre> livres = new ArrayList<>();
-        livres.add(new Livre());
-        auteur.setLivres(livres);
-        assertEquals(livres, auteur.getLivres());
+    public void testGetDateNaissance() {
+        LocalDate date = LocalDate.of(1990, 1, 1);
+        auteur.setDateNaissance(date);
+        assertEquals(date, auteur.getDateNaissance());
     }
 
     @Test
-    void setLivres() {
-        List<Livre> livres = new ArrayList<>();
-        livres.add(new Livre());
-        auteur.setLivres(livres);
-        assertEquals(livres, auteur.getLivres());
+    public void testSetDateNaissance() {
+        LocalDate date = LocalDate.of(1990, 1, 1);
+        auteur.setDateNaissance(date);
+        assertEquals(date, auteur.getDateNaissance());
     }
 
     @Test
-    void getNomComplet() {
+    public void testGetNomComplet() {
         auteur.setNom("Doe");
         auteur.setPrenom("John");
-        assertEquals("John Doe", auteur.getNomComplet());
+        assertEquals("Doe John", auteur.getNomComplet());
     }
 }

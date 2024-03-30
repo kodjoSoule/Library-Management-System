@@ -15,7 +15,6 @@ import java.util.List;
 public class AuteurService {
     @Autowired
     private AuteurRepository auteurRepository;
-    // Ajoutez les méthodes pour les opérations sur les auteurs
 
     public List<Auteur> getAllAuteurs() {
 
@@ -33,14 +32,13 @@ public class AuteurService {
     public Auteur addAuteur(Auteur auteur) {
         return auteurRepository.save(auteur);
     }
-    //update author by id and author
+
     public Auteur updateAuteur(int id, Auteur auteur) {
         if(auteurRepository.findById(id) != null) {
             return auteurRepository.save(auteur);
         }
         return null;
     }
-
     public void deleteAuteur(Long id) {
         auteurRepository.deleteById(id);
     }
@@ -49,4 +47,7 @@ public class AuteurService {
         return auteurRepository.findAll(Pageable);
     }
 
+    public Page<Auteur> findByNomContainingIgnoreCase(String s, PageRequest of) {
+        return auteurRepository.findByNomContainingIgnoreCase(s, of);
+    }
 }

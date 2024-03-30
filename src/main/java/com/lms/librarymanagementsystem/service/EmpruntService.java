@@ -1,29 +1,21 @@
 package com.lms.librarymanagementsystem.service;
 
-import com.lms.librarymanagementsystem.model.ReportData;
 import com.lms.librarymanagementsystem.model.Utilisateur;
 import com.lms.librarymanagementsystem.model.Emprunt;
-import com.lms.librarymanagementsystem.model.Utilisateur;
 import com.lms.librarymanagementsystem.repository.EmpruntRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 public class EmpruntService {
     @Autowired
     EmpruntRepository empruntRepository;
     @Autowired
     UtilisateurService utilisateurService ;
-
 
     public void deleteById(Long id){
         empruntRepository.deleteById(id);
@@ -88,7 +80,6 @@ public class EmpruntService {
         List<Emprunt> retardsEmprunts = empruntRepository.findRetardsEmprunts(LocalDate.now());
         return retardsEmprunts;
     }
-
     public Page<Emprunt> findByRetourne(boolean b, PageRequest of) {
         return empruntRepository.findByRetourne(b, of);
     }

@@ -11,13 +11,19 @@ import java.io.IOException;
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        response.sendRedirect("/access-denied");
+        if (request.getRequestURI().startsWith("/api")) {
+            handleApi(request, response, accessDeniedException);
+        } else {
+            response.sendRedirect("/access-denied");
+        }
     }
 
     //gerer l'acces refusé api rest qui commnet par /api
     public void handleApi(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
     }
+
+
 
 
 }

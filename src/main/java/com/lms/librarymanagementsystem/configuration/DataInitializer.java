@@ -40,8 +40,7 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private AuteurService auteurService;
 
-    @Autowired
-    InfosService infosService;
+
     @Autowired
     UtilisateurService utilisateurService;
     @Autowired
@@ -146,14 +145,7 @@ public class DataInitializer implements CommandLineRunner {
         //userService.createDefaultUser(new User(null, "admin", "admin", passwordEncoder().encode("password"), new ArrayList<>(Collections.singletonList("ROLE_ADMIN"))));
 
         createUtilisateurs();
-        //infos
-        Infos infos = new Infos();
-        infos.setHeuresOuverture("Lundi - Vendredi: 8h - 18h, Samedi: 9h - 17h, Dimanche: Fermé");
-        infos.setReglements("Règlements de la bibliothèque");
-        infos.setMessagesBanniere("Messages de bannière");
-        infos.setConditionEmprunt("Conditions d'emprunt");
-        infos.setPenelites("Pénélités");
-        infosService.updateInfos(infos);
+
         createLivreTest();
         //1 Création d'un catégorie
         Categorie scienceFictionCategory = new Categorie();

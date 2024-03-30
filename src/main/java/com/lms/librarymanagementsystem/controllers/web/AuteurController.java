@@ -19,13 +19,20 @@ public class AuteurController {
     private AuteurService auteurService;
     @GetMapping("/admin/auteurs")
     public String index(Model model, @RequestParam("pageNo") Optional<Integer> page,
-                        @RequestParam("size") Optional<Integer> size) {
+                        @RequestParam("size") Optional<Integer> size, @RequestParam("search") Optional<String> search
+    ){
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
         //show log
         System.out.println("currentPage: " + currentPage);
         System.out.println("pageSize: " + pageSize);
-        Page<Auteur> auteurPage = auteurService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        Page<Auteur> auteurPage ;
+        if (search.isPresent()){
+            auteurPage = auteurService.findByNomContainingIgnoreCase(search.get(), PageRequest.of(currentPage - 1, pageSize));
+        }else{
+            auteurPage = auteurService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        }
+                //= auteurService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
         model.addAttribute("auteurs", auteurPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", auteurPage.getTotalPages());

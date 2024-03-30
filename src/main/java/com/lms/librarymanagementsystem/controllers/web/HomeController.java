@@ -1,7 +1,6 @@
 package com.lms.librarymanagementsystem.controllers.web;
 
 import com.lms.librarymanagementsystem.model.Emprunt;
-import com.lms.librarymanagementsystem.model.Infos;
 import com.lms.librarymanagementsystem.model.Penalite;
 import com.lms.librarymanagementsystem.model.Utilisateur;
 import com.lms.librarymanagementsystem.service.*;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -20,8 +18,7 @@ import java.util.List;
 @Slf4j
 @Controller
 public class HomeController {
-    @Autowired
-    private InfosService infosService;
+
     @Autowired
     LivreService livreService;
     @Autowired
@@ -37,7 +34,6 @@ public class HomeController {
 
 
         model.addAttribute("topEmprunteLivres", livreService.getTopEmprunteLivres());
-        model.addAttribute("infos", infosService.getFirstInfos());
         model.addAttribute("recentEmprunts", empruntService.getThreeRecentEmprunts());
         return "home";
     }
@@ -47,38 +43,13 @@ public class HomeController {
     }
     @GetMapping("/reglements")
     public String reglements(Model model) {
-        model.addAttribute("infos", infosService.getFirstInfos());
         return "/reglements/reglements";
     }
     //page not found for error routes
 
     @GetMapping("/admin/infos-manager")
     public String infos(Model model) {
-        Infos infos = infosService.getFirstInfos();
-        model.addAttribute("infos", infos);
         return "admin/infos-manager";
-    }
-    @GetMapping("/admin/infos/infos-form-update")
-    public String updateInfos(Model model) {
-        Infos infos = infosService.getFirstInfos();
-        model.addAttribute("infos", infos);
-        return "admin/infos-form-update";
-    }
-    @PostMapping("/admin/infos/update")
-    public String updateInfos(@RequestBody Infos infos, RedirectAttributes redirectAttributes) {
-        if (infos == null) {
-            return "redirect:/admin/infos-manager";
-        }
-        try{
-            log.info(
-                    "Updating infos with id: " + infos.getId()
-            );
-            redirectAttributes.addFlashAttribute("message", "Les informations ont été mises à jour avec succès");
-        }catch (Exception e){
-            redirectAttributes.addFlashAttribute("message", "Erreur lors de la mise à jour des informations");
-
-        }
-        return "redirect:/admin/infos-manager";
     }
 
 

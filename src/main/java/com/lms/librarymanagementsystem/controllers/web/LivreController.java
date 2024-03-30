@@ -30,8 +30,6 @@ public class LivreController {
     CategorieService categorieService;
     @Autowired
     AuteurService auteurService ;
-    //@Autowired
-    //AdminService adminService;
     @Autowired
     UtilisateurService adminService;
     @Autowired
@@ -42,10 +40,18 @@ public class LivreController {
     @GetMapping("/livres")
     public String getPaginatedLivres(
             Model model, @RequestParam("pageNo") Optional<Integer> page,
-            @RequestParam("size") Optional<Integer> size) {
+            @RequestParam("size") Optional<Integer> size,
+            @RequestParam("search") Optional<String> search
+            ) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(12);
-        Page<Livre> livrePage = livreService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        Page<Livre> livrePage ;
+        if(search.isPresent()) {
+            livrePage = livreService.findPaginatedAndFiltered(PageRequest.of(currentPage - 1, pageSize), search.get());
+        } else {
+            livrePage = livreService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        }
+        //Page<Livre> livrePage = livreService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", livrePage.getTotalPages());
         model.addAttribute("pageSize", livrePage.getTotalElements());

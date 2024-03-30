@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 
 @Entity
@@ -74,16 +75,16 @@ public class Emprunt {
         this.dateEmprunt = dateEmprunt;
     }
 
-    public LocalDate getDateRetourPrevue() {
-        return dateRetourPrevue;
+    public Date getDateRetourPrevue()
+    {
+        return java.sql.Date.valueOf(dateRetourPrevue);
     }
 
-    public void setDateRetourPrevue(LocalDate dateRetourPrevue) {
-        this.dateRetourPrevue = dateRetourPrevue;
-    }
 
-    public LocalDate getDateRetourEffectif() {
-        return dateRetourEffectif;
+
+
+    public Date getDateRetourEffectif() {
+        return java.sql.Date.valueOf(dateRetourEffectif);
     }
 
     public void setDateRetourEffectif(LocalDate dateRetourEffectif) {

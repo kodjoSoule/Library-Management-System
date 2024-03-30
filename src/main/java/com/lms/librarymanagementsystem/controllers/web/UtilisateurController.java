@@ -26,10 +26,18 @@ public class UtilisateurController {
 
     @GetMapping("/admin/utilisateurs-manager")
     public String listUsers(Model model, @RequestParam("pageNo") Optional<Integer> page,
-                            @RequestParam("size") Optional<Integer> size) {
+                            @RequestParam("size") Optional<Integer> size,
+                            @RequestParam("search") Optional<String> search
+    ) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
-        Page<Utilisateur> utilisateursPage = utilisateurService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        Page<Utilisateur> utilisateursPage ;
+        if (search.isPresent()){
+            utilisateursPage = utilisateurService.findByUsernameContainingIgnoreCase(search.get(), PageRequest.of(currentPage - 1, pageSize));
+        }else{
+            utilisateursPage = utilisateurService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        }
+        //= utilisateurService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", utilisateursPage.getTotalPages());
         model.addAttribute("users", utilisateursPage.getContent());

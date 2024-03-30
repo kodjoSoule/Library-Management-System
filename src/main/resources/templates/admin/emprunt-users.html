@@ -57,7 +57,10 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Selectionner un utilisateur</h5>
-
+                        <form th:action="@{/admin/emprunt/users}" method="get" class="form-inline my-2 my-lg-0">
+                            <input class="form-control mr-sm-2 mb-1" type="search" placeholder="Rechercher un utilisateur par nom Utilisateur" aria-label="Search" name="search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
+                        </form>
                         <a href="/admin/utilisateur/add" class="btn btn-primary mb-3">
                             <i class="bi bi-plus
                             me-2"></i>

@@ -36,6 +36,10 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Liste des auteurs</h5>
+                        <form th:action="@{/admin/auteurs-manager}" method="get" class="form-inline my-2 my-lg-0">
+                            <input class="form-control mr-sm-2 mb-1" type="search" placeholder="Rechercher un auteur" aria-label="Search" name="search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
+                        </form>
                         <a href="/admin/auteur/add" class="btn btn-primary mb-3">Ajouter un auteur</a>
                         <table class="table table-striped">
                             <thead>

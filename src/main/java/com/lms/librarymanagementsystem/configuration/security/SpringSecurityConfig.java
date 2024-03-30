@@ -36,10 +36,7 @@ public class SpringSecurityConfig {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
-
     private String jwtKey ="357638792F423F4428472B4B6250655368566D597133743677397A2443264629";
-
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -49,42 +46,26 @@ public class SpringSecurityConfig {
                     auth.requestMatchers("/api/login").permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/user/**").hasRole("USER");
-                    auth.requestMatchers("/api/**").authenticated();
+                    auth.requestMatchers("/api/admin/**").hasRole("ADMIN");
+                    auth.requestMatchers("/api/**").permitAll();
                     auth.anyRequest().permitAll();
                 })
                 //use the custom login form
                 .formLogin(
                         formLogin -> formLogin
                                 .loginPage("/login")
-                                .defaultSuccessUrl("/")
+                                .defaultSuccessUrl("/", true)
+                                .permitAll()
                 )
                 .logout(
                         logout -> logout
                                 .logoutUrl("/logout")
                                 .logoutSuccessUrl("/")
                 ).exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(accessDeniedHandler));
+        http.httpBasic(Customizer.withDefaults());
         return http.build();
     }
 
-    @Bean
-    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
-                .authorizeRequests(authorize -> authorize
-                        .requestMatchers("/api/login").permitAll()
-                        .requestMatchers("/api/**").authenticated()
-                        .anyRequest().permitAll()
-                )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                //CustomJwtDecoder
-                .oauth2ResourceServer(
-                        oauth2 -> oauth2.jwt(Customizer.withDefaults())
-                )
-                .authenticationProvider(authenticationProvider())
-                .httpBasic(Customizer.withDefaults());
-
-        return http.build();
-    }
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();

@@ -21,13 +21,13 @@ public class AuteurControllerAPI {
     }
 
     // Récupérer un auteur par son ID
-    @GetMapping("/auteurs/{id}")
+    @GetMapping("/auteur/{id}")
     public Auteur getAuteurById(@PathVariable("id") int id) {
         return auteurService.getAuteurById(id);
     }
 
     // Ajouter un nouvel auteur
-    @PostMapping("/auteurs")
+    @PostMapping("/admin/auteur")
     public Auteur addAuteur(@RequestBody Auteur auteur) {
         return auteurService.addAuteur(auteur);
     }

@@ -68,7 +68,6 @@ public class EmpruntController {
         model.addAttribute("emprunts", empruntPage.getContent());
         return "admin/emprunt-manager";
     }
-
     @GetMapping("/admin/emprunt/retour/{id}")
     public String getPaginatedEmpruntsRetournerUnLivre(
             @PathVariable("id") Long id,
@@ -95,6 +94,7 @@ public class EmpruntController {
             @RequestParam("pageNo") Optional<Integer> page,
             @RequestParam("pageSize") Optional<Integer> size,
             @RequestParam(value = "livreId", defaultValue = "0") int livreId,
+            @RequestParam("search") Optional<String> search,
             Model model
     ) {
         if (livreId == 0 ) {
@@ -105,7 +105,14 @@ public class EmpruntController {
         }
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
-        Page<Utilisateur> utilisateursPage = utilisateurService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        Page<Utilisateur> utilisateursPage;
+        if (search.isPresent()) {
+            utilisateursPage = utilisateurService.findPaginatedAndFiltered(PageRequest.of(currentPage - 1, pageSize), search.get());
+        } else {
+            utilisateursPage = utilisateurService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        }
+
+                //= utilisateurService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
         model.addAttribute("livreId", livreId);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", utilisateursPage.getTotalPages());
@@ -116,11 +123,18 @@ public class EmpruntController {
     public String getPaginatedLivres(
             @RequestParam("pageNo") Optional<Integer> page,
             @RequestParam("pageSize") Optional<Integer> size,
+            @RequestParam("search") Optional<String> search,
             Model model
     ) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
-        Page<Livre> livrePage = livreService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        Page<Livre> livrePage ;
+        if (search.isPresent()) {
+            livrePage = livreService.findPaginatedAndFiltered(PageRequest.of(currentPage - 1, pageSize), search.get());
+        } else {
+            livrePage = livreService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        }
+        //livrePage = livreService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", livrePage.getTotalPages());
         model.addAttribute("pageSize", livrePage.getTotalElements());
