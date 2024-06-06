@@ -18,7 +18,7 @@ Un système de gestion de bibliothèque complet développé en Java avec Spring 
 
 - Java
 - Spring Boot
-- Base de données (par exemple, MySQL, PostgreSQL)
+- Base de données MySQL
 
 ## Captures d'écran
 
